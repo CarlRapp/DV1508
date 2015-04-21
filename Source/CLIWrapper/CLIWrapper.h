@@ -9,7 +9,7 @@ namespace ECSToolWrapper
 	{
 		ECST(void)
 		{
-			ECSTool::Class1::ShowTool();
+			
 		}
 	public:
 		static ECST^ ECSToolInstance = gcnew ECST();

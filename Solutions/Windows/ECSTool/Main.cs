@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.IO;
 
 namespace ECSTool
 {
-    public class Class1
+    public class Main
     {
         public static void ShowTool()
         {
-
+           MessageBox.Show("C# Message Box", "C# Message Box", MessageBoxButtons.OKCancel);
         }
     }
 }

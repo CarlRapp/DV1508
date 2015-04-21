@@ -509,12 +509,6 @@
     <ClInclude Include="..\..\..\Source\Game\LuaBridge\LoadingScreen\LuaLoadingScreen.h">
       <Filter>Lua Bridge\LoadingScreen</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="Game.rc">
-      <Filter>Resource Files</Filter>
-    </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
     <Image Include="icon.ico">

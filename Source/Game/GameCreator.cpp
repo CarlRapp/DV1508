@@ -720,7 +720,7 @@ void GameCreator::StartGame(int argc, char** argv)
 		}
 		else if (m_input->GetKeyboard()->GetKeyState(SDL_SCANCODE_F9) == Input::InputState::PRESSED)
 		{
-			
+			ShowTool();
 		}
 
 		if (showDebugInfo)
