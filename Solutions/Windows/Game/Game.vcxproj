@@ -29,12 +29,14 @@
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -42,6 +44,7 @@
     <PlatformToolset>v120</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
@@ -49,6 +52,7 @@
     <PlatformToolset>v120</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
+    <CLRSupport>false</CLRSupport>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -110,7 +114,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;OpenGL32.lib;glew32.lib;glew32s.lib;lua53.lib;Input_$(PlatformTarget)d.lib;Network_$(PlatformTarget)d.lib;MPL_$(PlatformTarget)d.lib;ECSL_$(PlatformTarget)d.lib;Renderer_$(PlatformTarget)d.lib;LuaEmbedder_$(PlatformTarget)d.lib;Console_$(PlatformTarget)d.lib;Logger_$(PlatformTarget)d.lib;FileSystem_$(PlatformTarget)d.lib;Audio_$(PlatformTarget)d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;OpenGL32.lib;glew32.lib;glew32s.lib;lua53.lib;Input_$(PlatformTarget)d.lib;Network_$(PlatformTarget)d.lib;MPL_$(PlatformTarget)d.lib;ECSL_$(PlatformTarget)d.lib;Renderer_$(PlatformTarget)d.lib;LuaEmbedder_$(PlatformTarget)d.lib;Console_$(PlatformTarget)d.lib;Logger_$(PlatformTarget)d.lib;FileSystem_$(PlatformTarget)d.lib;Audio_$(PlatformTarget)d.lib;CLIWrapper_$(PlatformTarget)d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /d /y "$(SolutionDir)..\..\Externals\binaries\Windows\$(PlatformTarget)\*.dll" "$(OutDir)"
@@ -135,7 +139,7 @@ xcopy "$(SolutionDir)..\..\Externals\Content" "$(OutDir)content" /d /y /s /e </C
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;OpenGL32.lib;glew32.lib;glew32s.lib;lua53.lib;Input_$(PlatformTarget)d.lib;Network_$(PlatformTarget)d.lib;MPL_$(PlatformTarget)d.lib;ECSL_$(PlatformTarget)d.lib;Renderer_$(PlatformTarget)d.lib;LuaEmbedder_$(PlatformTarget)d.lib;Console_$(PlatformTarget)d.lib;Logger_$(PlatformTarget)d.lib;FileSystem_$(PlatformTarget)d.lib;Audio_$(PlatformTarget)d.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;OpenGL32.lib;glew32.lib;glew32s.lib;lua53.lib;Input_$(PlatformTarget)d.lib;Network_$(PlatformTarget)d.lib;MPL_$(PlatformTarget)d.lib;ECSL_$(PlatformTarget)d.lib;Renderer_$(PlatformTarget)d.lib;LuaEmbedder_$(PlatformTarget)d.lib;Console_$(PlatformTarget)d.lib;Logger_$(PlatformTarget)d.lib;FileSystem_$(PlatformTarget)d.lib;Audio_$(PlatformTarget)d.lib;CLIWrapper_$(PlatformTarget)d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /d /y "$(SolutionDir)..\..\Externals\binaries\Windows\$(PlatformTarget)\*.dll" "$(OutDir)"
@@ -162,7 +166,7 @@ xcopy "$(SolutionDir)..\..\Externals\Content" "$(OutDir)content" /d /y /s /e </C
       <OptimizeReferences>true</OptimizeReferences>
       <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;OpenGL32.lib;glew32.lib;glew32s.lib;lua53.lib;Input_$(PlatformTarget).lib;Network_$(PlatformTarget).lib;MPL_$(PlatformTarget).lib;ECSL_$(PlatformTarget).lib;Renderer_$(PlatformTarget).lib;LuaEmbedder_$(PlatformTarget).lib;Console_$(PlatformTarget).lib;Logger_$(PlatformTarget).lib;FileSystem_$(PlatformTarget).lib;Audio_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;OpenGL32.lib;glew32.lib;glew32s.lib;lua53.lib;Input_$(PlatformTarget).lib;Network_$(PlatformTarget).lib;MPL_$(PlatformTarget).lib;ECSL_$(PlatformTarget).lib;Renderer_$(PlatformTarget).lib;LuaEmbedder_$(PlatformTarget).lib;Console_$(PlatformTarget).lib;Logger_$(PlatformTarget).lib;FileSystem_$(PlatformTarget).lib;Audio_$(PlatformTarget).lib;CLIWrapper_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /d /y "$(SolutionDir)..\..\Externals\binaries\Windows\$(PlatformTarget)\*.dll" "$(OutDir)"
@@ -189,7 +193,7 @@ xcopy "$(SolutionDir)..\..\Externals\Content" "$(OutDir)content" /d /y /s /e </C
       <OptimizeReferences>true</OptimizeReferences>
       <ProfileGuidedDatabase>$(OutDir)$(TargetName).pgd</ProfileGuidedDatabase>
       <ProgramDatabaseFile>$(IntDir)$(TargetName).pdb</ProgramDatabaseFile>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;OpenGL32.lib;glew32.lib;glew32s.lib;lua53.lib;Input_$(PlatformTarget).lib;Network_$(PlatformTarget).lib;MPL_$(PlatformTarget).lib;ECSL_$(PlatformTarget).lib;Renderer_$(PlatformTarget).lib;LuaEmbedder_$(PlatformTarget).lib;Console_$(PlatformTarget).lib;Logger_$(PlatformTarget).lib;FileSystem_$(PlatformTarget).lib;Audio_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2main.lib;OpenGL32.lib;glew32.lib;glew32s.lib;lua53.lib;Input_$(PlatformTarget).lib;Network_$(PlatformTarget).lib;MPL_$(PlatformTarget).lib;ECSL_$(PlatformTarget).lib;Renderer_$(PlatformTarget).lib;LuaEmbedder_$(PlatformTarget).lib;Console_$(PlatformTarget).lib;Logger_$(PlatformTarget).lib;FileSystem_$(PlatformTarget).lib;Audio_$(PlatformTarget).lib;CLIWrapper_$(PlatformTarget).lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>xcopy /d /y "$(SolutionDir)..\..\Externals\binaries\Windows\$(PlatformTarget)\*.dll" "$(OutDir)"

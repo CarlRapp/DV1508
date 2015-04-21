@@ -1,0 +1,3 @@
+[Logger]	Info: Added to log groups!
+[Game]		Info: Added to log groups!
+[Network]	Info: Added to log groups!
