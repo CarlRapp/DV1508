@@ -10,7 +10,8 @@ namespace ECSTool
     {
         public static void ShowTool()
         {
-           MessageBox.Show("C# Message Box", "C# Message Box", MessageBoxButtons.OKCancel);
+            MainWindow mainWindow = new MainWindow();
+            mainWindow.Show();
         }
     }
 }
