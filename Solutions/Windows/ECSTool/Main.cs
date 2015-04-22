@@ -10,6 +10,7 @@ namespace ECSTool
     {
         public static void ShowTool()
         {
+			Console.WriteLine("LOL");
             MainWindow mainWindow = new MainWindow();
             mainWindow.Show();
         }
