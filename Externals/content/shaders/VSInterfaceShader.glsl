@@ -9,9 +9,12 @@ layout( location = 7 ) in mat4 ModelViewMatrix;
 layout( location = 11 ) in mat3 NormalMatrix;
 // used locations 11-13
 layout( location = 14 ) in vec3 ColorVec;
+//Instance ID
+layout( location = 15 ) in int InstanceIDVec; 
 
 out vec2 TexCoord;
 out vec3 AddColor;
+flat out int InstanceID;
 
 uniform mat4 ProjectionMatrix;
 
@@ -21,4 +24,5 @@ void main()
 	mat4 MVP = ProjectionMatrix * ModelViewMatrix;
 	gl_Position = MVP * vec4(VertexPosition, 1.0);
 	AddColor = ColorVec;
+	InstanceID = InstanceIDVec; 
 }

@@ -5,9 +5,10 @@ in vec3 BiTan;
 in vec2 TexCoord;
 in vec3 ViewPos;
 in vec3 AddColor;
-in float A;
+flat in int InstanceID;
 
 layout( location = 0 ) out vec4 ColorData;
+layout( location = 1 ) out unsigned short PickingTexData;
 
 //Input textures
 uniform sampler2D diffuseTex;
@@ -214,4 +215,5 @@ void main()
 	vec4 glowvec = vec4(glow*albedo_tex.xyz, 0.0);
 
 	ColorData = vec4(ambient + diffuse*(1.0-glow), 1.0) * albedo_tex + vec4(spec, 0.0f) + glowvec;
+	PickingTexData = unsigned short(InstanceID);
 }

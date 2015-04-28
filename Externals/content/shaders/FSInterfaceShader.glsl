@@ -1,8 +1,10 @@
 #version 400
 in vec2 TexCoord;
 in vec3 AddColor;
+flat in int InstanceID;
 
 layout( location = 0 ) out vec4 ColorData;
+layout( location = 1 ) out unsigned short PickingTexData;
 
 //Input textures
 uniform sampler2D diffuseTex;
@@ -21,4 +23,5 @@ void main()
 		coloradded = albedo_tex;
 
 	ColorData = coloradded;
+	PickingTexData = unsigned short(InstanceID);
 }

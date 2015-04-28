@@ -73,6 +73,7 @@ bool GraphicsHigh::Init()
 	if (!InitGLEW()) { SDL_Log("GLEW_VERSION_4_3 FAILED"); return false; }
 	if (!InitShaders()) { ERRORMSG("INIT SHADERS FAILED\n"); return false; }
 	InitRenderLists();
+	InitPickingTexture();
 	if (!InitDeferred()) { ERRORMSG("INIT DEFERRED FAILED\n"); return false; }	
 	if (!InitBuffers()) { ERRORMSG("INIT BUFFERS FAILED\n"); return false; }
 	if (!InitForward()) { ERRORMSG("INIT FORWARD FAILED\n"); return false; }
@@ -194,14 +195,15 @@ bool GraphicsHigh::InitDeferred()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthBuf, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_normTex, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_colorTex, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_pickingTex, 0);
 
 	// Add vramUsage calc if adding a new g-buffer texture
 	m_vramUsage += (m_clientWidth*m_clientHeight*sizeof(float));
 	m_vramUsage += (m_clientWidth*m_clientHeight*sizeof(float) * 4);
 	m_vramUsage += (m_clientWidth*m_clientHeight * 1 * 4);
 
-	GLenum drawBuffersDeferred[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	glDrawBuffers(2, drawBuffersDeferred);
+	GLenum drawBuffersDeferred[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+	glDrawBuffers(3, drawBuffersDeferred);
 	return true;
 }
 bool GraphicsHigh::InitBuffers()
@@ -244,9 +246,10 @@ bool GraphicsHigh::InitForward()
 	// Attach the images to the framebuffer
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthBuf, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_outputImage, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_pickingTex, 0);
 
-	GLenum drawBufferForward = GL_COLOR_ATTACHMENT0;
-	glDrawBuffers(1, &drawBufferForward);
+	GLenum drawBufferForward[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	glDrawBuffers(2, drawBufferForward);
 
 	return true;
 }
@@ -285,6 +288,27 @@ bool GraphicsHigh::InitLightBuffers()
 	BufferDirectionalLight(&m_lightDefaults[0]);
 
 	return true;
+}
+
+void GraphicsHigh::InitPickingTexture()
+{
+	// Create the texture object for the primitive information buffer
+	glGenTextures(1, &m_pickingTex);
+	glActiveTexture(GL_TEXTURE6);
+	glBindTexture(GL_TEXTURE_2D, m_pickingTex);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	SDL_Log("- - - - - FIRST - %d", glGetError());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R16UI, m_clientWidth, m_clientHeight, 0, GL_RED_INTEGER, GL_UNSIGNED_SHORT, NULL);
+
+	SDL_Log("- - - - - - - %d", glGetError());
+
+	//system("pause");
+	//glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_pickingTex, 0);
+	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
 }
 #pragma endregion in the order they are initialized
 
@@ -649,6 +673,7 @@ void GraphicsHigh::Render()
 	//-------- FULL SCREEN QUAD RENDERING
 	m_fullScreenShader.UseProgram();
 	//glActiveTexture(GL_TEXTURE5);
+	//glBindTexture(GL_TEXTURE_2D, m_outputImage);
 	//glBindTexture(GL_TEXTURE_2D, m_shadowMap->GetDepthTexHandle());
 	glDrawArrays(GL_POINTS, 0, 1);
 

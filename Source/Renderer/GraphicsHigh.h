@@ -50,6 +50,7 @@ namespace Renderer
 		bool InitTextRenderer();
 		bool InitLightBuffers();
 		bool InitRandomVector();
+		void InitPickingTexture();
 
 		void CreateGBufTex(GLenum texUnit, GLenum format, GLuint &texid);
 		void CreateDepthTex(GLuint &texid);
@@ -70,6 +71,7 @@ namespace Renderer
 		GLuint m_outputImage;
 		GLuint m_debuggText;
 		GLuint m_depthBuf, m_normTex, m_colorTex;
+		GLuint m_pickingTex;
 
 		// Frame buffer object
 		GLuint m_deferredFBO, m_forwardFBO;
