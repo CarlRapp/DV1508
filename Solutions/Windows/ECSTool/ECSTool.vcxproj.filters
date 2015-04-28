@@ -7,15 +7,18 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Source\CLIWrapper\CLIWrapper.h">
+    <ClInclude Include="..\..\..\Source\ECSTool\WindowCreator.h">
       <Filter>Source Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Source\CLIWrapper\NativeInterface.h">
+    <ClInclude Include="..\..\..\Source\ECSTool\MainWindow.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Source\CLIWrapper\CLIWrapper.cpp">
+    <ClCompile Include="..\..\..\Source\ECSTool\WindowCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\Source\ECSTool\MainWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

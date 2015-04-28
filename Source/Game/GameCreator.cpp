@@ -44,7 +44,7 @@
 
 #include "LoadingScreen.h"
 
-#include "CLIWrapper/NativeInterface.h"
+#include "ECSTool/WindowCreator.h"
 
 GameCreator::GameCreator() :
 m_graphics(0), m_input(0), m_clientWorld(0), m_serverWorld(0), m_clientWorldProfiler(0), m_serverWorldProfiler(0), m_console(0), m_remoteConsole(0), m_consoleManager(Console::ConsoleManager::GetInstance()), m_frameCounter(new Utility::FrameCounter()), m_running(true),
@@ -720,7 +720,7 @@ void GameCreator::StartGame(int argc, char** argv)
 		}
 		else if (m_input->GetKeyboard()->GetKeyState(SDL_SCANCODE_F9) == Input::InputState::PRESSED)
 		{
-			ShowTool();
+			WindowCreator::CreateMainWindow(m_clientWorld);
 		}
 
 		if (showDebugInfo)
