@@ -732,6 +732,7 @@ void GameCreator::StartGame(int argc, char** argv)
 			lol[3] = '!';
 			lol[4] = '\0';
 		}
+		WindowCreator::UpdateWindow(dt);
 
 		if (showDebugInfo)
 		{
