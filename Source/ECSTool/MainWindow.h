@@ -12,13 +12,6 @@ namespace ECSTool {
 	using namespace System::Data;
 	using namespace System::Drawing;
 
-	public class EntityListItem
-	{
-	public:
-		std::string Label;
-		int Value;
-	};
-
 	/// <summary>
 	/// Summary for MainWindow
 	/// </summary>
@@ -33,7 +26,7 @@ namespace ECSTool {
 			//
 		}
 		void MainWindow::SetWorld(ECSL::World* _world);
-
+		void MainWindow::Update(float _dt);
 
 		
 	protected:
@@ -121,5 +114,7 @@ namespace ECSTool {
 		
 		private:
 			ECSL::World*	m_world;
+			float			m_refreshRate;
+			float			m_refreshTimer;
 	};
 }

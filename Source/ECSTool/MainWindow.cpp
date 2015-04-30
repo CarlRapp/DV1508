@@ -10,6 +10,18 @@ void MainWindow::SetWorld(ECSL::World* _world)
 {
 	m_world	=	_world;
 	currentEntity = 0;
+	m_refreshRate = 1.0f / 2.0f;
+	m_refreshTimer = 0;
+}
+
+void MainWindow::Update(float _dt)
+{
+	m_refreshTimer += _dt;
+	if (m_refreshTimer >= m_refreshRate)
+	{
+		m_refreshTimer -= m_refreshRate;
+		//	Call internal update here
+	}
 }
 
 #pragma region Entity Panel section
