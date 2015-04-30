@@ -144,7 +144,7 @@ void EntityTable::ClearEntityData(unsigned int _entityId)
 
 const EntityState EntityTable::GetEntityState(unsigned int _entityId) 
 { 
-	return (EntityState)(*(int*)(m_dataTable->GetData(_entityId))); 
+	return (EntityState)(*(unsigned char*)(m_dataTable->GetData(_entityId))); 
 }
 
 const BitSet::DataType* EntityTable::GetEntityComponents(unsigned int _entityId) 
