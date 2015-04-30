@@ -1,3 +1,11 @@
+-- EntityTag Component
+local EntityTag = ComponentType()
+EntityTag.Name = "EntityTag"
+EntityTag.SyncNetwork = true
+EntityTag.TableType = TableType.Map
+EntityTag:AddVariable("Tag", ByteSize.Text)
+worldCreator:AddComponentType(EntityTag)
+
 -- Null Component
 local NullComponent = ComponentType()
 NullComponent.Name = "Null"
