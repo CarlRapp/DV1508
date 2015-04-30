@@ -1,4 +1,7 @@
 #pragma once
+#include <msclr\marshal_cppstd.h>
+
+#include "ECSL/Framework/World.h"
 
 namespace ECSTool {
 
@@ -8,6 +11,13 @@ namespace ECSTool {
 	using namespace System::Windows::Forms;
 	using namespace System::Data;
 	using namespace System::Drawing;
+
+	public class EntityListItem
+	{
+	public:
+		std::string Label;
+		int Value;
+	};
 
 	/// <summary>
 	/// Summary for MainWindow
@@ -22,7 +32,10 @@ namespace ECSTool {
 			//TODO: Add the constructor code here
 			//
 		}
+		void MainWindow::SetWorld(ECSL::World* _world);
 
+
+		
 	protected:
 		/// <summary>
 		/// Clean up any resources being used.
@@ -34,8 +47,52 @@ namespace ECSTool {
 				delete components;
 			}
 		}
-	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::Panel^  panel1;
 	protected:
+	private: System::Windows::Forms::Button^  button2;
+	private: System::Windows::Forms::Button^  button1;
+	private: System::Windows::Forms::ListBox^  listBox1;
+	private: System::Windows::Forms::TextBox^  textBox1;
+	private: System::Windows::Forms::Label^  label1;
+	
+	private: 
+
+		/*	ENTITY PANEL START	*/
+	public:
+		void MainWindow::CreateEntityPanel();
+		void MainWindow::UpdateEntityPanelList();
+
+	private:
+		System::Windows::Forms::Panel^		entityPanel;
+		System::Windows::Forms::ListBox^	entityPanel_EntityList;
+
+	private:
+		System::Void entityPanel_EntityList_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
+		/*	ENTITY PANEL END	*/
+
+		/*	COMPONENT PANEL START	*/
+	public:
+		void MainWindow::CreateComponentPanel();
+		void MainWindow::UpdateComponentPanelList(unsigned int _entityId);
+		void MainWindow::RemoveComponent(System::Object^ sender, System::EventArgs^ e);
+
+	private:
+		System::Windows::Forms::Panel^		componentPanel;
+		System::Windows::Forms::ListBox^	componentPanel_ComponentList;
+		System::Windows::Forms::Button^		componentPanel_RemoveComponentButton;
+
+	private:
+		unsigned int currentEntity;
+		/*	COMPONENT PANEL END	*/
+
+
+		std::string toString(System::Object^ systemString)
+		{
+			msclr::interop::marshal_context context;
+			std::string standardString = context.marshal_as<std::string>(systemString->ToString());
+			return standardString;
+		}
+
 
 	private:
 		/// <summary>
@@ -50,29 +107,19 @@ namespace ECSTool {
 		/// </summary>
 		void InitializeComponent(void)
 		{
-			this->button1 = (gcnew System::Windows::Forms::Button());
-			this->SuspendLayout();
-			// 
-			// button1
-			// 
-			this->button1->Location = System::Drawing::Point(13, 13);
-			this->button1->Name = L"button1";
-			this->button1->Size = System::Drawing::Size(75, 23);
-			this->button1->TabIndex = 0;
-			this->button1->Text = L"button1";
-			this->button1->UseVisualStyleBackColor = true;
+
 			// 
 			// MainWindow
 			// 
-			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
-			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(284, 261);
-			this->Controls->Add(this->button1);
+			this->ClientSize = System::Drawing::Size(536, 459);
 			this->Name = L"MainWindow";
-			this->Text = L"MainWindow";
 			this->ResumeLayout(false);
 
 		}
 #pragma endregion
+
+		
+		private:
+			ECSL::World*	m_world;
 	};
 }
