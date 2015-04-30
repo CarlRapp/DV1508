@@ -722,6 +722,16 @@ void GameCreator::StartGame(int argc, char** argv)
 		{
 			WindowCreator::CreateMainWindow(m_clientWorld);
 		}
+		else if (m_input->GetKeyboard()->GetKeyState(SDL_SCANCODE_F10) == Input::InputState::PRESSED)
+		{
+			m_clientWorld->CreateComponentAndAddTo("EntityTag", 0);
+			char* lol = m_clientWorld->GetComponent(0, "EntityTag", "Tag");
+			lol[0] = 'T';
+			lol[1] = 'A';
+			lol[2] = 'G';
+			lol[3] = '!';
+			lol[4] = '\0';
+		}
 
 		if (showDebugInfo)
 		{
