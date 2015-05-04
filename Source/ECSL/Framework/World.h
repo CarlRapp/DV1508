@@ -70,6 +70,10 @@ namespace ECSL
 		std::string GetString(unsigned int _eId, unsigned int _componentTypeId, const unsigned int _index);
 
 		//	Tool things
+		const BitSet::DataType* GetEntityBitset(unsigned int _eId)
+		{
+			return m_dataManager->GetEntityTable()->GetEntityComponents(_eId);
+		}
 		unsigned int GetEntityCount()
 		{
 			return m_dataManager->GetEntityCount();
