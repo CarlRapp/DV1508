@@ -33,6 +33,9 @@
     <ClInclude Include="..\..\..\Source\ECSTool\WindowWrapper.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\Source\ECSTool\ComponentPanel.cpp" />
+    <ClCompile Include="..\..\..\Source\ECSTool\EntityFilterPanel.cpp" />
+    <ClCompile Include="..\..\..\Source\ECSTool\EntityPanel.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\MainWindow.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\WindowCreator.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\WindowWrapper.cpp" />
