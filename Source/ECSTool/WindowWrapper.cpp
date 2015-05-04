@@ -43,8 +43,7 @@ void WindowWrapper::InitializeWindow(ECSL::World* _world)
 	m_window = gcnew ECSTool::MainWindow();
 	m_window->SetWorld(_world);
 
-	m_window->CreateEntityPanel();
-	m_window->CreateComponentPanel();
+	m_window->InitializeTool();
 	m_window->Show();
 	m_isActive = true;
 }
