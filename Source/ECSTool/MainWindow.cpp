@@ -28,16 +28,25 @@ void MainWindow::Update(float _dt)
 
 	if (m_forceUpdate)
 	{
-		UpdateEntityPanelList();
 		m_forceUpdate = false;
+		InternalUpdate(_dt);
 	}
 	else if (m_refreshTimer >= m_refreshRate)
 	{
 		m_refreshTimer -= m_refreshRate;
 		//	Call internal update here
-		UpdateEntityPanelList();
+		InternalUpdate(_dt);
 	}
 }
+void MainWindow::InternalUpdate(float _dt)
+{
+	UpdateEntityPanelList();
+
+
+	if (this->entityFilterPanel->IsAccessible)
+		PopulateEntityFilter();
+}
+
 
 void MainWindow::InitializeTool()
 {

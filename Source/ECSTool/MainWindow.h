@@ -79,6 +79,7 @@ namespace ECSTool {
 		System::Windows::Forms::Button^		entityFilterPanel_Mandatory;
 		System::Windows::Forms::Button^		entityFilterPanel_RequiresOneOf;
 		System::Windows::Forms::Button^		entityFilterPanel_Excluded;
+		System::Windows::Forms::Button^		entityFilterPanel_RemoveFromFilter;
 
 	private:
 		System::Void entityFilterPanel_List_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
@@ -153,7 +154,8 @@ namespace ECSTool {
 		}
 #pragma endregion
 
-		
+		private:
+			void MainWindow::InternalUpdate(float _dt);
 		private:
 			ECSL::World*			m_world;
 			float					m_refreshRate;
