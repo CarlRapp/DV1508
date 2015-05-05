@@ -55,4 +55,6 @@ void MainWindow::InitializeTool()
 
 	this->CreateComponentPanel();
 	this->CreateComponentSubPanel();
+
+	this->CreateDataPanel();
 }

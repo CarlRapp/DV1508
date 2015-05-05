@@ -108,6 +108,7 @@ System::Void MainWindow::componentPanel_ComponentList_SelectedIndexChanged(Syste
 {
 	std::string component = toString(componentPanel_ComponentList->SelectedItem);
 	m_currentComponent = ECSL::ComponentTypeManager::GetInstance().GetTableId(component);
+	UpdateDataPanelList(m_currentEntity, m_currentComponent);
 }
 #pragma endregion
 

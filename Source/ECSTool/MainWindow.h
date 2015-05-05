@@ -127,6 +127,18 @@ namespace ECSTool {
 		System::Void addComponentPanel_Apply_Clicked(System::Object^ sender, System::EventArgs^ e);
 		/*	COMPONENT "ADD COMPONENT" PANEL END	*/
 
+		/*	DATA PANEL START	*/
+	public:
+		void MainWindow::CreateDataPanel();
+		void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent);
+
+	private:
+
+	private:
+		System::Windows::Forms::Panel^		dataPanel;
+		System::Windows::Forms::ListView^	dataPanel_List;
+
+		/*	DATA PANEL END	*/
 
 		std::string toString(System::Object^ systemString)
 		{

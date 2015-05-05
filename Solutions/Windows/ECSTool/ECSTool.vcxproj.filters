@@ -42,6 +42,9 @@
     <ClCompile Include="..\..\..\Source\ECSTool\ComponentSubPanel.cpp">
       <Filter>Source Files\Panels</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\Source\ECSTool\DataPanel.cpp">
+      <Filter>Source Files\Panels</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="..\..\..\Source\ECSTool\MainWindow.resx" />
