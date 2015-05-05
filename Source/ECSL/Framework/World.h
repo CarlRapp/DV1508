@@ -24,8 +24,6 @@ namespace ECSL
 		SystemManager* m_systemManager;
 		DataLogger* m_dataLogger;
 
-		
-
 	public:
 		World(unsigned int _entityCount, std::vector<SystemWorkGroup*>* _systemWorkGroups, std::vector<unsigned int>* _componentTypeIds);
 		~World();
@@ -71,7 +69,19 @@ namespace ECSL
 		std::string GetString(unsigned int _eId, const std::string& _componentType, const unsigned int _index);
 		std::string GetString(unsigned int _eId, unsigned int _componentTypeId, const unsigned int _index);
 
-		
+		//	Tool things
+		const BitSet::DataType* GetEntityBitset(unsigned int _eId)
+		{
+			return m_dataManager->GetEntityTable()->GetEntityComponents(_eId);
+		}
+		unsigned int GetEntityCount()
+		{
+			return m_dataManager->GetEntityCount();
+		}
+		bool IsEntityAlive(unsigned int _eId)
+		{
+			return m_dataManager->GetEntityTable()->GetEntityState(_eId) == EntityState::Alive;
+		}
 	};
 }
 

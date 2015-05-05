@@ -7,6 +7,7 @@
 namespace WindowCreator
 {
 	void DECLSPEC CreateMainWindow(ECSL::World* _world);
+	void DECLSPEC UpdateWindow(float _dt);
 }
 
 #endif

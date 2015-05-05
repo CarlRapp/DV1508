@@ -1,9 +1,13 @@
 #include "WindowCreator.h"
 
-#include "MainWindow.h"
+#include "WindowWrapper.h"
 
 void WindowCreator::CreateMainWindow(ECSL::World* _world)
 {
-	ECSTool::MainWindow^ mainWindow = gcnew ECSTool::MainWindow();
-	mainWindow->Show();
+	WindowWrapper::GetInstance()->OpenWindow(_world);
+}
+
+void WindowCreator::UpdateWindow(float _dt)
+{
+	WindowWrapper::GetInstance()->Update(_dt);
 }
