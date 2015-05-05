@@ -62,6 +62,9 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 {
 	this->dataPanel_List->Items->Clear();
 
+	if (_entityId == -1 || _currentComponent == -1)
+		return;
+
 	auto component = ECSL::ComponentTypeManager::GetInstance().GetComponentType(_currentComponent);
 	auto variables = component->GetVariables();
 

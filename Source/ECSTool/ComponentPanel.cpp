@@ -101,6 +101,8 @@ void MainWindow::UpdateComponentPanelList(int _entityId)
 		this->componentPanel_ComponentList->SetSelected(index, true);
 	else
 		ClearSelectedComponent();
+
+	UpdateDataPanelList(m_currentEntity, m_currentComponent);
 }
 
 #pragma region Selected Index
