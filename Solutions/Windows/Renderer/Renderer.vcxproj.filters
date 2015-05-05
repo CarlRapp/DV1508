@@ -279,5 +279,8 @@
     <None Include="..\..\..\Externals\content\shaders\highCSDeferredPass2.glsl">
       <Filter>shaders</Filter>
     </None>
+    <None Include="..\..\..\Externals\content\shaders\pickingShaderCompute.glsl">
+      <Filter>shaders</Filter>
+    </None>
   </ItemGroup>
 </Project>

@@ -80,6 +80,7 @@ namespace Renderer
 		Shader m_fullScreenShader;
 		Shader m_deferredShader1, m_compDeferredPass2Shader;
 		Shader m_shadowShaderAnim;
+		Shader m_pickingShader;
 
 		// SimpleText
 		bool m_renderSimpleText;
@@ -91,6 +92,9 @@ namespace Renderer
 		// Pointlights buffer
 		GLuint m_pointlightBuffer, m_dirLightBuffer, m_animationBuffer;
 		vec3 m_dirLightDirection;
+
+		// Picking, instanceID buffer
+		GLuint m_instanceIDBuffer;
 
 		// DEBUG variables ----
 		int m_nrOfLights; // lol
