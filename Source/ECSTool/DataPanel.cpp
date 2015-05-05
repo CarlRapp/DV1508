@@ -88,7 +88,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 			data = m_world->GetComponent(_entityId, componentName, varName);
 			break;
 		case ECSL::ComponentDataType::BOOL:
-			data = std::to_string(*(float*)m_world->GetComponent(_entityId, componentName, varName));
+			data = std::to_string(*(bool*)m_world->GetComponent(_entityId, componentName, varName));
 			break;
 		case ECSL::ComponentDataType::MATRIX:
 			data = "Can't view this value";
