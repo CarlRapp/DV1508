@@ -34,6 +34,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\Source\ECSTool\ComponentPanel.cpp" />
+    <ClCompile Include="..\..\..\Source\ECSTool\DataPanel.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\EntityFilterPanel.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\EntityPanel.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\MainWindow.cpp" />
