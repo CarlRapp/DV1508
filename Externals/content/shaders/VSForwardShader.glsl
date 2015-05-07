@@ -11,7 +11,7 @@ layout( location = 11 ) in mat3 NormalMatrix;
 layout( location = 14 ) in vec3 ColorVec;
 
 //Instance ID
-layout( location = 15 ) in int InstanceIDVec; 
+layout( location = 15 ) in uint InstanceIDVec; 
 
 out vec3 Normal;
 out vec3 Tan;
@@ -19,7 +19,7 @@ out vec3 BiTan;
 out vec2 TexCoord;
 out vec3 ViewPos;
 out vec3 AddColor;
-flat out int InstanceID;
+flat out uint InstanceID;
 
 uniform mat4 ProjectionMatrix;
 

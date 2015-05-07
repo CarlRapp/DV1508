@@ -24,7 +24,7 @@ void Model::Draw(mat4 viewMatrix)
 	std::vector<mat4> MVVector(instances.size());
 	std::vector<mat3> normalMatVector(instances.size());
 	float* colors = new float[instances.size() * 3];
-	int* ids = new int[instances.size()];
+	std::uint32_t* ids = new std::uint32_t[instances.size()];
 
 	int nrOfInstances = 0;
 
@@ -50,7 +50,7 @@ void Model::Draw(mat4 viewMatrix)
 			colors[j * 3 + 1] = instances[j].color[1];
 			colors[j * 3 + 2] = instances[j].color[2];
 
-			ids[j] = instances[j].id;
+			ids[j] = (std::uint32_t)instances[j].id;
 
 			nrOfInstances++;
 		}

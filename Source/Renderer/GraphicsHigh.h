@@ -96,6 +96,9 @@ namespace Renderer
 		// Picking, instanceID buffer
 		GLuint m_instanceIDBuffer;
 
+		int m_pickedID;
+		bool m_clicked;
+
 		// DEBUG variables ----
 		int m_nrOfLights; // lol
 

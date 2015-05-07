@@ -5,7 +5,6 @@ in vec3 BiTan;
 in vec2 TexCoord;
 in vec3 ViewPos;
 in vec3 AddColor;
-flat in int InstanceID;
 
 out vec4 ColorData;
 

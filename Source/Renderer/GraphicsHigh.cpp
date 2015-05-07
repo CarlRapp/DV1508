@@ -310,18 +310,22 @@ void GraphicsHigh::InitPickingTexture()
 	
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	//SDL_Log("- - - - - FIRST - %d", glGetError());
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_R16UI, m_clientWidth, m_clientHeight, 0, GL_RED_INTEGER, GL_UNSIGNED_SHORT, NULL);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32UI, m_clientWidth, m_clientHeight, 0, GL_RED_INTEGER, GL_UNSIGNED_INT, NULL);
 
-	//SDL_Log("- - - - - - - %d", glGetError());
+	SDL_Log("- - - - - - - %d", glGetError());
 
 	glGenBuffers(1, &m_instanceIDBuffer);
 	if (m_instanceIDBuffer < 0)
 		SDL_Log("- - Failed to generate instaceID buffer - -");
 
-	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 7, m_instanceIDBuffer, 0, sizeof(unsigned short));
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 7, m_instanceIDBuffer, 0, sizeof(unsigned int));
+	int zeroVal = 0;
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(unsigned int), &zeroVal, GL_STATIC_DRAW);
+
+	m_pickedID = -1;
 
 	//system("pause");
 	//glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_pickingTex, 0);
@@ -495,6 +499,25 @@ void GraphicsHigh::Render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+
+	int k = glGetError();
+	if (k)
+		SDL_Log("- - FIRST - - %d", k);
+	unsigned int *zeroVal = new unsigned int[m_clientWidth*m_clientHeight];
+
+	for (int i = 0; i < m_clientHeight; i++)
+		for (int j = 0; j < m_clientWidth; j++)
+			zeroVal[m_clientWidth*i + j] = 0;
+
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, m_pickingTex);
+	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_clientWidth, m_clientHeight, GL_RED_INTEGER, GL_UNSIGNED_INT, zeroVal);
+
+	k = glGetError();
+	if (k)
+		SDL_Log("- - SECOND - - %d", k);
+
+	delete zeroVal;
 	//----Uniforms
 	m_deferredShader1.UseProgram();
 	m_deferredShader1.SetUniVariable("TexFlag", glint, &m_debugTexFlag);
@@ -505,26 +528,26 @@ void GraphicsHigh::Render()
 
 	//--------ANIMATED DEFERRED RENDERING !!! ATTENTION: WORK IN PROGRESS !!!
 	//----Uniforms
-	m_animationShader.UseProgram();
-	m_animationShader.SetUniVariable("TexFlag", glint, &m_debugTexFlag);
-	//----DRAW MODELS
-	for (int i = 0; i < m_modelsAnimated.size(); i++)
-	{
-		// BUFFER JOINT MATRIXES
-		float *anim_data = new float[m_modelsAnimated[i].anim.size() * 16];
-		for (int j = 0; j < m_modelsAnimated[i].anim.size(); j++)
-		{
-			memcpy(&anim_data[16 * j], &m_modelsAnimated[i].anim[j], 16 * sizeof(float));
-		}
-		int anim_data_size = 16 * m_modelsAnimated[i].anim.size() * sizeof(float);
-		glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 6, m_animationBuffer, 0, anim_data_size);
-		glBufferData(GL_SHADER_STORAGE_BUFFER, anim_data_size, anim_data, GL_STATIC_DRAW);
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 6, m_animationBuffer);
-		delete[] anim_data;
+	//m_animationShader.UseProgram();
+	//m_animationShader.SetUniVariable("TexFlag", glint, &m_debugTexFlag);
+	////----DRAW MODELS
+	//for (int i = 0; i < m_modelsAnimated.size(); i++)
+	//{
+	//	// BUFFER JOINT MATRIXES
+	//	float *anim_data = new float[m_modelsAnimated[i].anim.size() * 16];
+	//	for (int j = 0; j < m_modelsAnimated[i].anim.size(); j++)
+	//	{
+	//		memcpy(&anim_data[16 * j], &m_modelsAnimated[i].anim[j], 16 * sizeof(float));
+	//	}
+	//	int anim_data_size = 16 * m_modelsAnimated[i].anim.size() * sizeof(float);
+	//	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 6, m_animationBuffer, 0, anim_data_size);
+	//	glBufferData(GL_SHADER_STORAGE_BUFFER, anim_data_size, anim_data, GL_STATIC_DRAW);
+	//	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 6, m_animationBuffer);
+	//	delete[] anim_data;
 
-		// DRAW MODEL
-		m_modelsAnimated[i].Draw(viewMatrix, projectionMatrix, &m_animationShader);
-	}
+	//	// DRAW MODEL
+	//	m_modelsAnimated[i].Draw(viewMatrix, projectionMatrix, &m_animationShader);
+	//}
 
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -566,7 +589,7 @@ void GraphicsHigh::Render()
 	glEnable(GL_DEPTH_TEST);
 	
 	// DRAW SKYBOX
-	glDisable(GL_CULL_FACE);
+	/*glDisable(GL_CULL_FACE);
 	glDepthMask(GL_FALSE);
 	m_skyBoxShader.UseProgram();
 	m_skybox->Draw(m_skyBoxShader.GetShaderProgram(), m_camera, m_dt);
@@ -575,7 +598,7 @@ void GraphicsHigh::Render()
 
 	m_skyboxClouds->Draw(m_skyBoxShader.GetShaderProgram(), m_camera, m_dt);
 	glEnable(GL_CULL_FACE);
-	glDepthMask(GL_TRUE);
+	glDepthMask(GL_TRUE);*/
 	// -----------
 	
 	//-------Render water-------------
@@ -686,34 +709,45 @@ void GraphicsHigh::Render()
 
 	int x, y;
 	//SDL_GetMouseState(&x, &y);
-	if (SDL_GetMouseState(&x, &y) == SDL_BUTTON_LEFT)
+	m_clicked = (SDL_GetMouseState(&x, &y) == SDL_BUTTON_LEFT);
+	m_pickingShader.SetUniVariable("Clicked", glint, &m_clicked);
+
+	//SDL_Log("x: %d,  y: %d ", x, y);
+
+	//---Picking compute shader-----
+	m_pickingShader.UseProgram();
+	y = m_clientHeight - y;
+	m_pickingShader.SetUniVariable("MouseX", glint, &x);
+	m_pickingShader.SetUniVariable("MouseY", glint, &y);
+	m_pickingShader.SetUniVariable("PickedID", glint, &m_pickedID);
+		
+	glEnable(GL_TEXTURE_2D);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, m_pickingTex);
+
+
+	//--- buffers----------
+	glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 7, m_instanceIDBuffer);
+	//--------------------------
+
+	glDispatchCompute(m_clientWidth * 0.0625, m_clientHeight * 0.0625, 1); // 1/16 = 0.0625
+	//---------------------------------------------------------------------------
+
+	if (m_clicked)
 	{
-		//SDL_Log("x: %d,  y: %d ", x, y);
-
-		//---Picking compute shader-----
-		m_pickingShader.UseProgram();
-
-		m_pickingShader.SetUniVariable("MouseX", glint, &x);
-		m_pickingShader.SetUniVariable("MouseY", glint, &y);
-
-		glEnable(GL_TEXTURE_2D);
-		glActiveTexture(GL_TEXTURE7);
-		glBindTexture(GL_TEXTURE_2D, m_pickingTex);
-
-		//glBindImageTexture(7, m_pickingTex, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RED_INTEGER);
-
-
-		//--- buffers----------
-		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 7, m_instanceIDBuffer);
-		//--------------------------
-
-		glDispatchCompute(m_clientWidth * 0.0625, m_clientHeight * 0.0625, 1); // 1/16 = 0.0625
-		//---------------------------------------------------------------------------
-
-		unsigned short* readID = (unsigned short*)glMapBuffer(GL_SHADER_STORAGE_BUFFER, GL_READ_ONLY);
+		unsigned int* readID = (unsigned int*)glMapNamedBuffer(m_instanceIDBuffer, GL_READ_ONLY);
 		if (readID)
+		{
 			SDL_Log("InstaceID from buffer: %d", readID[0]);
+			m_pickedID = readID[0];
+		}
+		glUnmapNamedBuffer(m_instanceIDBuffer);
 	}
+
+	k = glGetError();
+	if (k)
+		SDL_Log("- picking error: %d", k);
+
 	
 	//--------SIMPLETEXT RENDERING
 	if (m_renderSimpleText)
