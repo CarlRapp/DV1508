@@ -720,6 +720,7 @@ void GraphicsHigh::Render()
 	m_pickingShader.SetUniVariable("MouseX", glint, &x);
 	m_pickingShader.SetUniVariable("MouseY", glint, &y);
 	m_pickingShader.SetUniVariable("PickedID", glint, &m_pickedID);
+	m_pickingShader.SetUniVariable("HoverID", glint, &m_hoverID);
 		
 	glEnable(GL_TEXTURE_2D);
 	glActiveTexture(GL_TEXTURE7);
@@ -733,16 +734,22 @@ void GraphicsHigh::Render()
 	glDispatchCompute(m_clientWidth * 0.0625, m_clientHeight * 0.0625, 1); // 1/16 = 0.0625
 	//---------------------------------------------------------------------------
 
-	if (m_clicked)
+	unsigned int* readID = (unsigned int*)glMapNamedBuffer(m_instanceIDBuffer, GL_READ_ONLY);
+	if (readID)
 	{
-		unsigned int* readID = (unsigned int*)glMapNamedBuffer(m_instanceIDBuffer, GL_READ_ONLY);
-		if (readID)
+		if (m_clicked)
 		{
 			SDL_Log("InstaceID from buffer: %d", readID[0]);
 			m_pickedID = readID[0];
 		}
-		glUnmapNamedBuffer(m_instanceIDBuffer);
+		else
+		{
+			m_hoverID = readID[0];
+		}
 	}
+	glUnmapNamedBuffer(m_instanceIDBuffer);
+	
+
 
 	k = glGetError();
 	if (k)

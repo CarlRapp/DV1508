@@ -97,6 +97,7 @@ namespace Renderer
 		GLuint m_instanceIDBuffer;
 
 		int m_pickedID;
+		int m_hoverID;
 		bool m_clicked;
 
 		// DEBUG variables ----
