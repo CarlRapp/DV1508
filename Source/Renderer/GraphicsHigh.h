@@ -35,6 +35,9 @@ namespace Renderer
 
 		void BufferPointlights(int _nrOfLights, float **_lightPointers);
 		void BufferDirectionalLight(float *_lightPointer);
+
+		int GetPickedInstanceID(){ return m_pickedID; }
+		void UsePicking(bool _use){ m_usePicking = _use; }
 		
 		void Clear();
 		
@@ -99,6 +102,8 @@ namespace Renderer
 		int m_pickedID;
 		int m_hoverID;
 		bool m_clicked;
+		unsigned int* m_pickingTexZeros;
+		bool m_usePicking;
 
 		// DEBUG variables ----
 		int m_nrOfLights; // lol

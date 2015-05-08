@@ -47,7 +47,7 @@ void AModel::Draw(mat4 viewMatrix, mat4 projectionMatrix, Shader* shaderptr)
 		shaderptr->SetUniVariable("V", mat4x4, &V);
 		shaderptr->SetUniVariable("P", mat4x4, &P);
 		shaderptr->SetUniVariable("NormalMatrix", mat3x3, &normalMatrix);
-
+		shaderptr->SetUniVariable("InstanceID", glint, &id);
 
 		glActiveTexture(GL_TEXTURE1);
 		glBindTexture(GL_TEXTURE_2D, texID);
