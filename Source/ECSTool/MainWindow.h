@@ -65,6 +65,7 @@ namespace ECSTool {
 	private:
 		std::string GetEntityName(unsigned int _eId);
 		System::Void entityPanel_EntityList_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void entityPanel_filterButton_Clicked(System::Object^ sender, System::EventArgs^ e);
 		/*	ENTITY PANEL END	*/
 
 		/*	ENTITY FILTER PANEL START	*/
@@ -83,7 +84,7 @@ namespace ECSTool {
 
 	private:
 		System::Void entityFilterPanel_List_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
-		System::Void filterButton_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void entityFilterPanel_filterButtons_Clicked(System::Object^ sender, System::EventArgs^ e);
 		/*	ENTITY FILTER PANEL END	*/
 
 		/*	COMPONENT PANEL START	*/
@@ -97,6 +98,7 @@ namespace ECSTool {
 		void ClearSelectedComponent();
 		
 		System::Void componentPanel_ComponentList_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
+		System::Void componentPanel_AddComponent_Clicked(System::Object^ sender, System::EventArgs^ e);
 
 	private:
 		System::Windows::Forms::Panel^		componentPanel;
@@ -109,6 +111,34 @@ namespace ECSTool {
 		int m_currentComponent;
 		/*	COMPONENT PANEL END	*/
 
+		/*	COMPONENT "ADD COMPONENT" PANEL START	*/
+	public:
+		void MainWindow::CreateComponentSubPanel();
+		void MainWindow::PopulateComponentSubPanel(unsigned int _eId);
+
+	private:
+		System::Windows::Forms::Panel^		addComponentPanel;
+		System::Windows::Forms::ListView^	addComponentPanel_List;
+		System::Windows::Forms::Button^		addComponentPanel_Select;
+		System::Windows::Forms::Button^		addComponentPanel_Apply;
+
+	private:
+		System::Void addComponentPanel_Select_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void addComponentPanel_Apply_Clicked(System::Object^ sender, System::EventArgs^ e);
+		/*	COMPONENT "ADD COMPONENT" PANEL END	*/
+
+		/*	DATA PANEL START	*/
+	public:
+		void MainWindow::CreateDataPanel();
+		void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent);
+
+	private:
+
+	private:
+		System::Windows::Forms::Panel^		dataPanel;
+		System::Windows::Forms::ListView^	dataPanel_List;
+
+		/*	DATA PANEL END	*/
 
 		std::string toString(System::Object^ systemString)
 		{

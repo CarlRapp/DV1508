@@ -48,7 +48,7 @@ void MainWindow::CreateComponentPanel()
 	this->componentPanel_AddComponentButton->Size = System::Drawing::Size(55, 20);
 	this->componentPanel_AddComponentButton->Location = System::Drawing::Point(this->componentPanel_ComponentList->Location.X, this->componentPanel_ComponentList->Size.Height + 8);
 
-	this->componentPanel_AddComponentButton->Click += gcnew System::EventHandler(this, &MainWindow::RemoveComponent);
+	this->componentPanel_AddComponentButton->Click += gcnew System::EventHandler(this, &MainWindow::componentPanel_AddComponent_Clicked);
 
 	//	Hook up
 	this->componentPanel->Controls->Add(this->componentPanel_ComponentList);
@@ -98,9 +98,7 @@ void MainWindow::UpdateComponentPanelList(int _entityId)
 
 	//	If there is a entity selected, select it afterwards (if it wasnt found, set current to -1)
 	if (componentFound)
-	{
 		this->componentPanel_ComponentList->SetSelected(index, true);
-	}
 	else
 		ClearSelectedComponent();
 }
@@ -110,6 +108,7 @@ System::Void MainWindow::componentPanel_ComponentList_SelectedIndexChanged(Syste
 {
 	std::string component = toString(componentPanel_ComponentList->SelectedItem);
 	m_currentComponent = ECSL::ComponentTypeManager::GetInstance().GetTableId(component);
+	UpdateDataPanelList(m_currentEntity, m_currentComponent);
 }
 #pragma endregion
 
@@ -136,3 +135,18 @@ void MainWindow::ClearSelectedComponent()
 }
 
 #pragma endregion
+
+System::Void MainWindow::componentPanel_AddComponent_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	if (m_currentEntity == -1)
+		return;
+
+	if (this->addComponentPanel->Visible)
+		this->addComponentPanel->Hide();
+	else
+	{
+		PopulateComponentSubPanel(m_currentEntity);
+		this->addComponentPanel->Show();
+	}
+
+}

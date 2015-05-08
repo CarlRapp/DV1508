@@ -54,4 +54,7 @@ void MainWindow::InitializeTool()
 	this->CreateEntityFilterPanel();
 
 	this->CreateComponentPanel();
+	this->CreateComponentSubPanel();
+
+	this->CreateDataPanel();
 }

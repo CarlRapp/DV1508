@@ -38,8 +38,7 @@ void MainWindow::CreateEntityPanel()
 	this->entityPanel_FilterButton->Text = L"Filter";
 	this->entityPanel_FilterButton->Size = System::Drawing::Size(55, 20);
 	this->entityPanel_FilterButton->Location = System::Drawing::Point(entityPanel_EntityList->Location.X, entityPanel_EntityList->Size.Height + 8);
-
-	this->entityPanel_FilterButton->Click += gcnew System::EventHandler(this, &MainWindow::RemoveComponent);
+	this->entityPanel_FilterButton->Click += gcnew System::EventHandler(this, &MainWindow::entityPanel_filterButton_Clicked);
 
 
 	//	Hook up
@@ -96,6 +95,15 @@ void MainWindow::UpdateEntityPanelList()
 
 }
 #pragma endregion
+
+void MainWindow::entityPanel_filterButton_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	if (this->entityFilterPanel->Visible)
+		this->entityFilterPanel->Hide();
+	else
+		this->entityFilterPanel->Show();
+		
+}
 
 #pragma region Get Entity Name
 std::string MainWindow::GetEntityName(unsigned int _eId)
