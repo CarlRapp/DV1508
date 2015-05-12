@@ -13,7 +13,7 @@ public:
 	~WindowWrapper();
 
 	void OpenWindow(ECSL::World* _world, Renderer::GraphicsHigh* _graphics);
-	void ChangeWorld(ECSL::World* _world);
+	void ChangeWorld(ECSL::World* _world, Renderer::GraphicsHigh* _graphics);
 	void Update(float _dt);
 
 private:

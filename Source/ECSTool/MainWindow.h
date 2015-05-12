@@ -4,6 +4,19 @@
 #include "ECSL/Framework/World.h"
 #include "Renderer/GraphicsHigh.h"
 
+ref class FlickerLessPanel : public System::Windows::Forms::Panel
+
+{
+
+public: FlickerLessPanel()
+{
+
+	this->DoubleBuffered = true;
+
+}
+
+};
+
 namespace ECSTool {
 
 	using namespace System;
@@ -58,9 +71,10 @@ namespace ECSTool {
 	public:
 		void MainWindow::CreateEntityPanel();
 		void MainWindow::UpdateEntityPanelList();
+		void UpdatePicking();
 
 	private:
-		System::Windows::Forms::Panel^		entityPanel;
+		FlickerLessPanel^		entityPanel;
 		System::Windows::Forms::ListBox^	entityPanel_EntityList;
 		System::Windows::Forms::Button^		entityPanel_FilterButton;
 
@@ -234,3 +248,4 @@ namespace ECSTool {
 			Renderer::GraphicsHigh* m_graphics;
 	};
 }
+

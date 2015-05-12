@@ -19,14 +19,15 @@ WindowWrapper::~WindowWrapper()
 void WindowWrapper::OpenWindow(ECSL::World* _world, Renderer::GraphicsHigh* _graphics)
 {
 	InitializeWindow(_world, _graphics);
-	ChangeWorld(_world);
+	ChangeWorld(_world,_graphics);
 }
 
-void WindowWrapper::ChangeWorld(ECSL::World* _world)
+void WindowWrapper::ChangeWorld(ECSL::World* _world, Renderer::GraphicsHigh* _graphics)
 {
 	if (!m_isActive)
 		return;
 	m_window->SetWorld(_world);
+	m_window->SetGraphics(_graphics);
 }
 
 void WindowWrapper::Update(float _dt)

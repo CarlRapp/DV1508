@@ -13,7 +13,7 @@ void MainWindow::CreateEntityPanel()
 	this->SuspendLayout();
 
 	//	Create the panel object
-	this->entityPanel = (gcnew System::Windows::Forms::Panel());
+	this->entityPanel = (gcnew FlickerLessPanel());
 	this->entityPanel->SuspendLayout();
 
 	this->entityPanel->Location = System::Drawing::Point(13, 13);
@@ -68,16 +68,16 @@ void MainWindow::UpdateEntityPanelList()
 	{
 		if (m_world->IsEntityAlive(n))
 		{
-			int modelInstanceBlaha = -1;
+// 			int modelInstanceBlaha = -1;
+// 
+// 			unsigned int modelId = ECSL::ComponentTypeManager::GetInstance().GetTableId("Render");
+// 			if (m_world->GetEntityBitset(n)[0] & ((ECSL::BitSet::DataType)1 << modelId))
+// 			{
+// 				modelInstanceBlaha = *((int*)m_world->GetComponent(n, "Render", "ModelId"));
+// 			}
 
-			unsigned int modelId = ECSL::ComponentTypeManager::GetInstance().GetTableId("Render");
-			if (m_world->GetEntityBitset(n)[0] & ((ECSL::BitSet::DataType)1 << modelId))
-			{
-				modelInstanceBlaha = *((int*)m_world->GetComponent(n, "Render", "ModelId"));
-			}
-
-			if (modelInstanceBlaha == m_graphics->GetPickedInstanceID())
-			{
+//  			if (modelInstanceBlaha == m_graphics->GetPickedInstanceID())
+//  			{
 				bool filterCheck = ECSL::BitSet::BitSetPassFilters(componentCount, m_world->GetEntityBitset(n), m_filterMandatory, m_filterRequiresOneOf, m_filterExcluded);
 
 				if (filterCheck)
@@ -91,7 +91,7 @@ void MainWindow::UpdateEntityPanelList()
 						index = tempIndex;
 					}
 				}
-			}
+			//}
 		}
 	}
 
@@ -106,6 +106,46 @@ void MainWindow::UpdateEntityPanelList()
 
 }
 #pragma endregion
+
+void MainWindow::UpdatePicking()
+{
+	unsigned int entityCount = m_world->GetEntityCount();
+	unsigned int componentCount = ECSL::BitSet::GetDataTypeCount(ECSL::ComponentTypeManager::GetInstance().GetComponentTypeCount());
+
+	bool entityFound = false;
+	int index = -1;
+	for (unsigned int n = 0; n < entityCount; ++n)
+	{
+		if (m_world->IsEntityAlive(n))
+		{
+			int modelInstanceBlaha = -1;
+
+			unsigned int modelId = ECSL::ComponentTypeManager::GetInstance().GetTableId("Render");
+			if (m_world->GetEntityBitset(n)[0] & ((ECSL::BitSet::DataType)1 << modelId))
+			{
+				modelInstanceBlaha = *((int*)m_world->GetComponent(n, "Render", "ModelId"));
+
+				if (modelInstanceBlaha == m_graphics->GetPickedInstanceID())
+				{
+					m_currentEntity = n;
+				}
+			}
+		}
+	}
+	int indexOf = -2;
+	try
+	{
+		indexOf = entityPanel_EntityList->Items->IndexOf(gcnew System::String(std::to_string(m_currentEntity).c_str()));
+		if (indexOf > -1)
+			entityPanel_EntityList->SelectedIndex = indexOf;
+	}
+	catch (System::Exception^ e)
+	{
+		SDL_Log("LOOL %d,%d", m_currentEntity,indexOf);
+	}
+
+	//int selectedEntity = System::Int32::Parse(((System::String^)this->entityPanel_EntityList->SelectedItem));
+}
 
 void MainWindow::entityPanel_filterButton_Clicked(System::Object^ sender, System::EventArgs^ e)
 {
