@@ -58,3 +58,8 @@ void MainWindow::InitializeTool()
 
 	this->CreateDataPanel();
 }
+
+void ECSTool::MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics)
+{
+	m_graphics = _graphics;
+}

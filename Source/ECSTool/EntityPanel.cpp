@@ -68,17 +68,28 @@ void MainWindow::UpdateEntityPanelList()
 	{
 		if (m_world->IsEntityAlive(n))
 		{
-			bool filterCheck = ECSL::BitSet::BitSetPassFilters(componentCount, m_world->GetEntityBitset(n), m_filterMandatory, m_filterRequiresOneOf, m_filterExcluded);
+			int modelInstanceBlaha = -1;
 
-			if (filterCheck)
+			unsigned int modelId = ECSL::ComponentTypeManager::GetInstance().GetTableId("Render");
+			if (m_world->GetEntityBitset(n)[0] & ((ECSL::BitSet::DataType)1 << modelId))
 			{
-				std::string entryLabel = GetEntityName(n);
-				int tempIndex = this->entityPanel_EntityList->Items->Add(gcnew System::String(entryLabel.c_str()));
+				modelInstanceBlaha = *((int*)m_world->GetComponent(n, "Render", "ModelId"));
+			}
 
-				if (m_currentEntity == n)
+			if (modelInstanceBlaha == m_graphics->GetPickedInstanceID())
+			{
+				bool filterCheck = ECSL::BitSet::BitSetPassFilters(componentCount, m_world->GetEntityBitset(n), m_filterMandatory, m_filterRequiresOneOf, m_filterExcluded);
+
+				if (filterCheck)
 				{
-					entityFound = true;
-					index = tempIndex;
+					std::string entryLabel = GetEntityName(n);
+					int tempIndex = this->entityPanel_EntityList->Items->Add(gcnew System::String(entryLabel.c_str()));
+
+					if (m_currentEntity == n)
+					{
+						entityFound = true;
+						index = tempIndex;
+					}
 				}
 			}
 		}
