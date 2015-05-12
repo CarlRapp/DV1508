@@ -147,14 +147,20 @@ namespace ECSTool {
 	private:
 		void MainWindow::PopulateCreateEntityLists();
 		void MainWindow::ShowPopularComponents();
+		System::Drawing::Point MainWindow::FindLocation(Label^ label);
+		bool MainWindow::IsColliding(System::Drawing::Point point, System::Drawing::SizeF size, Label^ otherLabel);
 
 		void CreateEntityComponents_List_ItemSelectionChanged(System::Object^ sender, ListViewItemSelectionChangedEventArgs^ e);
 		void CreateEntityAddedComponents_List_ItemSelectionChanged(System::Object^ sender, ListViewItemSelectionChangedEventArgs^ e);
 		void CreateEntityPanel_AddComponentButton_Clicked(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_RemoveComponentButton_Clicked(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_CreateEntityButton_Clicked(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_PopularLabel_MouseEnter(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_PopularLabel_MouseLeave(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_PopularLabel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 
 	private:
+		const unsigned int					createEntityPopularComponentCount = 15;
 		System::Windows::Forms::Panel^		createEntityPanel;
 		System::Windows::Forms::ListView^	createEntityComponents_List;
 		System::Windows::Forms::ListView^	createEntityAddedComponents_List;
@@ -163,6 +169,7 @@ namespace ECSTool {
 		System::Windows::Forms::Button^		createEntityPanel_RemoveComponentButton;
 		System::Windows::Forms::Button^		createEntityPanel_CreateEntityButton;
 		System::Windows::Forms::Button^		createEntityPanel_BackButton;
+		System::Collections::ArrayList^		createEntityPanel_Labels;
 
 	private:
 
