@@ -40,26 +40,26 @@ void MainWindow::Update(float _dt)
 }
 void MainWindow::InternalUpdate(float _dt)
 {
-	//UpdateEntityPanelList();
+	UpdateEntityPanelList();
 
 
-	//if (this->entityFilterPanel->IsAccessible)
-	//	PopulateEntityFilter();
-
-	if (this->createEntityPanel->IsAccessible)
-		PopulateCreateEntityLists();
+	if (this->entityFilterPanel->IsAccessible)
+		PopulateEntityFilter();
 }
 
 
 void MainWindow::InitializeTool()
 {
-	//this->CreateEntityPanel();
-	//this->CreateEntityFilterPanel();
+	this->CreateEntityPanel();
+	this->CreateEntityFilterPanel();
 
-	//this->CreateComponentPanel();
-	//this->CreateComponentSubPanel();
+	this->CreateComponentPanel();
+	this->CreateComponentSubPanel();
 
-	//this->CreateDataPanel();
+	this->CreateDataPanel();
+}
 
-	this->CreateCreateEntityPanel();
+void ECSTool::MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics)
+{
+	m_graphics = _graphics;
 }

@@ -2,6 +2,7 @@
 #include <msclr\marshal_cppstd.h>
 
 #include "ECSL/Framework/World.h"
+#include "Renderer/GraphicsHigh.h"
 
 namespace ECSTool {
 
@@ -28,6 +29,7 @@ namespace ECSTool {
 		void MainWindow::InitializeTool();
 		void MainWindow::SetWorld(ECSL::World* _world);
 		void MainWindow::Update(float _dt);
+		void MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics);
 
 		
 	protected:
@@ -229,5 +231,6 @@ namespace ECSTool {
 			ECSL::BitSet::DataType* m_filterMandatory;
 			ECSL::BitSet::DataType* m_filterRequiresOneOf;
 			ECSL::BitSet::DataType* m_filterExcluded;
+			Renderer::GraphicsHigh* m_graphics;
 	};
 }

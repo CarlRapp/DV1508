@@ -17,7 +17,6 @@ uniform int MouseX;
 uniform int MouseY;
 uniform int PickedID;
 uniform int HoverID;
-uniform int Clicked;
 
 // ---- INPUT/OUTPUT ---- 
 layout (rgba32f, binding = 5) uniform image2D output_image;
@@ -49,7 +48,7 @@ void main()
 		}
 		else if (HoverID == pixelID && HoverID >= 0) //Hovered
 		{
-			FragColor = FragColor + vec4(0.2, 0.2, 0.2, 0.0);
+			FragColor = FragColor + vec4(0.15, 0.15, 0.15, 0.0);
 		}
 	}
 
@@ -58,8 +57,6 @@ void main()
 		ivec2(gl_GlobalInvocationID.xy),
 		FragColor
 	);
-
-	barrier();
 
 }
 
