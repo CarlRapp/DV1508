@@ -45,6 +45,9 @@ void MainWindow::InternalUpdate(float _dt)
 
 	if (this->entityFilterPanel->IsAccessible)
 		PopulateEntityFilter();
+
+	//if (this->createEntityPanel->IsAccessible)
+	//	PopulateCreateEntityLists();
 }
 
 
@@ -57,6 +60,8 @@ void MainWindow::InitializeTool()
 	this->CreateComponentSubPanel();
 
 	this->CreateDataPanel();
+
+	//this->CreateCreateEntityPanel();
 }
 
 void ECSTool::MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics)
