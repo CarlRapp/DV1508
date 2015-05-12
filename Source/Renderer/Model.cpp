@@ -24,6 +24,7 @@ void Model::Draw(mat4 viewMatrix)
 	std::vector<mat4> MVVector(instances.size());
 	std::vector<mat3> normalMatVector(instances.size());
 	float* colors = new float[instances.size() * 3];
+	std::uint32_t* ids = new std::uint32_t[instances.size()];
 
 	int nrOfInstances = 0;
 
@@ -49,6 +50,8 @@ void Model::Draw(mat4 viewMatrix)
 			colors[j * 3 + 1] = instances[j].color[1];
 			colors[j * 3 + 2] = instances[j].color[2];
 
+			ids[j] = (std::uint32_t)instances[j].id;
+
 			nrOfInstances++;
 		}
 	}
@@ -67,9 +70,10 @@ void Model::Draw(mat4 viewMatrix)
 		glBindTexture(GL_TEXTURE_2D, speID);
 	}
 	//m_modelsDeferred[i].bufferPtr->draw();
-	bufferPtr->drawInstanced(0, nrOfInstances, &MVVector, &normalMatVector, colors);
+	bufferPtr->drawInstanced(0, nrOfInstances, &MVVector, &normalMatVector, colors, ids);
 	glBindTexture(GL_TEXTURE_2D, 0);
 	delete [] colors;
+	delete [] ids;
 }
 
 bool Model::Compare(Model m)

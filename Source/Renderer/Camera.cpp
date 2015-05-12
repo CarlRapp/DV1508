@@ -70,6 +70,7 @@ void Camera::Update(float dt)
 			m_look = m_targetL;
 		}
 	}
+
 }
 
 vec3 Camera::lerp(vec3 start, vec3 end, float percent)

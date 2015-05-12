@@ -35,6 +35,9 @@ namespace Renderer
 
 		void BufferPointlights(int _nrOfLights, float **_lightPointers);
 		void BufferDirectionalLight(float *_lightPointer);
+
+		int GetPickedInstanceID(){ return m_pickedID; }
+		void UsePicking(bool _use){ m_usePicking = _use; }
 		
 		void Clear();
 		
@@ -50,6 +53,7 @@ namespace Renderer
 		bool InitTextRenderer();
 		bool InitLightBuffers();
 		bool InitRandomVector();
+		void InitPickingTexture();
 
 		void CreateGBufTex(GLenum texUnit, GLenum format, GLuint &texid);
 		void CreateDepthTex(GLuint &texid);
@@ -70,6 +74,7 @@ namespace Renderer
 		GLuint m_outputImage;
 		GLuint m_debuggText;
 		GLuint m_depthBuf, m_normTex, m_colorTex;
+		GLuint m_pickingTex;
 
 		// Frame buffer object
 		GLuint m_deferredFBO, m_forwardFBO;
@@ -78,6 +83,7 @@ namespace Renderer
 		Shader m_fullScreenShader;
 		Shader m_deferredShader1, m_compDeferredPass2Shader;
 		Shader m_shadowShaderAnim;
+		Shader m_pickingShader;
 
 		// SimpleText
 		bool m_renderSimpleText;
@@ -89,6 +95,15 @@ namespace Renderer
 		// Pointlights buffer
 		GLuint m_pointlightBuffer, m_dirLightBuffer, m_animationBuffer;
 		vec3 m_dirLightDirection;
+
+		// Picking, instanceID buffer
+		GLuint m_instanceIDBuffer;
+
+		int m_pickedID;
+		int m_hoverID;
+		bool m_clicked;
+		unsigned int* m_pickingTexZeros;
+		bool m_usePicking;
 
 		// DEBUG variables ----
 		int m_nrOfLights; // lol

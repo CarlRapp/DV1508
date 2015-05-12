@@ -4,8 +4,9 @@ in vec3 Tan;
 in vec3 BiTan;
 in vec2 TexCoord;
 in vec3 AddColor;
+flat in uint InstanceID;
 
-//flat in int instanceID;
+//flat flat in uint InstanceID;
 
 // The g-buffer textures
 layout(binding = 0) uniform sampler2D NormalTex;
@@ -19,6 +20,7 @@ uniform int TexFlag;
 
 layout (location = 0) out vec4 NormalData;
 layout (location = 1) out vec4 ColorData;
+layout (location = 2) out unsigned int PickingTexData;
 
 void main() 
 {
@@ -55,6 +57,7 @@ void main()
 		else
 			NormalData.w = specglow_map.y*0.5 + 0.5;	//negative normal
 			
+		PickingTexData = InstanceID+1;
 	}
 	else if(TexFlag == 1) //diffuse only
 	{

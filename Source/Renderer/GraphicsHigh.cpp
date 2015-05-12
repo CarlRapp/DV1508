@@ -55,12 +55,15 @@ GraphicsHigh::~GraphicsHigh()
 	glDeleteBuffers(1, &m_pointlightBuffer);
 	glDeleteBuffers(1, &m_dirLightBuffer);
 	glDeleteBuffers(1, &m_animationBuffer);
+	glDeleteBuffers(1, &m_instanceIDBuffer);
     
     if (m_FBOsCreated)
     {
         glDeleteFramebuffers(1, &m_deferredFBO);
         glDeleteFramebuffers(1, &m_forwardFBO);
     }
+
+	delete m_pickingTexZeros;
 }
 
 bool GraphicsHigh::Init()
@@ -73,6 +76,7 @@ bool GraphicsHigh::Init()
 	if (!InitGLEW()) { SDL_Log("GLEW_VERSION_4_3 FAILED"); return false; }
 	if (!InitShaders()) { ERRORMSG("INIT SHADERS FAILED\n"); return false; }
 	InitRenderLists();
+	InitPickingTexture();
 	if (!InitDeferred()) { ERRORMSG("INIT DEFERRED FAILED\n"); return false; }	
 	if (!InitBuffers()) { ERRORMSG("INIT BUFFERS FAILED\n"); return false; }
 	if (!InitForward()) { ERRORMSG("INIT FORWARD FAILED\n"); return false; }
@@ -163,6 +167,11 @@ bool GraphicsHigh::InitShaders()
 	m_shadowShaderAnim.AddShader("content/shaders/shadowShaderAnimFS.glsl", GL_FRAGMENT_SHADER);
 	m_shadowShaderAnim.FinalizeShaderProgram();
 
+	// Picking shader ( compute shader )
+	m_pickingShader.InitShaderProgram();
+	m_pickingShader.AddShader("content/shaders/pickingShaderCompute.glsl", GL_COMPUTE_SHADER);
+	m_pickingShader.FinalizeShaderProgram();
+
 	return true;
 }
 void GraphicsHigh::InitRenderLists()
@@ -194,14 +203,15 @@ bool GraphicsHigh::InitDeferred()
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthBuf, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_normTex, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_colorTex, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT2, GL_TEXTURE_2D, m_pickingTex, 0);
 
 	// Add vramUsage calc if adding a new g-buffer texture
 	m_vramUsage += (m_clientWidth*m_clientHeight*sizeof(float));
 	m_vramUsage += (m_clientWidth*m_clientHeight*sizeof(float) * 4);
 	m_vramUsage += (m_clientWidth*m_clientHeight * 1 * 4);
 
-	GLenum drawBuffersDeferred[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
-	glDrawBuffers(2, drawBuffersDeferred);
+	GLenum drawBuffersDeferred[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1, GL_COLOR_ATTACHMENT2 };
+	glDrawBuffers(3, drawBuffersDeferred);
 	return true;
 }
 bool GraphicsHigh::InitBuffers()
@@ -231,6 +241,11 @@ bool GraphicsHigh::InitBuffers()
 	// FULL SCREEN QUAD
 	m_fullScreenShader.CheckUniformLocation("output_image", 5);
 
+	m_pickingShader.UseProgram();
+	//glBindImageTexture(7, m_pickingTex, 0, GL_FALSE, 0, GL_READ_ONLY, GL_RED_INTEGER);
+	m_pickingShader.CheckUniformLocation("PickingTex", 7);
+	glBindImageTexture(5, m_outputImage, 0, GL_FALSE, 0, GL_READ_WRITE, GL_RGBA32F);
+
 	return true;
 }
 bool GraphicsHigh::InitForward()
@@ -244,9 +259,10 @@ bool GraphicsHigh::InitForward()
 	// Attach the images to the framebuffer
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, m_depthBuf, 0);
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_outputImage, 0);
+	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT1, GL_TEXTURE_2D, m_pickingTex, 0);
 
-	GLenum drawBufferForward = GL_COLOR_ATTACHMENT0;
-	glDrawBuffers(1, &drawBufferForward);
+	GLenum drawBufferForward[] = { GL_COLOR_ATTACHMENT0, GL_COLOR_ATTACHMENT1 };
+	glDrawBuffers(2, drawBufferForward);
 
 	return true;
 }
@@ -286,6 +302,45 @@ bool GraphicsHigh::InitLightBuffers()
 
 	return true;
 }
+
+void GraphicsHigh::InitPickingTexture()
+{
+	// Create the texture object for the primitive information buffer
+	glGenTextures(1, &m_pickingTex);
+	glActiveTexture(GL_TEXTURE7);
+	glBindTexture(GL_TEXTURE_2D, m_pickingTex);
+	
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	//SDL_Log("- - - - - FIRST - %d", glGetError());
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32UI, m_clientWidth, m_clientHeight, 0, GL_RED_INTEGER, GL_UNSIGNED_INT, NULL);
+
+	SDL_Log("- - - - - - - %d", glGetError());
+
+	glGenBuffers(1, &m_instanceIDBuffer);
+	if (m_instanceIDBuffer < 0)
+		SDL_Log("- - Failed to generate instaceID buffer - -");
+
+	glBindBufferRange(GL_SHADER_STORAGE_BUFFER, 7, m_instanceIDBuffer, 0, sizeof(unsigned int));
+	int zeroVal = 0;
+	glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(unsigned int), &zeroVal, GL_STATIC_DRAW);
+
+	m_pickedID = -1;
+
+	m_pickingTexZeros = new unsigned int[m_clientWidth*m_clientHeight];
+
+	for (int i = 0; i < m_clientHeight; i++)
+		for (int j = 0; j < m_clientWidth; j++)
+			m_pickingTexZeros[m_clientWidth*i + j] = 0;
+
+	m_usePicking = true;
+	//system("pause");
+	//glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_pickingTex, 0);
+	//glDrawBuffer(GL_COLOR_ATTACHMENT0);
+}
+
 #pragma endregion in the order they are initialized
 
 void GraphicsHigh::Update(float _dt)
@@ -453,6 +508,21 @@ void GraphicsHigh::Render()
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glClearColor(0.5f, 0.5f, 0.5f, 0.0f);
+
+	int k = glGetError();
+	if (k)
+		SDL_Log("- - FIRST - - %d", k);
+	
+	if (m_usePicking)
+	{
+		glActiveTexture(GL_TEXTURE7);
+		glBindTexture(GL_TEXTURE_2D, m_pickingTex);
+		glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, m_clientWidth, m_clientHeight, GL_RED_INTEGER, GL_UNSIGNED_INT, m_pickingTexZeros);
+	}
+	k = glGetError();
+	if (k)
+		SDL_Log("- - SECOND - - %d", k);
+
 	//----Uniforms
 	m_deferredShader1.UseProgram();
 	m_deferredShader1.SetUniVariable("TexFlag", glint, &m_debugTexFlag);
@@ -641,6 +711,55 @@ void GraphicsHigh::Render()
 
 	glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
 	//---------------------------------------------------------------------
+	k = glGetError();
+	if (k)
+		SDL_Log("- before picking %d", k);
+
+	if (m_usePicking)
+	{
+		int x, y;
+		m_clicked = (SDL_GetMouseState(&x, &y) == SDL_BUTTON_LEFT);
+
+		//---Picking compute shader-----
+		m_pickingShader.UseProgram();
+		y = m_clientHeight - y;
+		m_pickingShader.SetUniVariable("MouseX", glint, &x);
+		m_pickingShader.SetUniVariable("MouseY", glint, &y);
+		m_pickingShader.SetUniVariable("PickedID", glint, &m_pickedID);
+		m_pickingShader.SetUniVariable("HoverID", glint, &m_hoverID);
+
+		//glEnable(GL_TEXTURE_2D);
+		glActiveTexture(GL_TEXTURE7);
+		glBindTexture(GL_TEXTURE_2D, m_pickingTex);
+
+		//--- buffers----------
+		glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 7, m_instanceIDBuffer);
+		//--------------------------
+
+		glDispatchCompute(m_clientWidth * 0.0625, m_clientHeight * 0.0625, 1); // 1/16 = 0.0625
+		//---------------------------------------------------------------------------
+
+		unsigned int* readID = (unsigned int*)glMapNamedBuffer(m_instanceIDBuffer, GL_READ_ONLY);
+		if (readID)
+		{
+			if (m_clicked)
+			{
+				SDL_Log("InstaceID from buffer: %d", readID[0]);
+				m_pickedID = readID[0];
+			}
+			else
+			{
+				m_hoverID = readID[0];
+			}
+		}
+		glUnmapNamedBuffer(m_instanceIDBuffer);
+
+
+
+		k = glGetError();
+		if (k)
+			SDL_Log("- picking error: %d", k);
+	}
 	
 	//--------SIMPLETEXT RENDERING
 	if (m_renderSimpleText)
@@ -649,6 +768,7 @@ void GraphicsHigh::Render()
 	//-------- FULL SCREEN QUAD RENDERING
 	m_fullScreenShader.UseProgram();
 	//glActiveTexture(GL_TEXTURE5);
+	//glBindTexture(GL_TEXTURE_2D, m_outputImage);
 	//glBindTexture(GL_TEXTURE_2D, m_shadowMap->GetDepthTexHandle());
 	glDrawArrays(GL_POINTS, 0, 1);
 

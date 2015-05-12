@@ -17,6 +17,7 @@ Buffer::~Buffer(void)
 		glDeleteBuffers(1, &m_inMatVBO);
 		glDeleteBuffers(1, &m_normalMatVBO);
 		glDeleteBuffers(1, &m_colorVBO);
+		glDeleteBuffers(1, &m_IDsVBO);
 		glDeleteVertexArrays(1, &m_VAO);
 
 	}
@@ -131,6 +132,15 @@ bool Buffer::init(const BufferData* p_BufferData, GLsizei p_BufferDataSize,
 	glVertexAttribDivisor(14, 1);
 	//-------------------------------------------------
 
+	//----- Instance IDs ----------
+	glGenBuffers(1, &m_IDsVBO); //gen buffer till matrisen
+	glBindBuffer(GL_ARRAY_BUFFER, m_IDsVBO);
+
+	glVertexAttribIPointer(15, 1, GL_UNSIGNED_INT, sizeof(uint32_t), 0);
+	glEnableVertexAttribArray(15);
+	glVertexAttribDivisor(15, 1);
+	//-------------------------------------------------
+
 	// Initialize index buffer if specified
 	if (m_Type == IndexBased)
 	{
@@ -177,7 +187,7 @@ void Buffer::draw(GLint base, GLsizei count)
 	glBindVertexArray(0);
 }
 
-void Buffer::drawInstanced(GLint base, int instances, std::vector<glm::mat4> *inMats, std::vector<glm::mat3> *normalMats, float *color)
+void Buffer::drawInstanced(GLint base, int instances, std::vector<glm::mat4> *inMats, std::vector<glm::mat3> *normalMats, float *color, uint32_t *IDs)
 {
 	// Make sure there's no weird behaviour
 	if (m_Type == None)
@@ -196,6 +206,14 @@ void Buffer::drawInstanced(GLint base, int instances, std::vector<glm::mat4> *in
 	{ 
 		glBindBuffer(GL_ARRAY_BUFFER, m_colorVBO);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float)* 3 * instances, color, GL_DYNAMIC_DRAW);
+	}
+
+	if (IDs)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_IDsVBO);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(uint32_t)* instances, IDs, GL_DYNAMIC_DRAW);
+		//for (int i = 0; i < instances; i++)
+		//	SDL_Log("--Instace ID: %d", IDs[i]);
 	}
 	// Draw based on based buffer type
 	switch (m_Type)

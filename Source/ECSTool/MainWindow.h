@@ -140,6 +140,34 @@ namespace ECSTool {
 
 		/*	DATA PANEL END	*/
 
+		/*	CREATE ENTITY PANEL START	*/
+	public:
+		void MainWindow::CreateCreateEntityPanel();
+
+	private:
+		void MainWindow::PopulateCreateEntityLists();
+		void MainWindow::ShowPopularComponents();
+
+		void CreateEntityComponents_List_ItemSelectionChanged(System::Object^ sender, ListViewItemSelectionChangedEventArgs^ e);
+		void CreateEntityAddedComponents_List_ItemSelectionChanged(System::Object^ sender, ListViewItemSelectionChangedEventArgs^ e);
+		void CreateEntityPanel_AddComponentButton_Clicked(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_RemoveComponentButton_Clicked(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_CreateEntityButton_Clicked(System::Object^ sender, EventArgs^ e);
+
+	private:
+		System::Windows::Forms::Panel^		createEntityPanel;
+		System::Windows::Forms::ListView^	createEntityComponents_List;
+		System::Windows::Forms::ListView^	createEntityAddedComponents_List;
+		System::Windows::Forms::TextBox^	createEntitySearch_TextBox;
+		System::Windows::Forms::Button^		createEntityPanel_AddComponentButton;
+		System::Windows::Forms::Button^		createEntityPanel_RemoveComponentButton;
+		System::Windows::Forms::Button^		createEntityPanel_CreateEntityButton;
+		System::Windows::Forms::Button^		createEntityPanel_BackButton;
+
+	private:
+
+		/*	CREATE ENTITY PANEL END	*/
+
 		std::string toString(System::Object^ systemString)
 		{
 			msclr::interop::marshal_context context;
