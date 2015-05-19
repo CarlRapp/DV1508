@@ -79,6 +79,8 @@ void ECSTool::MainWindow::PickingOccured()
 	unsigned int entityCount = m_world->GetEntityCount();
 	unsigned int componentCount = ECSL::BitSet::GetDataTypeCount(ECSL::ComponentTypeManager::GetInstance().GetComponentTypeCount());
 
+
+	m_currentEntity = -1;
 	bool entityFound = false;
 	int index = -1;
 	for (unsigned int n = 0; n < entityCount; ++n)
