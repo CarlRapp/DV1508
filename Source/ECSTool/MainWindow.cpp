@@ -75,3 +75,33 @@ void ECSTool::MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics)
 {
 	m_graphics = _graphics;
 }
+
+void ECSTool::MainWindow::PickingOccured()
+{
+	unsigned int entityCount = m_world->GetEntityCount();
+	unsigned int componentCount = ECSL::BitSet::GetDataTypeCount(ECSL::ComponentTypeManager::GetInstance().GetComponentTypeCount());
+
+	bool entityFound = false;
+	int index = -1;
+	for (unsigned int n = 0; n < entityCount; ++n)
+	{
+		if (m_world->IsEntityAlive(n))
+		{
+			int modelInstanceBlaha = -1;
+
+			unsigned int modelId = ECSL::ComponentTypeManager::GetInstance().GetTableId("Render");
+			if (m_world->GetEntityBitset(n)[0] & ((ECSL::BitSet::DataType)1 << modelId))
+			{
+				modelInstanceBlaha = *((int*)m_world->GetComponent(n, "Render", "ModelId"));
+
+				if (modelInstanceBlaha == m_graphics->GetPickedInstanceID())
+				{
+					m_currentEntity = n;
+					break;
+				}
+			}
+		}
+	}
+
+	m_forceUpdate = true;
+}

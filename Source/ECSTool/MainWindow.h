@@ -60,6 +60,7 @@ namespace ECSTool {
 		void MainWindow::CreateEntityPanel();
 		void MainWindow::UpdateEntityPanelList();
 		void UpdatePicking();
+		void PickingOccured();
 
 	private:
 		System::Windows::Forms::Panel^		entityPanel;

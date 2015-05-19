@@ -12,3 +12,8 @@ void WindowCreator::UpdateWindow(float _dt)
 {
 	WindowWrapper::GetInstance()->Update(_dt);
 }
+
+void WindowCreator::PickingOccured()
+{
+	WindowWrapper::GetInstance()->PickingOccured();
+}

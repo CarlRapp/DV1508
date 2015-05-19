@@ -733,7 +733,12 @@ void GameCreator::StartGame(int argc, char** argv)
 
 			lol[name.size()] = '\0';
 		}
+
+		if (m_input->GetMouse()->GetButtonState(Input::MouseButton::LeftButton) == Input::InputState::PRESSED)
+			WindowCreator::PickingOccured();
+
 		WindowCreator::UpdateWindow(dt);
+
 
 		if (showDebugInfo)
 		{

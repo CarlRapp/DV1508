@@ -36,6 +36,12 @@ void WindowWrapper::Update(float _dt)
 		m_window->Update(_dt);
 }
 
+void WindowWrapper::PickingOccured()
+{
+	if (m_isActive)
+		m_window->PickingOccured();
+}
+
 void WindowWrapper::InitializeWindow(ECSL::World* _world, Renderer::GraphicsHigh* _graphics)
 {
 	if (m_isActive)
