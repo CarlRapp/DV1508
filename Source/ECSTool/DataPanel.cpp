@@ -183,7 +183,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		case Numeric:
 		{
 			System::Windows::Forms::NumericUpDown^ temp = gcnew System::Windows::Forms::NumericUpDown();
-			temp->Minimum = -System::Decimal::MinValue;
+			temp->Minimum = System::Decimal::MinValue;
 			temp->Maximum = System::Decimal::MaxValue;
 			temp->Text = gcnew System::String(data.c_str());
 
@@ -194,7 +194,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		{
 			System::Windows::Forms::NumericUpDown^ temp = gcnew System::Windows::Forms::NumericUpDown();
 			temp->DecimalPlaces = 5;
-			temp->Minimum = -System::Decimal::MinValue;
+			temp->Minimum = System::Decimal::MinValue;
 			temp->Maximum = System::Decimal::MaxValue;
 			temp->Value = System::Decimal(*(float*)m_world->GetComponent(_entityId, componentName, varName));
 
