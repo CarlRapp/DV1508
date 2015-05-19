@@ -22,13 +22,13 @@ void MainWindow::CreateEntityPanel()
 	this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 	//this->entityPanel->BackColor = System::Drawing::Color::Aqua;
 	this->entityPanel->TabIndex = 0;
-	
+
 	//	Create the listbox object
 	this->entityPanel_EntityList = (gcnew System::Windows::Forms::ListBox());
 	this->entityPanel_EntityList->FormattingEnabled = true;
 	this->entityPanel_EntityList->Name = L"EntityListBox";
 	this->entityPanel_EntityList->Size = System::Drawing::Size(200, 200);
-	this->entityPanel_EntityList->Location = System::Drawing::Point(4, 4);
+	this->entityPanel_EntityList->Location = System::Drawing::Point(4, 26);
 	this->entityPanel_EntityList->TabIndex = 0;
 	this->entityPanel_EntityList->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::entityPanel_EntityList_SelectedIndexChanged);
 
@@ -37,7 +37,7 @@ void MainWindow::CreateEntityPanel()
 	this->entityPanel_FilterButton->Name = L"FilterButton";
 	this->entityPanel_FilterButton->Text = L"Filter";
 	this->entityPanel_FilterButton->Size = System::Drawing::Size(55, 20);
-	this->entityPanel_FilterButton->Location = System::Drawing::Point(entityPanel_EntityList->Location.X, entityPanel_EntityList->Size.Height + 8);
+	this->entityPanel_FilterButton->Location = System::Drawing::Point(entityPanel_EntityList->Location.X, entityPanel_EntityList->Location.Y+entityPanel_EntityList->Size.Height + 8);
 	this->entityPanel_FilterButton->Click += gcnew System::EventHandler(this, &MainWindow::entityPanel_filterButton_Clicked);
 
 

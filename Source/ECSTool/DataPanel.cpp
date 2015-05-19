@@ -18,7 +18,7 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel->SuspendLayout();
 
 	//this->dataPanel->BackColor = System::Drawing::Color::Yellow;
-	this->dataPanel->Location = System::Drawing::Point(this->componentPanel->Location.X + this->componentPanel->Size.Width, 13);
+	this->dataPanel->Location = System::Drawing::Point(this->componentPanel->Location.X + this->componentPanel->Size.Width, this->entityPanel->Location.Y);
 	this->dataPanel->Name = L"DataPanel";
 	this->dataPanel->AutoSize = true;
 	this->dataPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
@@ -29,7 +29,7 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel_List->BackColor = System::Drawing::Color::White;
 	this->dataPanel_List->Name = L"DataList";
 	this->dataPanel_List->Size = this->entityPanel_EntityList->Size;
-	this->dataPanel_List->Location = System::Drawing::Point(4, 4);
+	this->dataPanel_List->Location = System::Drawing::Point(this->entityPanel_EntityList->Location.X, this->entityPanel_EntityList->Location.Y);
 	//this->dataPanel_List->SmallImageList = this->Tool_Icons;
 	this->dataPanel_List->TabIndex = 0;
 	this->dataPanel_List->UseCompatibleStateImageBehavior = false;
@@ -53,7 +53,7 @@ void MainWindow::CreateDataPanel()
 		40)));
 	this->dataPanel_Table->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 		60)));
-	this->dataPanel_Table->Location = System::Drawing::Point(4, 4);;
+	this->dataPanel_Table->Location = System::Drawing::Point(4, this->dataPanel_List->Location.Y );;
 	this->dataPanel_Table->Name = L"DataTable";
 	this->dataPanel_Table->RowCount = 0;
 	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
@@ -64,10 +64,25 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel_Table->Padding = System::Windows::Forms::Padding(0, 0, 4, 0);
 	this->dataPanel_Table->AutoScroll = true; 
 
+	//LABELS >>
+	this->entityListLabel = (gcnew System::Windows::Forms::Label());
+	this->entityPanel->Controls->Add(this->entityListLabel);
+	this->entityListLabel->Text = L"Entity List";
+	this->entityListLabel->Location = System::Drawing::Point(0, 0);
+
+	this->componentListLabel = (gcnew System::Windows::Forms::Label());
+	this->componentPanel->Controls->Add(this->componentListLabel);
+	this->componentListLabel->Text = L"Component List";
+	this->componentListLabel->Location = System::Drawing::Point(0, 0);
+
+	this->dataListLabel = (gcnew System::Windows::Forms::Label());
+	this->dataPanel->Controls->Add(this->dataListLabel);
+	this->dataListLabel->Text = L"Data List";
+	this->dataListLabel->Location = System::Drawing::Point(0, 0);
+	//LABELS <<
 
 	//	Hook up
 	this->dataPanel->Controls->Add(this->dataPanel_Table);
-
 
 	this->Controls->Add(this->dataPanel);
 
