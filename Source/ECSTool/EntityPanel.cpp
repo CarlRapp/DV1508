@@ -100,10 +100,17 @@ void MainWindow::UpdateEntityPanelList()
 	if (entityFound)
 	{
 		this->entityPanel_EntityList->SetSelected(index, true);
+		if (m_world->HasComponent(m_currentEntity, "Render"))
+			m_graphics->SetInstanceIDToHighlight(*((int*)m_world->GetComponent(m_currentEntity, "Render", "ModelId")));
+		else
+			m_graphics->SetInstanceIDToHighlight(-1);
 		UpdateComponentPanelList(m_currentEntity);
 	}
 	else
+	{
 		m_currentEntity = -1;
+		//m_graphics->SetInstanceIDToHighlight(-1);
+	}
 
 	this->entityPanel_EntityList->EndUpdate();
 }

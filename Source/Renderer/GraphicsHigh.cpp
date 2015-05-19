@@ -335,7 +335,7 @@ void GraphicsHigh::InitPickingTexture()
 		for (int j = 0; j < m_clientWidth; j++)
 			m_pickingTexZeros[m_clientWidth*i + j] = 0;
 
-	m_usePicking = true;
+	m_usePicking = false;
 	//system("pause");
 	//glFramebufferTexture2D(GL_DRAW_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, m_pickingTex, 0);
 	//glDrawBuffer(GL_COLOR_ATTACHMENT0);

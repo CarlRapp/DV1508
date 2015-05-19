@@ -65,6 +65,7 @@ void MainWindow::InitializeTool()
 
 	this->TopMost = true;
 	//this->CreateCreateEntityPanel();
+	m_graphics->TogglePicking();
 }
 
 void ECSTool::MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics)
