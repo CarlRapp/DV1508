@@ -38,6 +38,8 @@ namespace Renderer
 
 		int GetPickedInstanceID(){ return m_pickedID; }
 		void UsePicking(bool _use){ m_usePicking = _use; }
+		void TogglePicking(){ m_usePicking = 1 - m_usePicking; }
+		void SetInstanceIDToHighlight(int _id){ m_pickedID = _id; }
 		
 		void Clear();
 		
