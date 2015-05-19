@@ -38,7 +38,7 @@ void MainWindow::Update(float _dt)
 		InternalUpdate(_dt);
 	}
 
-	UpdatePicking();
+	//UpdatePicking();
 }
 void MainWindow::InternalUpdate(float _dt)
 {

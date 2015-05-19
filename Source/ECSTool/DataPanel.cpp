@@ -16,7 +16,7 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel = (gcnew System::Windows::Forms::Panel());
 	this->dataPanel->SuspendLayout();
 
-	this->dataPanel->BackColor = System::Drawing::Color::Yellow;
+	//this->dataPanel->BackColor = System::Drawing::Color::Yellow;
 	this->dataPanel->Location = System::Drawing::Point(this->componentPanel->Location.X + this->componentPanel->Size.Width, 13);
 	this->dataPanel->Name = L"DataPanel";
 	this->dataPanel->AutoSize = true;

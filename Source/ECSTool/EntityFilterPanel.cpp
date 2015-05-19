@@ -16,7 +16,8 @@ void MainWindow::CreateEntityFilterPanel()
 	this->entityFilterPanel->SuspendLayout();
 
 	this->entityFilterPanel->Location = System::Drawing::Point(13, this->entityPanel->Size.Height + 13);
-	this->entityFilterPanel->BackColor = System::Drawing::Color::Crimson;
+	//this->entityFilterPanel->BackColor = System::Drawing::Color::Crimson;
+	this->entityFilterPanel->Hide();
 	this->entityFilterPanel->Name = L"EntityFilterPanel";
 	this->entityFilterPanel->AutoSize = true;
 	this->entityFilterPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;

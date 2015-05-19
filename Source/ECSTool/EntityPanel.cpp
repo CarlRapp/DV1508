@@ -13,14 +13,14 @@ void MainWindow::CreateEntityPanel()
 	this->SuspendLayout();
 
 	//	Create the panel object
-	this->entityPanel = (gcnew FlickerLessPanel());
+	this->entityPanel = (gcnew System::Windows::Forms::Panel());
 	this->entityPanel->SuspendLayout();
 
 	this->entityPanel->Location = System::Drawing::Point(13, 13);
 	this->entityPanel->Name = L"EntityPanel";
 	this->entityPanel->AutoSize = true;
 	this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
-	this->entityPanel->BackColor = System::Drawing::Color::Aqua;
+	//this->entityPanel->BackColor = System::Drawing::Color::Aqua;
 	this->entityPanel->TabIndex = 0;
 	
 	//	Create the listbox object
@@ -57,6 +57,7 @@ void MainWindow::CreateEntityPanel()
 #pragma region Update Entity Panel List
 void MainWindow::UpdateEntityPanelList()
 {
+	this->entityPanel_EntityList->BeginUpdate();
 	this->entityPanel_EntityList->Items->Clear();
 
 	unsigned int entityCount = m_world->GetEntityCount();
@@ -104,6 +105,7 @@ void MainWindow::UpdateEntityPanelList()
 	else
 		m_currentEntity = -1;
 
+	this->entityPanel_EntityList->EndUpdate();
 }
 #pragma endregion
 

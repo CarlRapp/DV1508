@@ -16,7 +16,8 @@ void MainWindow::CreateComponentSubPanel()
 	this->addComponentPanel->SuspendLayout();
 
 	this->addComponentPanel->Location = System::Drawing::Point(this->componentPanel->Location.X, this->componentPanel->Size.Height + 13);
-	this->addComponentPanel->BackColor = System::Drawing::Color::Pink;
+	//this->addComponentPanel->BackColor = System::Drawing::Color::Pink;
+	this->addComponentPanel->Hide();
 	this->addComponentPanel->Name = L"ComponentSubPanel";
 	this->addComponentPanel->AutoSize = true;
 	this->addComponentPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
