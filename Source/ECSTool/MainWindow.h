@@ -59,7 +59,6 @@ namespace ECSTool {
 	public:
 		void MainWindow::CreateEntityPanel();
 		void MainWindow::UpdateEntityPanelList();
-		void UpdatePicking();
 		void PickingOccured();
 
 	private:
