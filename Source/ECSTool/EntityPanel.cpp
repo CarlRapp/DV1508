@@ -47,8 +47,6 @@ void MainWindow::CreateEntityPanel()
 
 	this->Controls->Add(this->entityPanel);
 
-	this->UpdateEntityPanelList();
-
 	this->entityPanel->ResumeLayout(true);
 	this->ResumeLayout(true);
 }
@@ -100,11 +98,13 @@ void MainWindow::UpdateEntityPanelList()
 	if (entityFound)
 	{
 		this->entityPanel_EntityList->SetSelected(index, true);
-		UpdateComponentPanelList(m_currentEntity);
 	}
 	else
+	{
+		m_currentComponent = -1;
 		m_currentEntity = -1;
-
+	}
+	UpdateComponentPanelList(m_currentEntity);
 	this->entityPanel_EntityList->EndUpdate();
 }
 #pragma endregion
@@ -178,11 +178,19 @@ std::string MainWindow::GetEntityName(unsigned int _eId)
 #pragma region Entity List events
 System::Void MainWindow::entityPanel_EntityList_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
 {
+	entityPanel_EntityList->BeginUpdate();
+	if (entityPanel_EntityList->SelectedItems->Count == 0)
+		return;
+
 	unsigned int entityIndex = std::atoi(toString(entityPanel_EntityList->SelectedItem).c_str());
 	unsigned int listIndex = std::atoi(toString(entityPanel_EntityList->SelectedIndex).c_str());
+	
 
 	m_currentEntity = entityIndex;
+
 	UpdateComponentPanelList(entityIndex);
+
+	entityPanel_EntityList->EndUpdate();
 }
 #pragma endregion
 
