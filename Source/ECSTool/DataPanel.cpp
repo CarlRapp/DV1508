@@ -2,6 +2,7 @@
 #include "ECSL/Managers/ComponentTypeManager.h"
 #include <SDL/SDL.h>
 #include <msclr\marshal_cppstd.h>
+#include <algorithm>
 using namespace ECSTool;
 
 
@@ -101,39 +102,106 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		SDL_Log("offset: %d", iterator->second.GetOffset());
 
 		ECSL::ComponentDataType dataType = component->GetDataTypes()->at(iterator->second.GetOffset());
-		bool enabled = true;
 		std::string data;
+
+		enum Type
+		{
+			None, Textbox, Checkbox, Numeric, Decimal
+		};
+
+		Type type = None;
+
 		switch (dataType)
 		{
 		case ECSL::ComponentDataType::INT:
 			data = std::to_string(*(int*)m_world->GetComponent(_entityId, componentName, varName));
+			type = Numeric;
 			break;
 		case ECSL::ComponentDataType::FLOAT:
 			data = std::to_string(*(float*)m_world->GetComponent(_entityId, componentName, varName));
+			std::replace(data.begin(), data.end(), '.', ',');
+			type = Decimal;
 			break;
 		case ECSL::ComponentDataType::TEXT:
 			data = m_world->GetComponent(_entityId, componentName, varName);
+			type = Textbox;
 			break;
 		case ECSL::ComponentDataType::BOOL:
-			data = std::to_string(*(bool*)m_world->GetComponent(_entityId, componentName, varName));
+			//data = std::to_string(*(bool*)m_world->GetComponent(_entityId, componentName, varName));
+			type = Checkbox;
 			break;
 		case ECSL::ComponentDataType::MATRIX:
 			data = "Can't view this value";
-			enabled = false;
+			type = None;
 			break;
 		case ECSL::ComponentDataType::REFERENCE:
 			data = std::to_string(*(int*)m_world->GetComponent(_entityId, componentName, varName));
+			type = Numeric;
 			break;
 		case ECSL::ComponentDataType::INT64:
 			data = std::to_string(*(Uint64*)m_world->GetComponent(_entityId, componentName, varName));
+			type = Numeric;
 			break;
 		case ECSL::ComponentDataType::STRING:
 			data = m_world->GetString(_entityId, componentName, iterator->second.GetOffset());
+			type = Textbox;
 			break;
 		default:
 			data = "";
 			break;
 		}
+
+		System::Windows::Forms::Control^ component;
+
+		switch (type)
+		{
+		case None:
+		{
+			System::Windows::Forms::Label^ temp = gcnew System::Windows::Forms::Label();
+			temp->Text = gcnew System::String(data.c_str());
+			temp->AutoEllipsis = true;
+
+			component = temp;
+			break;
+		}
+		case Textbox:
+		{
+			System::Windows::Forms::TextBox^ temp = gcnew System::Windows::Forms::TextBox();
+			temp->Text = gcnew System::String(data.c_str());
+
+			component = temp;
+			break;
+		}
+		case Checkbox:
+		{
+			System::Windows::Forms::CheckBox^ temp = gcnew System::Windows::Forms::CheckBox();
+			temp->Checked = *(bool*)m_world->GetComponent(_entityId, componentName, varName);
+
+			component = temp;
+			break;
+		}
+		case Numeric:
+		{
+			System::Windows::Forms::NumericUpDown^ temp = gcnew System::Windows::Forms::NumericUpDown();
+			temp->Text = gcnew System::String(data.c_str());
+
+			component = temp;
+			break;
+		}
+		case Decimal:
+		{
+			System::Windows::Forms::NumericUpDown^ temp = gcnew System::Windows::Forms::NumericUpDown();
+			temp->DecimalPlaces = 5;
+			temp->Text = gcnew System::String(data.c_str());
+
+			component = temp;
+			break;
+		}
+		default:
+			data = "";
+			break;
+		}
+
 
 		System::Windows::Forms::Label^ lable = gcnew System::Windows::Forms::Label();
 		lable->Text = gcnew System::String(varName.c_str());
@@ -147,101 +215,13 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		tooltip->SetToolTip(lable, gcnew System::String(varName.c_str()));
 
 
-		System::Windows::Forms::TextBox^ textbox = gcnew System::Windows::Forms::TextBox();
-		textbox->Text = gcnew System::String(data.c_str());
-		textbox->Enabled = enabled;
-
-		System::Windows::Forms::RowStyle^ row = gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25);
+		//System::Windows::Forms::RowStyle^ row = gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25);
 		this->dataPanel_Table->Controls->Add(lable);
-		this->dataPanel_Table->Controls->Add(textbox);
-		//this->dataPanel_Table->RowStyles->Add(row);
+		this->dataPanel_Table->Controls->Add(component);
 	}
 
-		//System::Windows::Forms::ListViewItem^ item = gcnew System::Windows::Forms::ListViewItem(gcnew System::String(varName.c_str()));
-		//item->SubItems->Add(gcnew System::String(data.c_str()));
-		//this->dataPanel_List->Items->Add(item);
+	this->dataPanel_Table->Update();
 
-
-	/*this->dataPanel_List->Items->Clear();
-
-	if (_entityId == -1 || _currentComponent == -1)
-		return;
-
-	auto component = ECSL::ComponentTypeManager::GetInstance().GetComponentType(_currentComponent);
-	auto variables = component->GetVariables();
-
-	std::string componentName = component->GetName();
-	auto iterator = variables->begin();
-	for (; iterator != variables->end(); ++iterator)
-	{
-		std::string varName = iterator->second.GetName();
-
-		SDL_Log("offset: %d", iterator->second.GetOffset());
-
-		ECSL::ComponentDataType dataType = component->GetDataTypes()->at(iterator->second.GetOffset());
-
-		std::string data;
-		switch (dataType)
-		{
-		case ECSL::ComponentDataType::INT:
-			data = std::to_string(*(int*)m_world->GetComponent(_entityId, componentName, varName));
-			break;
-		case ECSL::ComponentDataType::FLOAT:
-			data = std::to_string(*(float*)m_world->GetComponent(_entityId, componentName, varName));
-			break;
-		case ECSL::ComponentDataType::TEXT:
-			data = m_world->GetComponent(_entityId, componentName, varName);
-			break;
-		case ECSL::ComponentDataType::BOOL:
-			data = std::to_string(*(bool*)m_world->GetComponent(_entityId, componentName, varName));
-			break;
-		case ECSL::ComponentDataType::MATRIX:
-			data = "Can't view this value";
-			break;
-		case ECSL::ComponentDataType::REFERENCE:
-			data = std::to_string(*(int*)m_world->GetComponent(_entityId, componentName, varName));
-			break;
-		case ECSL::ComponentDataType::INT64:
-			data = std::to_string(*(Uint64*)m_world->GetComponent(_entityId, componentName, varName));
-			break;
-		case ECSL::ComponentDataType::STRING:
-			data = m_world->GetString(_entityId, componentName, iterator->second.GetOffset());
-			break;
-		default:
-			data = "";
-			break;
-		}
-
-		System::Windows::Forms::ListViewItem^ item = gcnew System::Windows::Forms::ListViewItem(gcnew System::String(varName.c_str()));
-		item->SubItems->Add(gcnew System::String(data.c_str()));
-		this->dataPanel_List->Items->Add(item);
-	}*/
-
-	
-
-	//std::vector<unsigned int> components;
-	//m_world->GetEntityComponents(components, _entityId);
-	//bool componentFound = false;
-	//int index = -1;
-	//for (int n = 0; n < components.size(); ++n)
-	//{
-	//	int tempIndex = this->componentPanel_ComponentList->Items->Add(gcnew System::String(GetComponentName(components.at(n)).c_str()));
-
-	//	if (components.at(n) == m_currentComponent)
-	//	{
-	//		componentFound = true;
-	//		index = tempIndex;
-	//	}
-
-	//}
-
-	////	If there is a entity selected, select it afterwards (if it wasnt found, set current to -1)
-	//if (componentFound)
-	//{
-	//	this->componentPanel_ComponentList->SetSelected(index, true);
-	//}
-	//else
-	//	ClearSelectedComponent();
 }
 
 //#pragma region Selected Index

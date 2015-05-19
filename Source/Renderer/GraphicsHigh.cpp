@@ -754,8 +754,6 @@ void GraphicsHigh::Render()
 		}
 		glUnmapNamedBuffer(m_instanceIDBuffer);
 
-
-
 		k = glGetError();
 		if (k)
 			SDL_Log("- picking error: %d", k);
