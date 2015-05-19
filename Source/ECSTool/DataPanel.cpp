@@ -118,8 +118,8 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 			type = Numeric;
 			break;
 		case ECSL::ComponentDataType::FLOAT:
-			data = std::to_string(*(float*)m_world->GetComponent(_entityId, componentName, varName));
-			std::replace(data.begin(), data.end(), '.', ',');
+			//data = std::to_string(*(float*)m_world->GetComponent(_entityId, componentName, varName));
+			//std::replace(data.begin(), data.end(), '.', ',');
 			type = Decimal;
 			break;
 		case ECSL::ComponentDataType::TEXT:
@@ -183,6 +183,8 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		case Numeric:
 		{
 			System::Windows::Forms::NumericUpDown^ temp = gcnew System::Windows::Forms::NumericUpDown();
+			temp->Minimum = System::Decimal::MinValue;
+			temp->Maximum = System::Decimal::MaxValue;
 			temp->Text = gcnew System::String(data.c_str());
 
 			component = temp;
@@ -192,7 +194,9 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		{
 			System::Windows::Forms::NumericUpDown^ temp = gcnew System::Windows::Forms::NumericUpDown();
 			temp->DecimalPlaces = 5;
-			temp->Text = gcnew System::String(data.c_str());
+			temp->Minimum = System::Decimal::MinValue;
+			temp->Maximum = System::Decimal::MaxValue;
+			temp->Value = System::Decimal(*(float*)m_world->GetComponent(_entityId, componentName, varName));
 
 			component = temp;
 			break;
@@ -213,7 +217,6 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		tooltip->ShowAlways = true;
 
 		tooltip->SetToolTip(lable, gcnew System::String(varName.c_str()));
-
 
 		//System::Windows::Forms::RowStyle^ row = gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25);
 		this->dataPanel_Table->Controls->Add(lable);

@@ -42,6 +42,7 @@ namespace ECSTool {
 			{
 				delete components;
 			}
+			m_graphics->UsePicking(false);
 		}
 	private: System::Windows::Forms::Panel^  panel1;
 	protected:
