@@ -727,11 +727,11 @@ void GameCreator::StartGame(int argc, char** argv)
 		{
 			m_clientWorld->CreateComponentAndAddTo("EntityTag", 0);
 			char* lol = m_clientWorld->GetComponent(0, "EntityTag", "Tag");
-			lol[0] = 'T';
-			lol[1] = 'A';
-			lol[2] = 'G';
-			lol[3] = '!';
-			lol[4] = '\0';
+			std::string name = "Small Island";
+			for (int a = 0; a < name.size(); a++)
+				lol[a] = name[a];
+
+			lol[name.size()] = '\0';
 		}
 		WindowCreator::UpdateWindow(dt);
 

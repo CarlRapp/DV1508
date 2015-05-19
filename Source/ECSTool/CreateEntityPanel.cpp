@@ -17,7 +17,7 @@ void MainWindow::CreateCreateEntityPanel()
 	this->createEntityPanel->Name = L"CreateEntityPanel";
 	this->createEntityPanel->AutoSize = true;
 	this->createEntityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
-	this->createEntityPanel->BackColor = System::Drawing::Color::Brown;
+	//this->createEntityPanel->BackColor = System::Drawing::Color::Brown;
 	this->createEntityPanel->TabIndex = 0;
 
 	this->createEntityComponents_List = (gcnew System::Windows::Forms::ListView());
