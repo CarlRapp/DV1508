@@ -744,7 +744,7 @@ void GraphicsHigh::Render()
 		{
 			if (m_clicked)
 			{
-				SDL_Log("InstaceID from buffer: %d", readID[0]);
+				//SDL_Log("InstaceID from buffer: %d", readID[0]);
 				m_pickedID = readID[0];
 			}
 			else
