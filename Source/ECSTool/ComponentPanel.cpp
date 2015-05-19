@@ -17,7 +17,7 @@ void MainWindow::CreateComponentPanel()
 	this->componentPanel->SuspendLayout();
 
 	//this->componentPanel->BackColor = System::Drawing::Color::Green;
-	this->componentPanel->Location = System::Drawing::Point(this->entityPanel->Size.Width + 13, 13);
+	this->componentPanel->Location = System::Drawing::Point(this->entityPanel->Size.Width + 13, this->entityPanel->Location.Y);
 	this->componentPanel->Name = L"ComponentPanel";
 	this->componentPanel->AutoSize = true;
 	this->componentPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
@@ -26,7 +26,7 @@ void MainWindow::CreateComponentPanel()
 	//	Create the listbox object
 	this->componentPanel_ComponentList = (gcnew System::Windows::Forms::ListBox());
 	this->componentPanel_ComponentList->FormattingEnabled = true;
-	this->componentPanel_ComponentList->Location = System::Drawing::Point(4, 4);
+	this->componentPanel_ComponentList->Location = System::Drawing::Point(this->entityPanel_EntityList->Location.X, this->entityPanel_EntityList->Location.Y);
 	this->componentPanel_ComponentList->Name = L"ComponentListBox";
 	this->componentPanel_ComponentList->Size = this->entityPanel_EntityList->Size;
 	this->componentPanel_ComponentList->TabIndex = 0;
@@ -37,7 +37,7 @@ void MainWindow::CreateComponentPanel()
 	this->componentPanel_RemoveComponentButton->Name = L"RemoveComponentButton";
 	this->componentPanel_RemoveComponentButton->Text = L"Remove";
 	this->componentPanel_RemoveComponentButton->Size = System::Drawing::Size(55, 20);
-	this->componentPanel_RemoveComponentButton->Location = System::Drawing::Point(this->componentPanel_ComponentList->Location.X + this->componentPanel_ComponentList->Size.Width - this->componentPanel_RemoveComponentButton->Size.Width, this->componentPanel_ComponentList->Size.Height + 8);
+	this->componentPanel_RemoveComponentButton->Location = System::Drawing::Point(this->componentPanel_ComponentList->Location.X + this->componentPanel_ComponentList->Size.Width - this->componentPanel_RemoveComponentButton->Size.Width, this->componentPanel_ComponentList->Location.Y + this->componentPanel_ComponentList->Size.Height + 8);
 
 	this->componentPanel_RemoveComponentButton->Click += gcnew System::EventHandler(this, &MainWindow::RemoveComponent);
 
@@ -46,7 +46,7 @@ void MainWindow::CreateComponentPanel()
 	this->componentPanel_AddComponentButton->Name = L"AddComponent";
 	this->componentPanel_AddComponentButton->Text = L"Add";
 	this->componentPanel_AddComponentButton->Size = System::Drawing::Size(55, 20);
-	this->componentPanel_AddComponentButton->Location = System::Drawing::Point(this->componentPanel_ComponentList->Location.X, this->componentPanel_ComponentList->Size.Height + 8);
+	this->componentPanel_AddComponentButton->Location = System::Drawing::Point(this->componentPanel_ComponentList->Location.X, this->componentPanel_ComponentList->Location.Y + this->componentPanel_ComponentList->Size.Height + 8);
 
 	this->componentPanel_AddComponentButton->Click += gcnew System::EventHandler(this, &MainWindow::componentPanel_AddComponent_Clicked);
 

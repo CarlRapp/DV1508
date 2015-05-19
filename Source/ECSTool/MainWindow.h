@@ -51,7 +51,12 @@ namespace ECSTool {
 	private: System::Windows::Forms::ListBox^  listBox1;
 	private: System::Windows::Forms::TextBox^  textBox1;
 	private: System::Windows::Forms::ImageList^  Tool_Icons;
-	private: System::Windows::Forms::Label^  label1;
+
+
+
+	private: System::Windows::Forms::Label^  entityListLabel;
+	private: System::Windows::Forms::Label^  componentListLabel;
+	private: System::Windows::Forms::Label^  dataListLabel;
 	
 	private: 
 
