@@ -71,15 +71,18 @@ std::string MainWindow::GetComponentName(unsigned int _cId)
 
 void MainWindow::UpdateComponentPanelList(int _entityId)
 {
+	this->componentPanel_ComponentList->BeginUpdate();
+	this->componentPanel_ComponentList->Items->Clear();
 	if (_entityId == -1)
 	{
 		ClearSelectedComponent();
+		this->componentPanel_ComponentList->EndUpdate();
 		return;
 	}
 
 
-	this->componentPanel_ComponentList->Items->Clear();
-
+	
+	
 	std::vector<unsigned int> components;
 	m_world->GetEntityComponents(components, _entityId);
 	bool componentFound = false;
@@ -103,6 +106,8 @@ void MainWindow::UpdateComponentPanelList(int _entityId)
 		ClearSelectedComponent();
 
 	UpdateDataPanelList(m_currentEntity, m_currentComponent);
+	this->componentPanel_ComponentList->EndUpdate();
+	
 }
 
 #pragma region Selected Index
