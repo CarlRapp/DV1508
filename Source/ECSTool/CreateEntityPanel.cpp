@@ -22,7 +22,7 @@ void MainWindow::CreateCreateEntityPanel()
 
 	this->createEntityComponents_List = (gcnew System::Windows::Forms::ListView());
 	this->createEntityComponents_List->Name = L"CreateEntityComponentsList";
-	this->createEntityComponents_List->Size = System::Drawing::Size(200, 200);
+	this->createEntityComponents_List->Size = System::Drawing::Size(200, 220);
 	this->createEntityComponents_List->Location = System::Drawing::Point(304, 4);
 	//this->createEntityComponents_List->SmallImageList = this->Tool_Icons;
 	this->createEntityComponents_List->TabIndex = 0;
@@ -50,16 +50,10 @@ void MainWindow::CreateCreateEntityPanel()
 	this->createEntityAddedComponents_List->MultiSelect = false;
 	this->createEntityAddedComponents_List->ItemSelectionChanged += gcnew ListViewItemSelectionChangedEventHandler(this, &MainWindow::CreateEntityAddedComponents_List_ItemSelectionChanged);
 
-	this->createEntitySearch_TextBox = (gcnew System::Windows::Forms::TextBox());
-	this->createEntitySearch_TextBox->Name = L"SearchComponentTextBox";
-	this->createEntitySearch_TextBox->Size = System::Drawing::Size(this->createEntityComponents_List->Size.Width, 10);
-	this->createEntitySearch_TextBox->Location = System::Drawing::Point(createEntityComponents_List->Location.X, createEntityComponents_List->Location.Y + this->createEntityComponents_List->Size.Height);
-	this->createEntitySearch_TextBox->TabIndex = 0;
-
 	this->createEntityPanel_AddComponentButton = (gcnew System::Windows::Forms::Button());
 	this->createEntityPanel_AddComponentButton->Name = L"AddComponentButton";
 	this->createEntityPanel_AddComponentButton->Size = System::Drawing::Size(this->createEntityComponents_List->Size.Width, this->createEntityPanel_AddComponentButton->Size.Height);
-	this->createEntityPanel_AddComponentButton->Location = System::Drawing::Point(createEntityComponents_List->Location.X, createEntitySearch_TextBox->Location.Y + this->createEntitySearch_TextBox->Size.Height);
+	this->createEntityPanel_AddComponentButton->Location = System::Drawing::Point(createEntityComponents_List->Location.X, createEntityComponents_List->Location.Y + this->createEntityComponents_List->Size.Height);
 	this->createEntityPanel_AddComponentButton->TabIndex = 0;
 	this->createEntityPanel_AddComponentButton->Text = "Add";
 	this->createEntityPanel_AddComponentButton->Enabled = false;
@@ -96,7 +90,6 @@ void MainWindow::CreateCreateEntityPanel()
 
 	this->createEntityPanel->Controls->Add(this->createEntityComponents_List);
 	this->createEntityPanel->Controls->Add(this->createEntityAddedComponents_List);
-	this->createEntityPanel->Controls->Add(this->createEntitySearch_TextBox);
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_AddComponentButton);
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_RemoveComponentButton);
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_CreateEntityButton);

@@ -166,7 +166,6 @@ namespace ECSTool {
 		System::Windows::Forms::Panel^		createEntityPanel;
 		System::Windows::Forms::ListView^	createEntityComponents_List;
 		System::Windows::Forms::ListView^	createEntityAddedComponents_List;
-		System::Windows::Forms::TextBox^	createEntitySearch_TextBox;
 		System::Windows::Forms::Button^		createEntityPanel_AddComponentButton;
 		System::Windows::Forms::Button^		createEntityPanel_RemoveComponentButton;
 		System::Windows::Forms::Button^		createEntityPanel_CreateEntityButton;
