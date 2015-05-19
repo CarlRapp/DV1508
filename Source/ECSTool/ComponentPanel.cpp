@@ -76,6 +76,7 @@ void MainWindow::UpdateComponentPanelList(int _entityId)
 	if (_entityId == -1)
 	{
 		ClearSelectedComponent();
+		UpdateDataPanelList(m_currentEntity, m_currentComponent);
 		this->componentPanel_ComponentList->EndUpdate();
 		return;
 	}
