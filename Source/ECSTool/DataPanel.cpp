@@ -25,6 +25,7 @@ void MainWindow::CreateDataPanel()
 
 	//	Create the list
 	this->dataPanel_List = (gcnew System::Windows::Forms::ListView());
+	this->dataPanel_List->BackColor = System::Drawing::Color::White;
 	this->dataPanel_List->Name = L"DataList";
 	this->dataPanel_List->Size = this->entityPanel_EntityList->Size;
 	this->dataPanel_List->Location = System::Drawing::Point(4, 4);
@@ -42,7 +43,30 @@ void MainWindow::CreateDataPanel()
 	//this->dataPanel_List->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_List_SelectedIndexChanged);
 
 	//	Hook up
-	this->dataPanel->Controls->Add(this->dataPanel_List);
+	//this->dataPanel->Controls->Add(this->dataPanel_List);
+
+
+	this->dataPanel_Table = (gcnew System::Windows::Forms::TableLayoutPanel());
+	this->dataPanel_Table->ColumnCount = 2;
+	this->dataPanel_Table->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+		40)));
+	this->dataPanel_Table->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
+		60)));
+	this->dataPanel_Table->Location = System::Drawing::Point(4, 4);;
+	this->dataPanel_Table->Name = L"DataTable";
+	this->dataPanel_Table->RowCount = 0;
+	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
+	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
+	this->dataPanel_Table->Size = this->entityPanel_EntityList->Size;
+	this->dataPanel_Table->TabIndex = 0;
+	//this->dataPanel_Table->VerticalScroll->Maximum = 100000;
+	this->dataPanel_Table->Padding = System::Windows::Forms::Padding(0, 0, 4, 0);
+	this->dataPanel_Table->AutoScroll = true;
+
+
+	//	Hook up
+	this->dataPanel->Controls->Add(this->dataPanel_Table);
+
 
 	this->Controls->Add(this->dataPanel);
 
@@ -60,7 +84,85 @@ void MainWindow::CreateDataPanel()
 
 void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 {
-	this->dataPanel_List->Items->Clear();
+	this->dataPanel_Table->Controls->Clear();
+
+	if (_entityId == -1 || _currentComponent == -1)
+		return;
+
+	auto component = ECSL::ComponentTypeManager::GetInstance().GetComponentType(_currentComponent);
+	auto variables = component->GetVariables();
+
+	std::string componentName = component->GetName();
+	auto iterator = variables->begin();
+	for (; iterator != variables->end(); ++iterator)
+	{
+		std::string varName = iterator->second.GetName();
+
+		SDL_Log("offset: %d", iterator->second.GetOffset());
+
+		ECSL::ComponentDataType dataType = component->GetDataTypes()->at(iterator->second.GetOffset());
+		bool enabled = true;
+		std::string data;
+		switch (dataType)
+		{
+		case ECSL::ComponentDataType::INT:
+			data = std::to_string(*(int*)m_world->GetComponent(_entityId, componentName, varName));
+			break;
+		case ECSL::ComponentDataType::FLOAT:
+			data = std::to_string(*(float*)m_world->GetComponent(_entityId, componentName, varName));
+			break;
+		case ECSL::ComponentDataType::TEXT:
+			data = m_world->GetComponent(_entityId, componentName, varName);
+			break;
+		case ECSL::ComponentDataType::BOOL:
+			data = std::to_string(*(bool*)m_world->GetComponent(_entityId, componentName, varName));
+			break;
+		case ECSL::ComponentDataType::MATRIX:
+			data = "Can't view this value";
+			enabled = false;
+			break;
+		case ECSL::ComponentDataType::REFERENCE:
+			data = std::to_string(*(int*)m_world->GetComponent(_entityId, componentName, varName));
+			break;
+		case ECSL::ComponentDataType::INT64:
+			data = std::to_string(*(Uint64*)m_world->GetComponent(_entityId, componentName, varName));
+			break;
+		case ECSL::ComponentDataType::STRING:
+			data = m_world->GetString(_entityId, componentName, iterator->second.GetOffset());
+			break;
+		default:
+			data = "";
+			break;
+		}
+
+		System::Windows::Forms::Label^ lable = gcnew System::Windows::Forms::Label();
+		lable->Text = gcnew System::String(varName.c_str());
+		lable->AutoEllipsis = true;
+		
+		System::Windows::Forms::ToolTip^ tooltip = gcnew System::Windows::Forms::ToolTip();
+		tooltip->ToolTipIcon = ToolTipIcon::None;
+		tooltip->IsBalloon = false;
+		tooltip->ShowAlways = true;
+
+		tooltip->SetToolTip(lable, gcnew System::String(varName.c_str()));
+
+
+		System::Windows::Forms::TextBox^ textbox = gcnew System::Windows::Forms::TextBox();
+		textbox->Text = gcnew System::String(data.c_str());
+		textbox->Enabled = enabled;
+
+		System::Windows::Forms::RowStyle^ row = gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25);
+		this->dataPanel_Table->Controls->Add(lable);
+		this->dataPanel_Table->Controls->Add(textbox);
+		//this->dataPanel_Table->RowStyles->Add(row);
+	}
+
+		//System::Windows::Forms::ListViewItem^ item = gcnew System::Windows::Forms::ListViewItem(gcnew System::String(varName.c_str()));
+		//item->SubItems->Add(gcnew System::String(data.c_str()));
+		//this->dataPanel_List->Items->Add(item);
+
+
+	/*this->dataPanel_List->Items->Clear();
 
 	if (_entityId == -1 || _currentComponent == -1)
 		return;
@@ -113,7 +215,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		System::Windows::Forms::ListViewItem^ item = gcnew System::Windows::Forms::ListViewItem(gcnew System::String(varName.c_str()));
 		item->SubItems->Add(gcnew System::String(data.c_str()));
 		this->dataPanel_List->Items->Add(item);
-	}
+	}*/
 
 	
 

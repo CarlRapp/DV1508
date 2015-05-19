@@ -74,7 +74,7 @@ void MainWindow::UpdateEntityPanelList()
 			{
 				std::string entryLabel = GetEntityName(n);
 				int tempIndex = this->entityPanel_EntityList->Items->Add(gcnew System::String(entryLabel.c_str()));
-
+				
 				if (m_currentEntity == n)
 				{
 					entityFound = true;

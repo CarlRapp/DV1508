@@ -138,6 +138,8 @@ namespace ECSTool {
 		System::Windows::Forms::Panel^		dataPanel;
 		System::Windows::Forms::ListView^	dataPanel_List;
 
+		System::Windows::Forms::TableLayoutPanel^	dataPanel_Table;
+
 		/*	DATA PANEL END	*/
 
 		/*	CREATE ENTITY PANEL START	*/
