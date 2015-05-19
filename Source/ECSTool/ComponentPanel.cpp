@@ -16,7 +16,7 @@ void MainWindow::CreateComponentPanel()
 	this->componentPanel = (gcnew System::Windows::Forms::Panel());
 	this->componentPanel->SuspendLayout();
 
-	this->componentPanel->BackColor = System::Drawing::Color::Green;
+	//this->componentPanel->BackColor = System::Drawing::Color::Green;
 	this->componentPanel->Location = System::Drawing::Point(this->entityPanel->Size.Width + 13, 13);
 	this->componentPanel->Name = L"ComponentPanel";
 	this->componentPanel->AutoSize = true;
