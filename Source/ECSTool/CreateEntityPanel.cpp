@@ -22,7 +22,7 @@ void MainWindow::CreateCreateEntityPanel()
 
 	this->createEntityComponents_List = (gcnew System::Windows::Forms::ListView());
 	this->createEntityComponents_List->Name = L"CreateEntityComponentsList";
-	this->createEntityComponents_List->Size = System::Drawing::Size(200, 200);
+	this->createEntityComponents_List->Size = System::Drawing::Size(200, 220);
 	this->createEntityComponents_List->Location = System::Drawing::Point(304, 4);
 	//this->createEntityComponents_List->SmallImageList = this->Tool_Icons;
 	this->createEntityComponents_List->TabIndex = 0;
@@ -50,16 +50,10 @@ void MainWindow::CreateCreateEntityPanel()
 	this->createEntityAddedComponents_List->MultiSelect = false;
 	this->createEntityAddedComponents_List->ItemSelectionChanged += gcnew ListViewItemSelectionChangedEventHandler(this, &MainWindow::CreateEntityAddedComponents_List_ItemSelectionChanged);
 
-	this->createEntitySearch_TextBox = (gcnew System::Windows::Forms::TextBox());
-	this->createEntitySearch_TextBox->Name = L"SearchComponentTextBox";
-	this->createEntitySearch_TextBox->Size = System::Drawing::Size(this->createEntityComponents_List->Size.Width, 10);
-	this->createEntitySearch_TextBox->Location = System::Drawing::Point(createEntityComponents_List->Location.X, createEntityComponents_List->Location.Y + this->createEntityComponents_List->Size.Height);
-	this->createEntitySearch_TextBox->TabIndex = 0;
-
 	this->createEntityPanel_AddComponentButton = (gcnew System::Windows::Forms::Button());
 	this->createEntityPanel_AddComponentButton->Name = L"AddComponentButton";
 	this->createEntityPanel_AddComponentButton->Size = System::Drawing::Size(this->createEntityComponents_List->Size.Width, this->createEntityPanel_AddComponentButton->Size.Height);
-	this->createEntityPanel_AddComponentButton->Location = System::Drawing::Point(createEntityComponents_List->Location.X, createEntitySearch_TextBox->Location.Y + this->createEntitySearch_TextBox->Size.Height);
+	this->createEntityPanel_AddComponentButton->Location = System::Drawing::Point(createEntityComponents_List->Location.X, createEntityComponents_List->Location.Y + this->createEntityComponents_List->Size.Height);
 	this->createEntityPanel_AddComponentButton->TabIndex = 0;
 	this->createEntityPanel_AddComponentButton->Text = "Add";
 	this->createEntityPanel_AddComponentButton->Enabled = false;
@@ -96,7 +90,6 @@ void MainWindow::CreateCreateEntityPanel()
 
 	this->createEntityPanel->Controls->Add(this->createEntityComponents_List);
 	this->createEntityPanel->Controls->Add(this->createEntityAddedComponents_List);
-	this->createEntityPanel->Controls->Add(this->createEntitySearch_TextBox);
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_AddComponentButton);
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_RemoveComponentButton);
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_CreateEntityButton);
@@ -151,16 +144,68 @@ void MainWindow::PopulateCreateEntityLists()
 
 void MainWindow::ShowPopularComponents()
 {
-	for (int i = 0; i < 1; ++i)
+	createEntityPanel_Labels = gcnew ArrayList();
+	for (int i = 0; i < createEntityPopularComponentCount; ++i)
 	{
 		std::string componentName = ECSL::ComponentTypeManager::GetInstance().GetComponentType(i)->GetName();
 		Label^ label = (gcnew System::Windows::Forms::Label());
 		label->Name = gcnew System::String(componentName.c_str());
-		label->Size = System::Drawing::Size(this->createEntityAddedComponents_List->Size.Width, this->createEntityPanel_RemoveComponentButton->Size.Height);
-		label->Location = System::Drawing::Point(30, 30);
+		label->Text = gcnew System::String(componentName.c_str());
+		label->AutoSize = true;
+		label->Font = gcnew System::Drawing::Font("Arial", 15.0f - (i * 0.5f));
+		label->Location = FindLocation(label);
+		label->MouseEnter += gcnew System::EventHandler(this, &MainWindow::CreateEntityPanel_PopularLabel_MouseEnter);
+		label->MouseLeave += gcnew System::EventHandler(this, &MainWindow::CreateEntityPanel_PopularLabel_MouseLeave);
+		label->MouseClick += gcnew System::Windows::Forms::MouseEventHandler(this, &MainWindow::CreateEntityPanel_PopularLabel_MouseClick);
+		
+		createEntityPanel_Labels->Add(label);
 
 		this->createEntityPanel->Controls->Add(label);
 	}
+}
+
+System::Drawing::Point MainWindow::FindLocation(Label^ label)
+{
+	System::Drawing::Point startPos = System::Drawing::Point(130, 130);
+	System::Drawing::SizeF textSize = this->CreateGraphics()->MeasureString(label->Text, label->Font);
+	float t = 0;
+	float a = 0.002f;
+	float b = 0.004f;
+	while (true)
+	{
+		System::Drawing::Point point = System::Drawing::Point(startPos.X + (2 * a * Math::Exp(b * t) * Math::Cos(t)), startPos.Y + (a * Math::Exp(b * t) * Math::Sin(t)));
+		
+		bool collision = false;
+		auto e = createEntityPanel_Labels->GetEnumerator();
+		while (e->MoveNext())
+		{
+			if (IsColliding(point, textSize, (Label^)e->Current))
+			{
+				collision = true;
+				break;
+			}
+		}
+
+		if (!collision)
+		{
+			return System::Drawing::Point(point.X - textSize.Width * 0.5f, point.Y - textSize.Height * 0.5f);
+		}
+
+		++t;
+	}
+}
+
+bool MainWindow::IsColliding(System::Drawing::Point point, System::Drawing::SizeF size, Label^ otherLabel)
+{
+	System::Drawing::SizeF textSize = this->CreateGraphics()->MeasureString(otherLabel->Text, otherLabel->Font);
+	//if (RectA.X1 < RectB.X2 
+	// && RectA.X2 > RectB.X1 &&
+	//	RectA.Y1 < RectB.Y2 
+	// && RectA.Y2 > RectB.Y1)
+	return ((point.X - size.Width * 0.5f) < (otherLabel->Location.X + textSize.Width)
+		&& (point.X + size.Width * 0.5f) > otherLabel->Location.X
+		&& (point.Y - size.Height * 0.5f) < (otherLabel->Location.Y + textSize.Height)
+		&& (point.Y + size.Height * 0.5f) > otherLabel->Location.Y);
 }
 
 void MainWindow::CreateEntityComponents_List_ItemSelectionChanged(System::Object^ sender, ListViewItemSelectionChangedEventArgs^ e)
@@ -193,6 +238,17 @@ void MainWindow::CreateEntityPanel_AddComponentButton_Clicked(System::Object^ se
 			);
 		copy->Name = gcnew System::String(item->Name);
 		this->createEntityAddedComponents_List->Items->Add(copy);
+
+		auto en = createEntityPanel_Labels->GetEnumerator();
+		while (en->MoveNext())
+		{
+			Label^ label = (Label^)en->Current;
+			if (label->Name == item->Name)
+			{
+				label->Enabled = false;
+				label->Visible = false;
+			}
+		}
 	}
 
 	if (this->createEntityAddedComponents_List->Items->Count > 0)
@@ -213,6 +269,17 @@ void MainWindow::CreateEntityPanel_RemoveComponentButton_Clicked(System::Object^
 			);
 		copy->Name = gcnew System::String(item->Name);
 		this->createEntityComponents_List->Items->Add(copy);
+
+		auto en = createEntityPanel_Labels->GetEnumerator();
+		while (en->MoveNext())
+		{
+			Label^ label = (Label^)en->Current;
+			if (label->Name == item->Name)
+			{
+				label->Enabled = true;
+				label->Visible = true;
+			}
+		}
 	}
 
 	if (this->createEntityAddedComponents_List->Items->Count == 0)
@@ -226,4 +293,30 @@ void MainWindow::CreateEntityPanel_CreateEntityButton_Clicked(System::Object^ se
 	{
 		m_world->CreateComponentAndAddTo(toString(this->createEntityAddedComponents_List->Items[i]->Name), id);
 	}
+}
+
+void MainWindow::CreateEntityPanel_PopularLabel_MouseEnter(System::Object^ sender, EventArgs^ e)
+{
+	((Label^)sender)->ForeColor = System::Drawing::Color::Red;
+}
+
+void MainWindow::CreateEntityPanel_PopularLabel_MouseLeave(System::Object^ sender, EventArgs^ e)
+{
+	((Label^)sender)->ForeColor = System::Drawing::Color::Black;
+}
+
+void MainWindow::CreateEntityPanel_PopularLabel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e)
+{
+	Label^ label = ((Label^)sender);
+	System::Windows::Forms::ListViewItem^ listItem = (
+		gcnew System::Windows::Forms::ListViewItem
+		(
+		gcnew cli::array< System::String^  >(1){ gcnew System::String(label->Name) }, -1
+		)
+		);
+	listItem->Name = gcnew System::String(label->Name);
+	this->createEntityAddedComponents_List->Items->Add(listItem);
+
+	label->Visible = false;
+	label->Enabled = false;
 }

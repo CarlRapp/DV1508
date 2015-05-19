@@ -2,6 +2,20 @@
 #include <msclr\marshal_cppstd.h>
 
 #include "ECSL/Framework/World.h"
+#include "Renderer/GraphicsHigh.h"
+
+ref class FlickerLessPanel : public System::Windows::Forms::Panel
+
+{
+
+public: FlickerLessPanel()
+{
+
+	this->DoubleBuffered = true;
+
+}
+
+};
 
 namespace ECSTool {
 
@@ -28,6 +42,7 @@ namespace ECSTool {
 		void MainWindow::InitializeTool();
 		void MainWindow::SetWorld(ECSL::World* _world);
 		void MainWindow::Update(float _dt);
+		void MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics);
 
 		
 	protected:
@@ -56,9 +71,10 @@ namespace ECSTool {
 	public:
 		void MainWindow::CreateEntityPanel();
 		void MainWindow::UpdateEntityPanelList();
+		void UpdatePicking();
 
 	private:
-		System::Windows::Forms::Panel^		entityPanel;
+		FlickerLessPanel^		entityPanel;
 		System::Windows::Forms::ListBox^	entityPanel_EntityList;
 		System::Windows::Forms::Button^		entityPanel_FilterButton;
 
@@ -149,22 +165,28 @@ namespace ECSTool {
 	private:
 		void MainWindow::PopulateCreateEntityLists();
 		void MainWindow::ShowPopularComponents();
+		System::Drawing::Point MainWindow::FindLocation(Label^ label);
+		bool MainWindow::IsColliding(System::Drawing::Point point, System::Drawing::SizeF size, Label^ otherLabel);
 
 		void CreateEntityComponents_List_ItemSelectionChanged(System::Object^ sender, ListViewItemSelectionChangedEventArgs^ e);
 		void CreateEntityAddedComponents_List_ItemSelectionChanged(System::Object^ sender, ListViewItemSelectionChangedEventArgs^ e);
 		void CreateEntityPanel_AddComponentButton_Clicked(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_RemoveComponentButton_Clicked(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_CreateEntityButton_Clicked(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_PopularLabel_MouseEnter(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_PopularLabel_MouseLeave(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_PopularLabel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
 
 	private:
+		const unsigned int					createEntityPopularComponentCount = 15;
 		System::Windows::Forms::Panel^		createEntityPanel;
 		System::Windows::Forms::ListView^	createEntityComponents_List;
 		System::Windows::Forms::ListView^	createEntityAddedComponents_List;
-		System::Windows::Forms::TextBox^	createEntitySearch_TextBox;
 		System::Windows::Forms::Button^		createEntityPanel_AddComponentButton;
 		System::Windows::Forms::Button^		createEntityPanel_RemoveComponentButton;
 		System::Windows::Forms::Button^		createEntityPanel_CreateEntityButton;
 		System::Windows::Forms::Button^		createEntityPanel_BackButton;
+		System::Collections::ArrayList^		createEntityPanel_Labels;
 
 	private:
 
@@ -224,5 +246,7 @@ namespace ECSTool {
 			ECSL::BitSet::DataType* m_filterMandatory;
 			ECSL::BitSet::DataType* m_filterRequiresOneOf;
 			ECSL::BitSet::DataType* m_filterExcluded;
+			Renderer::GraphicsHigh* m_graphics;
 	};
 }
+

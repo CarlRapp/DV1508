@@ -21,7 +21,6 @@ void SpinSystem::Initialize()
 
 	m_rotationId = ECSL::ComponentTypeManager::GetInstance().GetTableId("Rotation");
 	m_spinId = ECSL::ComponentTypeManager::GetInstance().GetTableId("Spin");
-
 }
 
 void SpinSystem::Update(const ECSL::RuntimeInfo& _runtime)

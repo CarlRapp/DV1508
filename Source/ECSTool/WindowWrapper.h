@@ -4,6 +4,7 @@
 
 #include "MainWindow.h"
 #include "ECSL/Framework/World.h"
+//#include "Renderer/GraphicsHigh.h"
 
 public class WindowWrapper
 {
@@ -11,14 +12,13 @@ public:
 	static WindowWrapper* GetInstance();
 	~WindowWrapper();
 
-	void OpenWindow(ECSL::World* _world);
-	void ChangeWorld(ECSL::World* _world);
+	void OpenWindow(ECSL::World* _world, Renderer::GraphicsHigh* _graphics);
+	void ChangeWorld(ECSL::World* _world, Renderer::GraphicsHigh* _graphics);
 	void Update(float _dt);
 
 private:
 	WindowWrapper();
-	void InitializeWindow(ECSL::World* _world);
-
+	void InitializeWindow(ECSL::World* _world, Renderer::GraphicsHigh* _graphics);
 private:
 	bool m_isActive;
 

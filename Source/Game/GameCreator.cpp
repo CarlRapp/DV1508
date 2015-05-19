@@ -720,7 +720,8 @@ void GameCreator::StartGame(int argc, char** argv)
 		}
 		else if (m_input->GetKeyboard()->GetKeyState(SDL_SCANCODE_F9) == Input::InputState::PRESSED)
 		{
-			WindowCreator::CreateMainWindow(m_clientWorld);
+			Renderer::GraphicsHigh* gh = static_cast<Renderer::GraphicsHigh*>(m_graphics);
+			WindowCreator::CreateMainWindow(m_clientWorld, gh);
 		}
 		else if (m_input->GetKeyboard()->GetKeyState(SDL_SCANCODE_F10) == Input::InputState::PRESSED)
 		{

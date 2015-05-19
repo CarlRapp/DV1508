@@ -9,7 +9,7 @@ using namespace ECSTool;
 void MainWindow::SetWorld(ECSL::World* _world)
 {
 	m_world	=	_world;
-	m_refreshRate = 100.0f;
+	m_refreshRate = 0.2f;
 	m_refreshTimer = 0;
 
 	m_currentEntity = -1;
@@ -37,6 +37,8 @@ void MainWindow::Update(float _dt)
 		//	Call internal update here
 		InternalUpdate(_dt);
 	}
+
+	UpdatePicking();
 }
 void MainWindow::InternalUpdate(float _dt)
 {
@@ -45,6 +47,9 @@ void MainWindow::InternalUpdate(float _dt)
 
 	if (this->entityFilterPanel->IsAccessible)
 		PopulateEntityFilter();
+
+	//if (this->createEntityPanel->IsAccessible)
+	//	PopulateCreateEntityLists();
 }
 
 
@@ -57,4 +62,12 @@ void MainWindow::InitializeTool()
 	this->CreateComponentSubPanel();
 
 	this->CreateDataPanel();
+
+	this->TopMost = true;
+	//this->CreateCreateEntityPanel();
+}
+
+void ECSTool::MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics)
+{
+	m_graphics = _graphics;
 }
