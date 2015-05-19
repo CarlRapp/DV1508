@@ -55,6 +55,9 @@ void MainWindow::InternalUpdate(float _dt)
 
 void MainWindow::InitializeTool()
 {
+	this->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	this->AutoSize = true;
+
 	this->CreateEntityPanel();
 	this->CreateEntityFilterPanel();
 

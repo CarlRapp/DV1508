@@ -94,6 +94,7 @@ System::Void MainWindow::addComponentPanel_Apply_Clicked(System::Object^ sender,
 	if (m_currentEntity == -1)
 		return;
 
+	addComponentPanel_List->BeginUpdate();
 	System::Windows::Forms::ListView::ListViewItemCollection^ allItems = addComponentPanel_List->Items;
 	for (int n = 0; n < allItems->Count; ++n)
 	{
@@ -102,9 +103,13 @@ System::Void MainWindow::addComponentPanel_Apply_Clicked(System::Object^ sender,
 			std::string sComponent = toString(allItems[n]->Tag);
 			m_world->CreateComponentAndAddTo(sComponent, m_currentEntity);
 
+			allItems[n]->ImageIndex = -1;
 			addComponentPanel_List->Items->Remove(allItems[n]);
 		}
 	}
+	addComponentPanel_List->EndUpdate();
+
+	addComponentPanel->Hide();
 
 	m_forceUpdate = true;
 }
@@ -140,6 +145,5 @@ void MainWindow::PopulateComponentSubPanel(unsigned int _eId)
 
 		this->addComponentPanel_List->Items->Add(componentItem);
 	}
-	addComponentPanel_List->Update();
 	addComponentPanel_List->EndUpdate();
 }

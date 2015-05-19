@@ -216,7 +216,7 @@ namespace ECSTool {
 			// 
 			// MainWindow
 			// 
-			this->ClientSize = System::Drawing::Size(784, 681);
+			//this->ClientSize = System::Drawing::Size(100, 100);
 			this->Name = L"MainWindow";
 			this->ResumeLayout(false);
 

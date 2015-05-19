@@ -62,7 +62,7 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel_Table->TabIndex = 0;
 	//this->dataPanel_Table->VerticalScroll->Maximum = 100000;
 	this->dataPanel_Table->Padding = System::Windows::Forms::Padding(0, 0, 4, 0);
-	this->dataPanel_Table->AutoScroll = true;
+	this->dataPanel_Table->AutoScroll = true; 
 
 
 	//	Hook up

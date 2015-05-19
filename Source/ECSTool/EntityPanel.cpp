@@ -154,7 +154,10 @@ void MainWindow::entityPanel_filterButton_Clicked(System::Object^ sender, System
 	if (this->entityFilterPanel->Visible)
 		this->entityFilterPanel->Hide();
 	else
+	{
 		this->entityFilterPanel->Show();
+		this->entityFilterPanel->Update();
+	}
 		
 }
 
