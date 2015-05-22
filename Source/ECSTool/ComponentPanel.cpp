@@ -33,6 +33,7 @@ void MainWindow::CreateComponentPanel()
 	this->componentPanel_ComponentList->Name = L"ComponentListBox";
 	this->componentPanel_ComponentList->Size = this->entityPanel_EntityList->Size;
 	this->componentPanel_ComponentList->TabIndex = 0;
+	this->componentPanel_ComponentList->Sorted = true;
 	this->componentPanel_ComponentList->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::componentPanel_ComponentList_SelectedIndexChanged);
 
 	//	Create the remove component button
@@ -85,7 +86,9 @@ void MainWindow::UpdateComponentPanelList(int _entityId)
 	}
 
 
-	
+	if (_entityId != m_currentEntity)
+		if (this->addComponentPanel->Visible)
+			PopulateComponentSubPanel(_entityId);
 	
 	std::vector<unsigned int> components;
 	m_world->GetEntityComponents(components, _entityId);
@@ -94,14 +97,19 @@ void MainWindow::UpdateComponentPanelList(int _entityId)
 	for (int n = 0; n < components.size(); ++n)
 	{
 		int tempIndex = this->componentPanel_ComponentList->Items->Add(gcnew System::String(GetComponentName(components.at(n)).c_str()));
+	}
 
-		if (components.at(n) == m_currentComponent)
+	for (int n = 0; n < components.size(); ++n)
+	{
+		unsigned int cId = ECSL::ComponentTypeManager::GetInstance().GetTableId(toString(this->componentPanel_ComponentList->Items[n]));
+
+		if (cId == m_currentComponent)
 		{
 			componentFound = true;
-			index = tempIndex;
+			index = n;
 		}
-
 	}
+	
 
 	//	If there is a entity selected, select it afterwards (if it wasnt found, set current to -1)
 	if (componentFound)
@@ -109,7 +117,7 @@ void MainWindow::UpdateComponentPanelList(int _entityId)
 	else
 		ClearSelectedComponent();
 
-	UpdateDataPanelList(m_currentEntity, m_currentComponent);
+	UpdateDataPanelList(_entityId, m_currentComponent);
 	this->componentPanel_ComponentList->EndUpdate();
 	
 }

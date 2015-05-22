@@ -37,7 +37,7 @@ void MainWindow::CreateEntityFilterPanel()
 	this->entityFilterPanel_List->AutoResizeColumns(ColumnHeaderAutoResizeStyle::HeaderSize);
 	this->entityFilterPanel_List->HeaderStyle = Windows::Forms::ColumnHeaderStyle::None;
 
-	this->entityFilterPanel_List->MultiSelect = false;
+	//this->entityFilterPanel_List->MultiSelect = false;
 	this->entityFilterPanel_List->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_List_SelectedIndexChanged);
 
 	//	Create the Mandatory button
@@ -50,8 +50,8 @@ void MainWindow::CreateEntityFilterPanel()
 
 	this->entityFilterPanel_RequiresOneOf = (gcnew System::Windows::Forms::Button());
 	this->entityFilterPanel_RequiresOneOf->Name = L"RequiresOneOfButton";
-	this->entityFilterPanel_RequiresOneOf->Text = L"Requires one of";
-	this->entityFilterPanel_RequiresOneOf->Size = this->entityFilterPanel_Mandatory->Size + System::Drawing::Size(0, 20);
+	this->entityFilterPanel_RequiresOneOf->Text = L"One of";
+	this->entityFilterPanel_RequiresOneOf->Size = this->entityFilterPanel_Mandatory->Size;
 	this->entityFilterPanel_RequiresOneOf->Location = System::Drawing::Point(this->entityFilterPanel_Mandatory->Location.X, this->entityFilterPanel_Mandatory->Location.Y + this->entityFilterPanel_Mandatory->Size.Height + 4);
 	this->entityFilterPanel_RequiresOneOf->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_filterButtons_Clicked);
 
@@ -64,10 +64,11 @@ void MainWindow::CreateEntityFilterPanel()
 
 	this->entityFilterPanel_RemoveFromFilter = (gcnew System::Windows::Forms::Button());
 	this->entityFilterPanel_RemoveFromFilter->Name = L"RemoveFromFilter";
-	this->entityFilterPanel_RemoveFromFilter->Text = L"Remove from filter";
+	this->entityFilterPanel_RemoveFromFilter->Text = L"Remove";
 	this->entityFilterPanel_RemoveFromFilter->Size = this->entityFilterPanel_RequiresOneOf->Size;
 	this->entityFilterPanel_RemoveFromFilter->Location = System::Drawing::Point(this->entityFilterPanel_Excluded->Location.X, this->entityFilterPanel_Excluded->Location.Y + this->entityFilterPanel_Excluded->Size.Height + 4);
 	this->entityFilterPanel_RemoveFromFilter->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_filterButtons_Clicked);
+	this->entityFilterPanel_RemoveFromFilter->Location = System::Drawing::Point(this->entityFilterPanel_List->Location.X + this->entityFilterPanel_List->Size.Width - this->entityFilterPanel_RemoveFromFilter->Size.Width, this->entityFilterPanel_RequiresOneOf->Location.Y);
 
 	//	Hook up
 	this->entityFilterPanel->Controls->Add(this->entityFilterPanel_List);
@@ -91,6 +92,8 @@ void MainWindow::PopulateEntityFilter()
 
 	unsigned int nComponents = ECSL::ComponentTypeManager::GetInstance().GetComponentTypeCount();
 	
+	entityFilterPanel_List->BeginUpdate();
+	entityFilterPanel_List->Sorting = System::Windows::Forms::SortOrder::Ascending;
 	for (int n = 0; n < nComponents; ++n)
 	{
 		int iconStyle = -1;
@@ -118,6 +121,8 @@ void MainWindow::PopulateEntityFilter()
 
 		this->entityFilterPanel_List->Items->Add(componentItem);
 	}
+	entityFilterPanel_List->Sort();
+	entityFilterPanel_List->EndUpdate();
 }
 
 System::Void MainWindow::entityFilterPanel_List_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e)
@@ -133,34 +138,42 @@ System::Void MainWindow::entityFilterPanel_filterButtons_Clicked(System::Object^
 	if (tempCollection->Count == 0)
 		return;
 
-	std::string currentComponent = toString(entityFilterPanel_List->SelectedItems[0]->Tag).c_str();
+	entityFilterPanel_List->BeginUpdate();
+	for (int n = 0; n < tempCollection->Count; ++n)
+	{
+		std::string currentComponent = toString(entityFilterPanel_List->SelectedItems[n]->Tag).c_str();
 
-	System::String^ buttonName = ((System::Windows::Forms::Button^)sender)->Name;
-	if (buttonName == this->entityFilterPanel_Mandatory->Name)
-		UpdateFilter(currentComponent, ECSL::FilterType::Mandatory);
-	else if (buttonName == this->entityFilterPanel_RequiresOneOf->Name)
-		UpdateFilter(currentComponent, ECSL::FilterType::RequiresOneOf);
-	else if (buttonName == this->entityFilterPanel_Excluded->Name)
-		UpdateFilter(currentComponent, ECSL::FilterType::Excluded);
-	else if (buttonName == this->entityFilterPanel_RemoveFromFilter->Name)
-		UpdateFilter(currentComponent, -1);
+		System::String^ buttonName = ((System::Windows::Forms::Button^)sender)->Name;
+		if (buttonName == this->entityFilterPanel_Mandatory->Name)
+			UpdateFilter(currentComponent, ECSL::FilterType::Mandatory, n);
+		else if (buttonName == this->entityFilterPanel_RequiresOneOf->Name)
+			UpdateFilter(currentComponent, ECSL::FilterType::RequiresOneOf, n);
+		else if (buttonName == this->entityFilterPanel_Excluded->Name)
+			UpdateFilter(currentComponent, ECSL::FilterType::Excluded, n);
+		else if (buttonName == this->entityFilterPanel_RemoveFromFilter->Name)
+			UpdateFilter(currentComponent, -1, n);
+
+		
+	}
+	entityFilterPanel_List->Update();
+	entityFilterPanel_List->EndUpdate();
 }
 
-void MainWindow::UpdateFilter(std::string _component, int _filterType)
+void MainWindow::UpdateFilter(std::string _component, int _filterType, int _listIndex)
 {
 	unsigned int currentBit = ECSL::ComponentTypeManager::GetInstance().GetTableId(_component);
 	/*	Calculate at which index the current number should be represented	*/
 	unsigned int bitSetIndex = ECSL::BitSet::GetBitSetIndex(currentBit);
 	unsigned int bitIndex = ECSL::BitSet::GetBitIndex(currentBit);
 
-	entityFilterPanel_List->BeginUpdate();
+	
 	//	Remove component from filters
 	if (_filterType == -1)
 	{
 		m_filterMandatory[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
 		m_filterRequiresOneOf[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
 		m_filterExcluded[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
-		entityFilterPanel_List->SelectedItems[0]->ImageIndex = -1;
+		entityFilterPanel_List->SelectedItems[_listIndex]->ImageIndex = -1;
 		
 	}
 	else if (_filterType == ECSL::FilterType::Mandatory)
@@ -168,25 +181,24 @@ void MainWindow::UpdateFilter(std::string _component, int _filterType)
 		m_filterMandatory[bitSetIndex] |= ((ECSL::BitSet::DataType)1 << bitIndex);
 		m_filterRequiresOneOf[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
 		m_filterExcluded[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
-		entityFilterPanel_List->SelectedItems[0]->ImageIndex = 0;
+		entityFilterPanel_List->SelectedItems[_listIndex]->ImageIndex = 0;
 	}
 	else if (_filterType == ECSL::FilterType::RequiresOneOf)
 	{
 		m_filterMandatory[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
 		m_filterRequiresOneOf[bitSetIndex] |= ((ECSL::BitSet::DataType)1 << bitIndex);
 		m_filterExcluded[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
-		entityFilterPanel_List->SelectedItems[0]->ImageIndex = 1;
+		entityFilterPanel_List->SelectedItems[_listIndex]->ImageIndex = 1;
 	}
 	else if (_filterType == ECSL::FilterType::Excluded)
 	{
 		m_filterMandatory[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
 		m_filterRequiresOneOf[bitSetIndex] &= ~((ECSL::BitSet::DataType)1 << bitIndex);
 		m_filterExcluded[bitSetIndex] |= ((ECSL::BitSet::DataType)1 << bitIndex);
-		entityFilterPanel_List->SelectedItems[0]->ImageIndex = 2;
+		entityFilterPanel_List->SelectedItems[_listIndex]->ImageIndex = 2;
 	}
 
-	entityFilterPanel_List->Update();
-	entityFilterPanel_List->EndUpdate();
+
 
 	this->m_forceUpdate = true;
 }
