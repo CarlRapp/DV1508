@@ -40,10 +40,19 @@ void MainWindow::CreateEntityPanel()
 	this->entityPanel_FilterButton->Location = System::Drawing::Point(entityPanel_EntityList->Location.X, entityPanel_EntityList->Location.Y+entityPanel_EntityList->Size.Height + 8);
 	this->entityPanel_FilterButton->Click += gcnew System::EventHandler(this, &MainWindow::entityPanel_filterButton_Clicked);
 
+	//	Create new entity button
+	this->entityPanel_NewEntityButton = (gcnew System::Windows::Forms::Button());
+	this->entityPanel_NewEntityButton->Name = L"NewEntityButton";
+	this->entityPanel_NewEntityButton->Text = L"New Entity";
+	this->entityPanel_NewEntityButton->Size = System::Drawing::Size(70, 20);
+	this->entityPanel_NewEntityButton->Location = System::Drawing::Point(entityPanel_FilterButton->Location.X + entityPanel_FilterButton->Size.Width + 3, entityPanel_EntityList->Location.Y + entityPanel_EntityList->Size.Height + 8);
+	this->entityPanel_NewEntityButton->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_newEntityButtons_Clicked);
+
 
 	//	Hook up
 	this->entityPanel->Controls->Add(this->entityPanel_EntityList);
 	this->entityPanel->Controls->Add(this->entityPanel_FilterButton);
+	this->entityPanel->Controls->Add(this->entityPanel_NewEntityButton);
 
 	this->Controls->Add(this->entityPanel);
 
@@ -122,6 +131,18 @@ void MainWindow::entityPanel_filterButton_Clicked(System::Object^ sender, System
 		this->entityFilterPanel->Update();
 	}
 		
+}
+
+void MainWindow::entityFilterPanel_newEntityButtons_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	Form^ newEntityForm = gcnew Form();
+	newEntityForm->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	newEntityForm->AutoSize = true;
+	newEntityForm->TopMost = true;
+	newEntityForm->MaximizeBox = false;
+	newEntityForm->Show();
+	CreateChooseEntityTypePanel(newEntityForm);
+	
 }
 
 #pragma region Get Entity Name
