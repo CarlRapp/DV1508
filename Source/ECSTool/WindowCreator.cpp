@@ -8,9 +8,14 @@ void WindowCreator::CreateMainWindow(ECSL::World* _world, Renderer::GraphicDevic
 	WindowWrapper::GetInstance()->OpenWindow(_world,static_cast<Renderer::GraphicsHigh*>(_graphics));
 }
 
-void WindowCreator::UpdateWindow(float _dt)
+void WindowCreator::UpdateWindow(float _dt, bool paused)
 {
-	WindowWrapper::GetInstance()->Update(_dt);
+	WindowWrapper::GetInstance()->Update(_dt, paused);
+}
+
+bool WindowCreator::HasToggledPause()
+{
+	return WindowWrapper::GetInstance()->HasToggledPause();
 }
 
 void WindowCreator::PickingOccured()

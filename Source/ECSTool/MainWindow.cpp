@@ -22,7 +22,7 @@ void MainWindow::SetWorld(ECSL::World* _world)
 	m_filterExcluded = ECSL::BitSet::BitSetConverter::ArrayToBitSet(bitsetComponents, ECSL::ComponentTypeManager::GetInstance().GetComponentTypeCount());
 }
 
-void MainWindow::Update(float _dt)
+void MainWindow::Update(float _dt, bool _paused)
 {
 	m_refreshTimer += _dt;
 
@@ -31,13 +31,30 @@ void MainWindow::Update(float _dt)
 		m_forceUpdate = false;
 		InternalUpdate(_dt);
 	}
-	else if (m_refreshTimer >= m_refreshRate)
+	else if (!paused && m_refreshTimer >= m_refreshRate)
 	{
 		m_refreshTimer -= m_refreshRate;
 		//	Call internal update here
 		InternalUpdate(_dt);
 	}
+// 	if (paused != _paused)
+// 	{
+// 		paused = _paused;
+// 		if (paused)
+// 			dataPanel_Pause->Text = "Unpause";
+// 		else
+// 			dataPanel_Pause->Text = "Pause";
+// 	}
+
 }
+
+bool MainWindow::HasToggledPause()
+{
+	bool result = toggledPause;
+	toggledPause = false;
+	return result;
+}
+
 void MainWindow::InternalUpdate(float _dt)
 {
 	UpdateEntityPanelList();
@@ -64,9 +81,15 @@ void MainWindow::InitializeTool()
 
 	this->CreateDataPanel();
 
+	this->CreateToolPanel();
+
 	this->TopMost = true;
 
+	this->toggledPause = false;
+	paused = false;
+
 	this->BackColor = System::Drawing::Color::Gray;
+
 	//this->CreateCreateEntityPanel();
 	m_graphics->TogglePicking();
 }

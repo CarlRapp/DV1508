@@ -28,7 +28,8 @@ namespace ECSTool {
 		}
 		void MainWindow::InitializeTool();
 		void MainWindow::SetWorld(ECSL::World* _world);
-		void MainWindow::Update(float _dt);
+		void MainWindow::Update(float _dt, bool paused);
+		bool MainWindow::HasToggledPause();
 		void MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics);
 
 		
@@ -60,6 +61,9 @@ namespace ECSTool {
 	
 	private: 
 
+		bool toggledPause;
+		bool paused;
+
 		/*	ENTITY PANEL START	*/
 	public:
 		void MainWindow::CreateEntityPanel();
@@ -71,7 +75,6 @@ namespace ECSTool {
 		System::Windows::Forms::ListBox^	entityPanel_EntityList;
 		System::Windows::Forms::Button^		entityPanel_FilterButton;
 		System::Windows::Forms::Button^		entityPanel_NewEntityButton;
-
 	private:
 		std::string GetEntityName(unsigned int _eId);
 		System::Void entityPanel_EntityList_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
@@ -151,9 +154,30 @@ namespace ECSTool {
 
 		System::Windows::Forms::TableLayoutPanel^	dataPanel_Table;
 
+		//System::Windows::Forms::Button^		dataPanel_Pause;
+		System::Windows::Forms::Button^		dataPanel_Reset;
+		System::Windows::Forms::Button^		dataPanel_Apply;
+
+	private:
+		//System::Void dataPanel_Pause_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void dataPanel_Reset_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void dataPanel_Apply_Clicked(System::Object^ sender, System::EventArgs^ e);
 		/*	DATA PANEL END	*/
 
 		/*	CREATE ENTITY PANEL START	*/
+
+		//TOOL PANEL >>
+	private:
+		System::Windows::Forms::Panel^		toolPanel;
+		System::Windows::Forms::CheckBox^	togglePickingButton;
+		System::Windows::Forms::CheckBox^	togglePauseButton;
+		System::Windows::Forms::Label^		toolLabel;
+	public:
+		System::Void TogglePicking_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void TogglePause_Clicked(System::Object^ sender, System::EventArgs^ e);
+		void MainWindow::CreateToolPanel();
+		//TOOL PANEL <<
+
 	public:
 		void MainWindow::CreateCreateEntityPanel(Form^ _form);
 		void MainWindow::CreateChooseEntityTypePanel(Form^ _form);

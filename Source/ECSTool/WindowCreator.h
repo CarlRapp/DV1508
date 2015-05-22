@@ -8,7 +8,8 @@
 namespace WindowCreator
 {
 	void DECLSPEC CreateMainWindow(ECSL::World* _world, Renderer::GraphicDevice* _graphics);
-	void DECLSPEC UpdateWindow(float _dt);
+	void DECLSPEC UpdateWindow(float _dt, bool paused);
+	bool DECLSPEC HasToggledPause();
 	void DECLSPEC PickingOccured();
 }
 
