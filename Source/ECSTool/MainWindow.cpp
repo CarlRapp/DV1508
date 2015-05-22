@@ -37,7 +37,6 @@ void MainWindow::Update(float _dt, bool _paused)
 		//	Call internal update here
 		InternalUpdate(_dt);
 	}
-
 	if (paused != _paused)
 	{
 		paused = _paused;
@@ -47,7 +46,6 @@ void MainWindow::Update(float _dt, bool _paused)
 			dataPanel_Pause->Text = "Pause";
 	}
 
-	//UpdatePicking();
 }
 
 bool MainWindow::HasToggledPause()

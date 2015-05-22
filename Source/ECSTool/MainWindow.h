@@ -68,13 +68,13 @@ namespace ECSTool {
 	public:
 		void MainWindow::CreateEntityPanel();
 		void MainWindow::UpdateEntityPanelList();
-		void UpdatePicking();
 		void PickingOccured();
 
 	private:
 		System::Windows::Forms::Panel^		entityPanel;
 		System::Windows::Forms::ListBox^	entityPanel_EntityList;
 		System::Windows::Forms::Button^		entityPanel_FilterButton;
+		System::Windows::Forms::Button^		entityPanel_NewEntityButton;
 
 	private:
 		std::string GetEntityName(unsigned int _eId);
@@ -86,7 +86,7 @@ namespace ECSTool {
 	public:
 		void MainWindow::CreateEntityFilterPanel();
 		void MainWindow::PopulateEntityFilter();
-		void MainWindow::UpdateFilter(std::string _component, int _filterType);
+		void MainWindow::UpdateFilter(std::string _component, int _filterType, int _listIndex);
 
 	private:
 		System::Windows::Forms::Panel^		entityFilterPanel;
@@ -99,6 +99,7 @@ namespace ECSTool {
 	private:
 		System::Void entityFilterPanel_List_SelectedIndexChanged(System::Object^ sender, System::EventArgs^ e);
 		System::Void entityFilterPanel_filterButtons_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void entityFilterPanel_newEntityButtons_Clicked(System::Object^ sender, System::EventArgs^ e);
 		/*	ENTITY FILTER PANEL END	*/
 
 		/*	COMPONENT PANEL START	*/
@@ -166,7 +167,8 @@ namespace ECSTool {
 
 		/*	CREATE ENTITY PANEL START	*/
 	public:
-		void MainWindow::CreateCreateEntityPanel();
+		void MainWindow::CreateCreateEntityPanel(Form^ _form);
+		void MainWindow::CreateChooseEntityTypePanel(Form^ _form);
 
 	private:
 		void MainWindow::PopulateCreateEntityLists();
@@ -179,9 +181,15 @@ namespace ECSTool {
 		void CreateEntityPanel_AddComponentButton_Clicked(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_RemoveComponentButton_Clicked(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_CreateEntityButton_Clicked(System::Object^ sender, EventArgs^ e);
+		void CreateEntityPanel_BackButton_Clicked(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_PopularLabel_MouseEnter(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_PopularLabel_MouseLeave(System::Object^ sender, EventArgs^ e);
 		void CreateEntityPanel_PopularLabel_MouseClick(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e);
+
+		void ChooseEntityTypePanel_RadioButton_Clicked(System::Object^ sender, EventArgs^ e);
+		void ChooseEntityTypePanel_NextButton_Clicked(System::Object^ sender, EventArgs^ e);
+		void ChooseEntityTypePanel_BackButton_Clicked(System::Object^ sender, EventArgs^ e);
+
 
 	private:
 		const unsigned int					createEntityPopularComponentCount = 15;
@@ -193,6 +201,14 @@ namespace ECSTool {
 		System::Windows::Forms::Button^		createEntityPanel_CreateEntityButton;
 		System::Windows::Forms::Button^		createEntityPanel_BackButton;
 		System::Collections::ArrayList^		createEntityPanel_Labels;
+
+		System::Windows::Forms::Panel^		chooseEntityTypePanel;
+		System::Windows::Forms::Button^		chooseEntityTypeNextButton;
+		System::Windows::Forms::Button^		chooseEntityTypeBackButton;
+		System::Windows::Forms::RadioButton^ chooseEntityTypeScratchButton;
+		System::Windows::Forms::RadioButton^ chooseEntityTypeTemplateButton;
+
+		Form^ createEntityForm;
 
 	private:
 

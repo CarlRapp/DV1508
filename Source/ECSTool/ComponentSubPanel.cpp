@@ -36,6 +36,7 @@ void MainWindow::CreateComponentSubPanel()
 	this->addComponentPanel_List->Columns->Add(L"Components");
 	this->addComponentPanel_List->AutoResizeColumns(ColumnHeaderAutoResizeStyle::HeaderSize);
 	this->addComponentPanel_List->HeaderStyle = Windows::Forms::ColumnHeaderStyle::None;
+	
 
 	this->addComponentPanel_List->MultiSelect = false;
 	//this->addComponentPanel_List->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_List_SelectedIndexChanged);
@@ -101,7 +102,9 @@ System::Void MainWindow::addComponentPanel_Apply_Clicked(System::Object^ sender,
 		if (allItems[n]->ImageIndex != -1)
 		{
 			std::string sComponent = toString(allItems[n]->Tag);
-			m_world->CreateComponentAndAddTo(sComponent, m_currentEntity);
+
+			if(!m_world->HasComponent(m_currentEntity, sComponent))
+				m_world->CreateComponentAndAddTo(sComponent, m_currentEntity);
 
 			allItems[n]->ImageIndex = -1;
 			addComponentPanel_List->Items->Remove(allItems[n]);
@@ -120,8 +123,11 @@ void MainWindow::PopulateComponentSubPanel(unsigned int _eId)
 		return;
 
 	unsigned int nComponents = ECSL::ComponentTypeManager::GetInstance().GetComponentTypeCount();
+	this->addComponentPanel_List->Items->Clear();
 
 	addComponentPanel_List->BeginUpdate();
+	addComponentPanel_List->Sorting = System::Windows::Forms::SortOrder::Ascending;
+	
 	for (int n = 0; n < nComponents; ++n)
 	{
 		if (m_world->HasComponent(_eId, n))
@@ -145,5 +151,6 @@ void MainWindow::PopulateComponentSubPanel(unsigned int _eId)
 
 		this->addComponentPanel_List->Items->Add(componentItem);
 	}
+	addComponentPanel_List->Sort();
 	addComponentPanel_List->EndUpdate();
 }
