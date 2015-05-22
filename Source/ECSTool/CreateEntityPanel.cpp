@@ -5,9 +5,69 @@
 
 using namespace ECSTool;
 
-void MainWindow::CreateCreateEntityPanel()
+void MainWindow::CreateChooseEntityTypePanel(Form^ _form)
 {
-	this->SuspendLayout();
+	createEntityForm = _form;
+
+	_form->SuspendLayout();
+	this->chooseEntityTypePanel = (gcnew System::Windows::Forms::Panel());
+	this->chooseEntityTypePanel->SuspendLayout();
+
+	this->chooseEntityTypePanel->Location = System::Drawing::Point(13, 13);
+	this->chooseEntityTypePanel->Name = L"ChooseEntityTypePanel";
+	this->chooseEntityTypePanel->AutoSize = true;
+	this->chooseEntityTypePanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	//this->createEntityPanel->BackColor = System::Drawing::Color::Brown;
+	this->chooseEntityTypePanel->TabIndex = 0;
+
+	Label^ label = (gcnew System::Windows::Forms::Label());
+	label->Name = "DescriptionLabel";
+	label->Location = System::Drawing::Point(15, 5);
+	label->Text = "Create from:";
+	
+	this->chooseEntityTypeScratchButton = (gcnew System::Windows::Forms::RadioButton());
+	this->chooseEntityTypeScratchButton->Name = L"ScratchRadioButton";
+	//this->chooseEntityTypeScratchButton->Size = System::Drawing::Size(this->createEntityComponents_List->Size.Width, this->createEntityPanel_AddComponentButton->Size.Height);
+	this->chooseEntityTypeScratchButton->Location = System::Drawing::Point(15, 25);
+	this->chooseEntityTypeScratchButton->TabIndex = 0;
+	this->chooseEntityTypeScratchButton->Text = "Scratch";
+	this->chooseEntityTypeScratchButton->CheckedChanged += gcnew System::EventHandler(this, &MainWindow::ChooseEntityTypePanel_RadioButton_Clicked);
+
+	this->chooseEntityTypeTemplateButton = (gcnew System::Windows::Forms::RadioButton());
+	this->chooseEntityTypeTemplateButton->Name = L"TemplateRadioButton";
+	//this->chooseEntityTypeTemplateButton->Size = System::Drawing::Size(this->createEntityComponents_List->Size.Width, this->createEntityPanel_AddComponentButton->Size.Height);
+	this->chooseEntityTypeTemplateButton->Location = System::Drawing::Point(15, 45);
+	this->chooseEntityTypeTemplateButton->TabIndex = 0;
+	this->chooseEntityTypeTemplateButton->Text = "Template";
+	this->chooseEntityTypeTemplateButton->CheckedChanged += gcnew System::EventHandler(this, &MainWindow::ChooseEntityTypePanel_RadioButton_Clicked);
+
+	chooseEntityTypeBackButton = (gcnew System::Windows::Forms::Button());
+	chooseEntityTypeBackButton->Name = "BackButton";
+	chooseEntityTypeBackButton->Location = System::Drawing::Point(0, 90);
+	chooseEntityTypeBackButton->Text = "Back";
+	chooseEntityTypeBackButton->Click += gcnew System::EventHandler(this, &MainWindow::ChooseEntityTypePanel_BackButton_Clicked);
+
+	chooseEntityTypeNextButton = (gcnew System::Windows::Forms::Button());
+	chooseEntityTypeNextButton->Name = "NextButton";
+	chooseEntityTypeNextButton->Location = System::Drawing::Point(150, 90);
+	chooseEntityTypeNextButton->Text = "Next";
+	chooseEntityTypeNextButton->Enabled = false;
+	chooseEntityTypeNextButton->Click += gcnew System::EventHandler(this, &MainWindow::ChooseEntityTypePanel_NextButton_Clicked);
+
+	this->chooseEntityTypePanel->Controls->Add(chooseEntityTypeScratchButton);
+	this->chooseEntityTypePanel->Controls->Add(chooseEntityTypeTemplateButton);
+	this->chooseEntityTypePanel->Controls->Add(label);
+	this->chooseEntityTypePanel->Controls->Add(chooseEntityTypeBackButton);
+	this->chooseEntityTypePanel->Controls->Add(chooseEntityTypeNextButton);
+	_form->Controls->Add(this->chooseEntityTypePanel);
+
+	this->chooseEntityTypePanel->ResumeLayout(true);
+	_form->ResumeLayout(true);
+}
+
+void MainWindow::CreateCreateEntityPanel(Form^ _form)
+{
+	_form->SuspendLayout();
 
 	//	Create the panel object
 	this->createEntityPanel = (gcnew System::Windows::Forms::Panel());
@@ -87,6 +147,7 @@ void MainWindow::CreateCreateEntityPanel()
 		this->createEntityAddedComponents_List->Location.Y + this->createEntityAddedComponents_List->Size.Height + 50);
 	this->createEntityPanel_BackButton->TabIndex = 0;
 	this->createEntityPanel_BackButton->Text = "Back";
+	this->createEntityPanel_BackButton->Click += gcnew System::EventHandler(this, &MainWindow::CreateEntityPanel_BackButton_Clicked);
 
 	this->createEntityPanel->Controls->Add(this->createEntityComponents_List);
 	this->createEntityPanel->Controls->Add(this->createEntityAddedComponents_List);
@@ -94,13 +155,13 @@ void MainWindow::CreateCreateEntityPanel()
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_RemoveComponentButton);
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_CreateEntityButton);
 	this->createEntityPanel->Controls->Add(this->createEntityPanel_BackButton);
-	this->Controls->Add(this->createEntityPanel);
+	_form->Controls->Add(this->createEntityPanel);
 
 	ShowPopularComponents();
 	PopulateCreateEntityLists();
 
 	this->createEntityPanel->ResumeLayout(true);
-	this->ResumeLayout(true);
+	_form->ResumeLayout(true);
 }
 
 void MainWindow::PopulateCreateEntityLists()
@@ -293,6 +354,14 @@ void MainWindow::CreateEntityPanel_CreateEntityButton_Clicked(System::Object^ se
 	{
 		m_world->CreateComponentAndAddTo(toString(this->createEntityAddedComponents_List->Items[i]->Name), id);
 	}
+
+	createEntityForm->Close();
+}
+
+void MainWindow::CreateEntityPanel_BackButton_Clicked(System::Object^ sender, EventArgs^ e)
+{
+	createEntityForm->Controls->Clear();
+	CreateChooseEntityTypePanel(createEntityForm);
 }
 
 void MainWindow::CreateEntityPanel_PopularLabel_MouseEnter(System::Object^ sender, EventArgs^ e)
@@ -319,4 +388,20 @@ void MainWindow::CreateEntityPanel_PopularLabel_MouseClick(System::Object^ sende
 
 	label->Visible = false;
 	label->Enabled = false;
+}
+
+void MainWindow::ChooseEntityTypePanel_RadioButton_Clicked(System::Object^ sender, EventArgs^ e)
+{
+	chooseEntityTypeNextButton->Enabled = true;
+}
+
+void MainWindow::ChooseEntityTypePanel_NextButton_Clicked(System::Object^ sender, EventArgs^ e)
+{
+	createEntityForm->Controls->Clear();
+	CreateCreateEntityPanel(createEntityForm);
+}
+
+void MainWindow::ChooseEntityTypePanel_BackButton_Clicked(System::Object^ sender, EventArgs^ e)
+{
+	createEntityForm->Close();
 }
