@@ -15,14 +15,17 @@ void MainWindow::CreateComponentSubPanel()
 	this->addComponentPanel = (gcnew System::Windows::Forms::Panel());
 	this->addComponentPanel->SuspendLayout();
 
-	this->addComponentPanel->Location = System::Drawing::Point(this->componentPanel->Location.X, this->componentPanel->Size.Height + 13);
-	//this->addComponentPanel->BackColor = System::Drawing::Color::Pink;
+	this->addComponentPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+
+	this->addComponentPanel->Location = System::Drawing::Point(this->componentPanel->Location.X, this->componentPanel->Size.Height + 1);
+	this->addComponentPanel->BackColor = System::Drawing::Color::LightGray;
 	this->addComponentPanel->Hide();
 	this->addComponentPanel->Name = L"ComponentSubPanel";
-	this->addComponentPanel->AutoSize = true;
-	this->addComponentPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	//this->addComponentPanel->AutoSize = true;
+	//this->addComponentPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	this->addComponentPanel->Size = System::Drawing::Size(210, 260);
 	this->addComponentPanel->TabIndex = 0;
-
+	
 	//	Create the list
 	this->addComponentPanel_List = (gcnew System::Windows::Forms::ListView());
 	this->addComponentPanel_List->Name = L"ComponentSubPanelList";

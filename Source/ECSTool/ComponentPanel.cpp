@@ -18,7 +18,7 @@ void MainWindow::CreateComponentPanel()
 
 	this->componentPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 
-	//this->componentPanel->BackColor = System::Drawing::Color::Green;
+	this->componentPanel->BackColor = System::Drawing::Color::WhiteSmoke;
 	this->componentPanel->Location = System::Drawing::Point(this->entityPanel->Size.Width + 1, this->entityPanel->Location.Y);
 	this->componentPanel->Name = L"ComponentPanel";
 	//this->componentPanel->AutoSize = true;

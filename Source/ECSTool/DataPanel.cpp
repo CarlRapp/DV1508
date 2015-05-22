@@ -19,7 +19,7 @@ void MainWindow::CreateDataPanel()
 
 	this->dataPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 
-	//this->dataPanel->BackColor = System::Drawing::Color::Yellow;
+	this->dataPanel->BackColor = System::Drawing::Color::WhiteSmoke;
 	this->dataPanel->Location = System::Drawing::Point(this->componentPanel->Location.X + this->componentPanel->Size.Width-1, this->entityPanel->Location.Y);
 	this->dataPanel->Name = L"DataPanel";
 	//this->dataPanel->AutoSize = true;

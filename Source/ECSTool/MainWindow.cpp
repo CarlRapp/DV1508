@@ -88,6 +88,8 @@ void MainWindow::InitializeTool()
 	this->toggledPause = false;
 	paused = false;
 
+	this->BackColor = System::Drawing::Color::Gray;
+
 	//this->CreateCreateEntityPanel();
 	m_graphics->TogglePicking();
 }

@@ -13,11 +13,14 @@ void MainWindow::CreateToolPanel()
 	this->toolPanel = (gcnew System::Windows::Forms::Panel());
 	this->toolPanel->SuspendLayout();
 
-	//this->dataPanel->BackColor = System::Drawing::Color::Yellow;
+	this->toolPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+
+	this->toolPanel->BackColor = System::Drawing::Color::WhiteSmoke;
 	this->toolPanel->Location = System::Drawing::Point(this->dataPanel->Location.X + this->dataPanel->Size.Width, this->entityPanel->Location.Y);
 	this->toolPanel->Name = L"ToolPanel";
-	this->toolPanel->AutoSize = true;
-	this->toolPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	//this->toolPanel->AutoSize = true;
+	//this->toolPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	this->toolPanel->Size = System::Drawing::Size(110, 70);
 	this->toolPanel->TabIndex = 0;
 
 	this->togglePickingButton = (gcnew System::Windows::Forms::CheckBox());
