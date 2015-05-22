@@ -33,7 +33,7 @@ void MainWindow::Update(float _dt, bool _paused)
 	}
 	else if (!paused && m_refreshTimer >= m_refreshRate)
 	{
-		m_refreshTimer -= m_refreshRate;
+		m_refreshTimer = 0;
 		//	Call internal update here
 		InternalUpdate(_dt);
 	}
