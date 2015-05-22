@@ -57,6 +57,7 @@ void MainWindow::TogglePicking_Clicked(System::Object^ sender, System::EventArgs
 
 void MainWindow::TogglePause_Clicked(System::Object^ sender, System::EventArgs^ e)
 {
+	toggledPause = true;
 	//PAUSE GAME
 }
 

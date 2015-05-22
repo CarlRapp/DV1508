@@ -154,12 +154,12 @@ namespace ECSTool {
 
 		System::Windows::Forms::TableLayoutPanel^	dataPanel_Table;
 
-		System::Windows::Forms::Button^		dataPanel_Pause;
+		//System::Windows::Forms::Button^		dataPanel_Pause;
 		System::Windows::Forms::Button^		dataPanel_Reset;
 		System::Windows::Forms::Button^		dataPanel_Apply;
 
 	private:
-		System::Void dataPanel_Pause_Clicked(System::Object^ sender, System::EventArgs^ e);
+		//System::Void dataPanel_Pause_Clicked(System::Object^ sender, System::EventArgs^ e);
 		System::Void dataPanel_Reset_Clicked(System::Object^ sender, System::EventArgs^ e);
 		System::Void dataPanel_Apply_Clicked(System::Object^ sender, System::EventArgs^ e);
 		/*	DATA PANEL END	*/
