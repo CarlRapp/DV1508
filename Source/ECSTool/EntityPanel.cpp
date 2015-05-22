@@ -16,10 +16,13 @@ void MainWindow::CreateEntityPanel()
 	this->entityPanel = (gcnew System::Windows::Forms::Panel());
 	this->entityPanel->SuspendLayout();
 
-	this->entityPanel->Location = System::Drawing::Point(13, 13);
+	this->entityPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+
+	this->entityPanel->Location = System::Drawing::Point(2, 2);
 	this->entityPanel->Name = L"EntityPanel";
-	this->entityPanel->AutoSize = true;
-	this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	//this->entityPanel->AutoSize = true;
+	//this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	this->entityPanel->Size = System::Drawing::Size(210, 260);
 	//this->entityPanel->BackColor = System::Drawing::Color::Aqua;
 	this->entityPanel->TabIndex = 0;
 

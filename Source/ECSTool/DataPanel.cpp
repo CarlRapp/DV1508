@@ -17,11 +17,14 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel = (gcnew System::Windows::Forms::Panel());
 	this->dataPanel->SuspendLayout();
 
+	this->dataPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+
 	//this->dataPanel->BackColor = System::Drawing::Color::Yellow;
-	this->dataPanel->Location = System::Drawing::Point(this->componentPanel->Location.X + this->componentPanel->Size.Width, this->entityPanel->Location.Y);
+	this->dataPanel->Location = System::Drawing::Point(this->componentPanel->Location.X + this->componentPanel->Size.Width-1, this->entityPanel->Location.Y);
 	this->dataPanel->Name = L"DataPanel";
-	this->dataPanel->AutoSize = true;
-	this->dataPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	//this->dataPanel->AutoSize = true;
+	//this->dataPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	this->dataPanel->Size = System::Drawing::Size(210, 260);
 	this->dataPanel->TabIndex = 0;
 
 	//	Create the list
@@ -114,7 +117,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 	{
 		std::string varName = iterator->second.GetName();
 
-		SDL_Log("offset: %d", iterator->second.GetOffset());
+		//SDL_Log("offset: %d", iterator->second.GetOffset());
 
 		ECSL::ComponentDataType dataType = component->GetDataTypes()->at(iterator->second.GetOffset());
 		std::string data;

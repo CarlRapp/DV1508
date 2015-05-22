@@ -16,11 +16,14 @@ void MainWindow::CreateComponentPanel()
 	this->componentPanel = (gcnew System::Windows::Forms::Panel());
 	this->componentPanel->SuspendLayout();
 
+	this->componentPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+
 	//this->componentPanel->BackColor = System::Drawing::Color::Green;
-	this->componentPanel->Location = System::Drawing::Point(this->entityPanel->Size.Width + 13, this->entityPanel->Location.Y);
+	this->componentPanel->Location = System::Drawing::Point(this->entityPanel->Size.Width + 1, this->entityPanel->Location.Y);
 	this->componentPanel->Name = L"ComponentPanel";
-	this->componentPanel->AutoSize = true;
-	this->componentPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	//this->componentPanel->AutoSize = true;
+	//this->componentPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	this->componentPanel->Size = System::Drawing::Size(210, 260);
 	this->componentPanel->TabIndex = 0;
 
 	//	Create the listbox object
