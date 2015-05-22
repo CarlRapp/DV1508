@@ -40,6 +40,7 @@
     <ClCompile Include="..\..\..\Source\ECSTool\EntityFilterPanel.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\EntityPanel.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\MainWindow.cpp" />
+    <ClCompile Include="..\..\..\Source\ECSTool\ToolPanel.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\WindowCreator.cpp" />
     <ClCompile Include="..\..\..\Source\ECSTool\WindowWrapper.cpp" />
   </ItemGroup>

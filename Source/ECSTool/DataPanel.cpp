@@ -70,12 +70,12 @@ void MainWindow::CreateDataPanel()
 	//BUTTONS >>
 
 	//	Create the pause button
-	this->dataPanel_Pause = (gcnew System::Windows::Forms::Button());
-	this->dataPanel_Pause->Name = L"PauseButton";
-	this->dataPanel_Pause->Text = L"Pause";
-	this->dataPanel_Pause->Size = System::Drawing::Size(55, 20);
-	this->dataPanel_Pause->Location = System::Drawing::Point(this->dataPanel_Table->Location.X + 0, this->dataPanel_Table->Size.Height + 34);
-	this->dataPanel_Pause->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Pause_Clicked);
+// 	this->dataPanel_Pause = (gcnew System::Windows::Forms::Button());
+// 	this->dataPanel_Pause->Name = L"PauseButton";
+// 	this->dataPanel_Pause->Text = L"Pause";
+// 	this->dataPanel_Pause->Size = System::Drawing::Size(55, 20);
+// 	this->dataPanel_Pause->Location = System::Drawing::Point(this->dataPanel_Table->Location.X + 0, this->dataPanel_Table->Size.Height + 34);
+// 	this->dataPanel_Pause->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Pause_Clicked);
 
 	//	Create the reset button
 	this->dataPanel_Reset = (gcnew System::Windows::Forms::Button());
@@ -118,7 +118,7 @@ void MainWindow::CreateDataPanel()
 
 	//	Hook up
 	this->dataPanel->Controls->Add(this->dataPanel_Table);
-	this->dataPanel->Controls->Add(this->dataPanel_Pause);
+	//this->dataPanel->Controls->Add(this->dataPanel_Pause);
 	this->dataPanel->Controls->Add(this->dataPanel_Reset);
 	this->dataPanel->Controls->Add(this->dataPanel_Apply);
 
@@ -279,10 +279,10 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 
 }
 
-System::Void MainWindow::dataPanel_Pause_Clicked(System::Object^ sender, System::EventArgs^ e)
-{
-	toggledPause = true;
-}
+// System::Void MainWindow::dataPanel_Pause_Clicked(System::Object^ sender, System::EventArgs^ e)
+// {
+// 	toggledPause = true;
+// }
 
 System::Void MainWindow::dataPanel_Reset_Clicked(System::Object^ sender, System::EventArgs^ e)
 {
