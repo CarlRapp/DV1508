@@ -190,16 +190,17 @@ System::Void MainWindow::entityPanel_EntityList_SelectedIndexChanged(System::Obj
 
 	unsigned int entityIndex = std::atoi(toString(entityPanel_EntityList->SelectedItem).c_str());
 	unsigned int listIndex = std::atoi(toString(entityPanel_EntityList->SelectedIndex).c_str());
+
 	
 
-	m_currentEntity = entityIndex;
-
-	if (m_world->HasComponent(m_currentEntity, "Render"))
-		m_graphics->SetInstanceIDToHighlight(*((int*)m_world->GetComponent(m_currentEntity, "Render", "ModelId")));
+	if (m_world->HasComponent(entityIndex, "Render"))
+		m_graphics->SetInstanceIDToHighlight(*((int*)m_world->GetComponent(entityIndex, "Render", "ModelId")));
 	else
 		m_graphics->SetInstanceIDToHighlight(-1);
 
 	UpdateComponentPanelList(entityIndex);
+
+	m_currentEntity = entityIndex;
 
 	entityPanel_EntityList->EndUpdate();
 }

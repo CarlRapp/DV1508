@@ -82,7 +82,7 @@ namespace ECSTool {
 	public:
 		void MainWindow::CreateEntityFilterPanel();
 		void MainWindow::PopulateEntityFilter();
-		void MainWindow::UpdateFilter(std::string _component, int _filterType);
+		void MainWindow::UpdateFilter(std::string _component, int _filterType, int _listIndex);
 
 	private:
 		System::Windows::Forms::Panel^		entityFilterPanel;

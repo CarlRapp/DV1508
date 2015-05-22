@@ -100,6 +100,7 @@ void MainWindow::CreateDataPanel()
 
 void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 {
+
 	this->dataPanel_Table->Controls->Clear();
 
 	if (_entityId == -1 || _currentComponent == -1)
