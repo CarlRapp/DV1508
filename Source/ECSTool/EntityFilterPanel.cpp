@@ -15,12 +15,15 @@ void MainWindow::CreateEntityFilterPanel()
 	this->entityFilterPanel = (gcnew System::Windows::Forms::Panel());
 	this->entityFilterPanel->SuspendLayout();
 
-	this->entityFilterPanel->Location = System::Drawing::Point(13, this->entityPanel->Size.Height + 13);
-	//this->entityFilterPanel->BackColor = System::Drawing::Color::Crimson;
+	this->entityFilterPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+
+	this->entityFilterPanel->Location = System::Drawing::Point(2, this->entityPanel->Size.Height + 1);
+	this->entityFilterPanel->BackColor = System::Drawing::Color::LightGray;
 	this->entityFilterPanel->Hide();
 	this->entityFilterPanel->Name = L"EntityFilterPanel";
-	this->entityFilterPanel->AutoSize = true;
-	this->entityFilterPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	//this->entityFilterPanel->AutoSize = true;
+	//this->entityFilterPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	this->entityFilterPanel->Size = System::Drawing::Size(210, 260);
 	this->entityFilterPanel->TabIndex = 0;
 
 	//	Create the list
@@ -44,7 +47,7 @@ void MainWindow::CreateEntityFilterPanel()
 	this->entityFilterPanel_Mandatory = (gcnew System::Windows::Forms::Button());
 	this->entityFilterPanel_Mandatory->Name = L"MandatoryButton";
 	this->entityFilterPanel_Mandatory->Text = L"Mandatory";
-	this->entityFilterPanel_Mandatory->Size = System::Drawing::Size(70, 20);
+	this->entityFilterPanel_Mandatory->Size = System::Drawing::Size(66, 20);
 	this->entityFilterPanel_Mandatory->Location = System::Drawing::Point(this->entityFilterPanel_List->Location.X, this->entityFilterPanel_List->Location.Y + this->entityFilterPanel_List->Size.Height + 4);
 	this->entityFilterPanel_Mandatory->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_filterButtons_Clicked);
 
@@ -52,23 +55,23 @@ void MainWindow::CreateEntityFilterPanel()
 	this->entityFilterPanel_RequiresOneOf->Name = L"RequiresOneOfButton";
 	this->entityFilterPanel_RequiresOneOf->Text = L"One of";
 	this->entityFilterPanel_RequiresOneOf->Size = this->entityFilterPanel_Mandatory->Size;
-	this->entityFilterPanel_RequiresOneOf->Location = System::Drawing::Point(this->entityFilterPanel_Mandatory->Location.X, this->entityFilterPanel_Mandatory->Location.Y + this->entityFilterPanel_Mandatory->Size.Height + 4);
+	this->entityFilterPanel_RequiresOneOf->Location = System::Drawing::Point(this->entityFilterPanel_Mandatory->Location.X + this->entityFilterPanel_Mandatory->Size.Width + 1, this->entityFilterPanel_Mandatory->Location.Y);
 	this->entityFilterPanel_RequiresOneOf->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_filterButtons_Clicked);
 
 	this->entityFilterPanel_Excluded = (gcnew System::Windows::Forms::Button());
 	this->entityFilterPanel_Excluded->Name = L"ExcludedButton";
 	this->entityFilterPanel_Excluded->Text = L"Excluded";
 	this->entityFilterPanel_Excluded->Size = this->entityFilterPanel_Mandatory->Size;
-	this->entityFilterPanel_Excluded->Location = System::Drawing::Point(this->entityFilterPanel_RequiresOneOf->Location.X, this->entityFilterPanel_RequiresOneOf->Location.Y + this->entityFilterPanel_RequiresOneOf->Size.Height + 4);
+	this->entityFilterPanel_Excluded->Location = System::Drawing::Point(this->entityFilterPanel_RequiresOneOf->Location.X + this->entityFilterPanel_RequiresOneOf->Size.Width + 1, this->entityFilterPanel_RequiresOneOf->Location.Y);
 	this->entityFilterPanel_Excluded->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_filterButtons_Clicked);
 
 	this->entityFilterPanel_RemoveFromFilter = (gcnew System::Windows::Forms::Button());
 	this->entityFilterPanel_RemoveFromFilter->Name = L"RemoveFromFilter";
 	this->entityFilterPanel_RemoveFromFilter->Text = L"Remove";
 	this->entityFilterPanel_RemoveFromFilter->Size = this->entityFilterPanel_RequiresOneOf->Size;
-	this->entityFilterPanel_RemoveFromFilter->Location = System::Drawing::Point(this->entityFilterPanel_Excluded->Location.X, this->entityFilterPanel_Excluded->Location.Y + this->entityFilterPanel_Excluded->Size.Height + 4);
+	this->entityFilterPanel_RemoveFromFilter->Location = System::Drawing::Point(this->entityFilterPanel_Mandatory->Location.X, this->entityFilterPanel_Mandatory->Location.Y + this->entityFilterPanel_Mandatory->Size.Height + 6);
 	this->entityFilterPanel_RemoveFromFilter->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_filterButtons_Clicked);
-	this->entityFilterPanel_RemoveFromFilter->Location = System::Drawing::Point(this->entityFilterPanel_List->Location.X + this->entityFilterPanel_List->Size.Width - this->entityFilterPanel_RemoveFromFilter->Size.Width, this->entityFilterPanel_RequiresOneOf->Location.Y);
+	//this->entityFilterPanel_RemoveFromFilter->Location = System::Drawing::Point(this->entityFilterPanel_List->Location.X + this->entityFilterPanel_List->Size.Width - this->entityFilterPanel_RemoveFromFilter->Size.Width, this->entityFilterPanel_RequiresOneOf->Location.Y);
 
 	//	Hook up
 	this->entityFilterPanel->Controls->Add(this->entityFilterPanel_List);

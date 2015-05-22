@@ -23,7 +23,7 @@ void MainWindow::CreateEntityPanel()
 	//this->entityPanel->AutoSize = true;
 	//this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
 	this->entityPanel->Size = System::Drawing::Size(210, 260);
-	//this->entityPanel->BackColor = System::Drawing::Color::Aqua;
+	this->entityPanel->BackColor = System::Drawing::Color::WhiteSmoke;
 	this->entityPanel->TabIndex = 0;
 
 	//	Create the listbox object

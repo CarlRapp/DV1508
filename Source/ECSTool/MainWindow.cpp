@@ -65,6 +65,8 @@ void MainWindow::InitializeTool()
 	this->CreateDataPanel();
 
 	this->TopMost = true;
+
+	this->BackColor = System::Drawing::Color::Gray;
 	//this->CreateCreateEntityPanel();
 	m_graphics->TogglePicking();
 }
