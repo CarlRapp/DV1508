@@ -28,7 +28,8 @@ namespace ECSTool {
 		}
 		void MainWindow::InitializeTool();
 		void MainWindow::SetWorld(ECSL::World* _world);
-		void MainWindow::Update(float _dt);
+		void MainWindow::Update(float _dt, bool paused);
+		bool MainWindow::HasToggledPause();
 		void MainWindow::SetGraphics(Renderer::GraphicsHigh* _graphics);
 
 		
@@ -60,11 +61,13 @@ namespace ECSTool {
 	
 	private: 
 
+		bool toggledPause;
+		bool paused;
+
 		/*	ENTITY PANEL START	*/
 	public:
 		void MainWindow::CreateEntityPanel();
 		void MainWindow::UpdateEntityPanelList();
-		void UpdatePicking();
 		void PickingOccured();
 
 	private:
@@ -82,7 +85,7 @@ namespace ECSTool {
 	public:
 		void MainWindow::CreateEntityFilterPanel();
 		void MainWindow::PopulateEntityFilter();
-		void MainWindow::UpdateFilter(std::string _component, int _filterType);
+		void MainWindow::UpdateFilter(std::string _component, int _filterType, int _listIndex);
 
 	private:
 		System::Windows::Forms::Panel^		entityFilterPanel;
@@ -151,6 +154,14 @@ namespace ECSTool {
 
 		System::Windows::Forms::TableLayoutPanel^	dataPanel_Table;
 
+		System::Windows::Forms::Button^		dataPanel_Pause;
+		System::Windows::Forms::Button^		dataPanel_Reset;
+		System::Windows::Forms::Button^		dataPanel_Apply;
+
+	private:
+		System::Void dataPanel_Pause_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void dataPanel_Reset_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void dataPanel_Apply_Clicked(System::Object^ sender, System::EventArgs^ e);
 		/*	DATA PANEL END	*/
 
 		/*	CREATE ENTITY PANEL START	*/

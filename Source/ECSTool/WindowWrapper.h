@@ -14,7 +14,8 @@ public:
 
 	void OpenWindow(ECSL::World* _world, Renderer::GraphicsHigh* _graphics);
 	void ChangeWorld(ECSL::World* _world, Renderer::GraphicsHigh* _graphics);
-	void Update(float _dt);
+	void Update(float _dt, bool _paused);
+	bool HasToggledPause();
 	void PickingOccured();
 
 private:

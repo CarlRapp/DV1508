@@ -30,10 +30,17 @@ void WindowWrapper::ChangeWorld(ECSL::World* _world, Renderer::GraphicsHigh* _gr
 	m_window->SetGraphics(_graphics);
 }
 
-void WindowWrapper::Update(float _dt)
+void WindowWrapper::Update(float _dt, bool _paused)
 {
 	if (m_isActive)
-		m_window->Update(_dt);
+		m_window->Update(_dt, _paused);
+}
+
+bool WindowWrapper::HasToggledPause()
+{
+	if (m_isActive)
+		return m_window->HasToggledPause();
+	return false;
 }
 
 void WindowWrapper::PickingOccured()

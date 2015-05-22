@@ -16,10 +16,13 @@ void MainWindow::CreateEntityPanel()
 	this->entityPanel = (gcnew System::Windows::Forms::Panel());
 	this->entityPanel->SuspendLayout();
 
-	this->entityPanel->Location = System::Drawing::Point(13, 13);
+	this->entityPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+
+	this->entityPanel->Location = System::Drawing::Point(2, 2);
 	this->entityPanel->Name = L"EntityPanel";
-	this->entityPanel->AutoSize = true;
-	this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	//this->entityPanel->AutoSize = true;
+	//this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
+	this->entityPanel->Size = System::Drawing::Size(210, 260);
 	//this->entityPanel->BackColor = System::Drawing::Color::Aqua;
 	this->entityPanel->TabIndex = 0;
 
@@ -121,46 +124,6 @@ void MainWindow::UpdateEntityPanelList()
 }
 #pragma endregion
 
-void MainWindow::UpdatePicking()
-{
-	unsigned int entityCount = m_world->GetEntityCount();
-	unsigned int componentCount = ECSL::BitSet::GetDataTypeCount(ECSL::ComponentTypeManager::GetInstance().GetComponentTypeCount());
-
-	bool entityFound = false;
-	int index = -1;
-	for (unsigned int n = 0; n < entityCount; ++n)
-	{
-		if (m_world->IsEntityAlive(n))
-		{
-			int modelInstanceBlaha = -1;
-
-			unsigned int modelId = ECSL::ComponentTypeManager::GetInstance().GetTableId("Render");
-			if (m_world->GetEntityBitset(n)[0] & ((ECSL::BitSet::DataType)1 << modelId))
-			{
-				modelInstanceBlaha = *((int*)m_world->GetComponent(n, "Render", "ModelId"));
-
-				if (modelInstanceBlaha == m_graphics->GetPickedInstanceID())
-				{
-					m_currentEntity = n;
-				}
-			}
-		}
-	}
-	int indexOf = -2;
-	try
-	{
-		indexOf = entityPanel_EntityList->Items->IndexOf(gcnew System::String(std::to_string(m_currentEntity).c_str()));
-		if (indexOf > -1)
-			entityPanel_EntityList->SelectedIndex = indexOf;
-	}
-	catch (System::Exception^ e)
-	{
-		SDL_Log("LOOL %d,%d", m_currentEntity,indexOf);
-	}
-
-	//int selectedEntity = System::Int32::Parse(((System::String^)this->entityPanel_EntityList->SelectedItem));
-}
-
 void MainWindow::entityPanel_filterButton_Clicked(System::Object^ sender, System::EventArgs^ e)
 {
 	if (this->entityFilterPanel->Visible)
@@ -211,16 +174,17 @@ System::Void MainWindow::entityPanel_EntityList_SelectedIndexChanged(System::Obj
 
 	unsigned int entityIndex = std::atoi(toString(entityPanel_EntityList->SelectedItem).c_str());
 	unsigned int listIndex = std::atoi(toString(entityPanel_EntityList->SelectedIndex).c_str());
+
 	
 
-	m_currentEntity = entityIndex;
-
-	if (m_world->HasComponent(m_currentEntity, "Render"))
-		m_graphics->SetInstanceIDToHighlight(*((int*)m_world->GetComponent(m_currentEntity, "Render", "ModelId")));
+	if (m_world->HasComponent(entityIndex, "Render"))
+		m_graphics->SetInstanceIDToHighlight(*((int*)m_world->GetComponent(entityIndex, "Render", "ModelId")));
 	else
 		m_graphics->SetInstanceIDToHighlight(-1);
 
 	UpdateComponentPanelList(entityIndex);
+
+	m_currentEntity = entityIndex;
 
 	entityPanel_EntityList->EndUpdate();
 }
