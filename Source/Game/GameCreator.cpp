@@ -48,7 +48,7 @@
 
 GameCreator::GameCreator() :
 m_graphics(0), m_input(0), m_clientWorld(0), m_serverWorld(0), m_clientWorldProfiler(0), m_serverWorldProfiler(0), m_console(0), m_remoteConsole(0), m_consoleManager(Console::ConsoleManager::GetInstance()), m_frameCounter(new Utility::FrameCounter()), m_running(true),
-m_graphicalSystems(std::vector<GraphicalSystem*>()), m_timeScale(1.0f)
+m_graphicalSystems(std::vector<GraphicalSystem*>()), m_timeScale(1.0f), m_paused(false)
 {
   
 }
@@ -631,29 +631,34 @@ void GameCreator::StartGame(int argc, char** argv)
 			break;
 		m_inputCounter.Tick();
 
-		m_serverWorldCounter.Reset();
-		/*	Update world (systems, entities, etc)	*/
-		
+		if (WindowCreator::HasToggledPause())
+			m_paused = !m_paused;
 
-		m_serverWorldProfiler->Begin();
-        if (m_serverWorld)
-           m_serverWorld->Update(dt);
-		m_serverWorldProfiler->End();
-		m_serverWorldProfiler->Update(dt);
-		m_serverWorldProfiler->Render();
+		if (!m_paused)
+		{
+			m_serverWorldCounter.Reset();
+			/*	Update world (systems, entities, etc)	*/
 
-		m_serverWorldCounter.Tick();
-        
-		m_clientWorldCounter.Reset();
+			m_serverWorldProfiler->Begin();
+			if (m_serverWorld)
+				m_serverWorld->Update(dt);
+			m_serverWorldProfiler->End();
+			m_serverWorldProfiler->Update(dt);
+			m_serverWorldProfiler->Render();
 
-		m_clientWorldProfiler->Begin();
-        if (m_clientWorld)
-            m_clientWorld->Update(dt);
-		m_clientWorldProfiler->End();
-		m_clientWorldProfiler->Update(dt);
-		m_clientWorldProfiler->Render();
-        
-		m_clientWorldCounter.Tick();
+			m_serverWorldCounter.Tick();
+
+			m_clientWorldCounter.Reset();
+
+			m_clientWorldProfiler->Begin();
+			if (m_clientWorld)
+				m_clientWorld->Update(dt);
+			m_clientWorldProfiler->End();
+			m_clientWorldProfiler->Update(dt);
+			m_clientWorldProfiler->Render();
+
+			m_clientWorldCounter.Tick();
+		}
 
 		m_luaGarbageCollectionCounter.Reset();
 		LuaEmbedder::CollectGarbageForDuration(0.1f * dt);
@@ -737,7 +742,7 @@ void GameCreator::StartGame(int argc, char** argv)
 		if (m_input->GetMouse()->GetButtonState(Input::MouseButton::LeftButton) == Input::InputState::PRESSED)
 			WindowCreator::PickingOccured();
 
-		WindowCreator::UpdateWindow(dt);
+		WindowCreator::UpdateWindow(dt, m_paused);
 
 
 		if (showDebugInfo)

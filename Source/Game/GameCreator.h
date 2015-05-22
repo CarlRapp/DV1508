@@ -115,6 +115,7 @@ private:
 	std::string					m_gameMode;
 
 	bool						m_running;
+	bool						m_paused;
 	unsigned	int				m_entityCount;
 	
 	Utility::FrameCounter m_inputCounter;

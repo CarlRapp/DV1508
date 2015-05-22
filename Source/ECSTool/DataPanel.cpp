@@ -64,6 +64,34 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel_Table->Padding = System::Windows::Forms::Padding(0, 0, 4, 0);
 	this->dataPanel_Table->AutoScroll = true; 
 
+	//BUTTONS >>
+
+	//	Create the pause button
+	this->dataPanel_Pause = (gcnew System::Windows::Forms::Button());
+	this->dataPanel_Pause->Name = L"PauseButton";
+	this->dataPanel_Pause->Text = L"Pause";
+	this->dataPanel_Pause->Size = System::Drawing::Size(55, 20);
+	this->dataPanel_Pause->Location = System::Drawing::Point(this->dataPanel_Table->Location.X + 0, this->dataPanel_Table->Size.Height + 34);
+	this->dataPanel_Pause->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Pause_Clicked);
+
+	//	Create the reset button
+	this->dataPanel_Reset = (gcnew System::Windows::Forms::Button());
+	this->dataPanel_Reset->Name = L"ResetButton";
+	this->dataPanel_Reset->Text = L"Reset";
+	this->dataPanel_Reset->Size = System::Drawing::Size(55, 20);
+	this->dataPanel_Reset->Location = System::Drawing::Point(this->dataPanel_Table->Location.X + this->dataPanel_Table->Size.Width / 2 - 27, this->dataPanel_Table->Size.Height + 34);
+	this->dataPanel_Reset->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Reset_Clicked);
+
+	//	Create the apply button
+	this->dataPanel_Apply = (gcnew System::Windows::Forms::Button());
+	this->dataPanel_Apply->Name = L"ApplyButton";
+	this->dataPanel_Apply->Text = L"Apply";
+	this->dataPanel_Apply->Size = System::Drawing::Size(55, 20);
+	this->dataPanel_Apply->Location = System::Drawing::Point(this->dataPanel_Table->Location.X + this->dataPanel_Table->Size.Width - 55, this->dataPanel_Table->Size.Height + 34);
+	this->dataPanel_Apply->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Apply_Clicked);
+
+	//BUTTONS <<
+
 	//LABELS >>
 	this->entityListLabel = (gcnew System::Windows::Forms::Label());
 	this->entityPanel->Controls->Add(this->entityListLabel);
@@ -83,6 +111,9 @@ void MainWindow::CreateDataPanel()
 
 	//	Hook up
 	this->dataPanel->Controls->Add(this->dataPanel_Table);
+	this->dataPanel->Controls->Add(this->dataPanel_Pause);
+	this->dataPanel->Controls->Add(this->dataPanel_Reset);
+	this->dataPanel->Controls->Add(this->dataPanel_Apply);
 
 	this->Controls->Add(this->dataPanel);
 
@@ -113,8 +144,6 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 	for (; iterator != variables->end(); ++iterator)
 	{
 		std::string varName = iterator->second.GetName();
-
-		SDL_Log("offset: %d", iterator->second.GetOffset());
 
 		ECSL::ComponentDataType dataType = component->GetDataTypes()->at(iterator->second.GetOffset());
 		std::string data;
@@ -240,6 +269,106 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 
 	this->dataPanel_Table->Update();
 
+}
+
+System::Void MainWindow::dataPanel_Pause_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	toggledPause = true;
+}
+
+System::Void MainWindow::dataPanel_Reset_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	InternalUpdate(0.0f);
+}
+
+System::Void MainWindow::dataPanel_Apply_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	if (paused && m_currentEntity != -1 && m_currentComponent != -1)
+	{
+		auto component = ECSL::ComponentTypeManager::GetInstance().GetComponentType(m_currentComponent);
+		auto variables = component->GetVariables();
+
+
+		int row = 0;
+		std::string componentName = component->GetName();
+		auto iterator = variables->begin();
+		for (; iterator != variables->end(); ++iterator)
+		{
+			std::string varName = iterator->second.GetName();
+
+			ECSL::ComponentDataType dataType = component->GetDataTypes()->at(iterator->second.GetOffset());
+			std::string data;
+
+			enum Type
+			{
+				None, Textbox, Checkbox, Numeric, Decimal
+			};
+
+			Type type = None;
+
+			System::Windows::Forms::Control^ component = this->dataPanel_Table->GetControlFromPosition(1, row);
+			row++;
+			
+			switch (dataType)
+			{
+
+				case ECSL::ComponentDataType::INT:
+				case ECSL::ComponentDataType::REFERENCE:
+				{
+					int data = (int)((System::Windows::Forms::NumericUpDown^)component)->Value;
+					m_world->SetComponent(m_currentEntity, componentName, varName, &data);
+					break;
+				}
+				
+				case ECSL::ComponentDataType::FLOAT:
+				{
+					float data = (float)((System::Windows::Forms::NumericUpDown^)component)->Value;
+					m_world->SetComponent(m_currentEntity, componentName, varName, &data);
+					break;
+				}
+
+				case ECSL::ComponentDataType::TEXT:
+				{
+					std::string str = toString(((System::Windows::Forms::TextBox^)component)->Text);
+					m_world->SetComponent(m_currentEntity, componentName, varName, (void*)str.c_str());
+					break;
+				}
+
+				case ECSL::ComponentDataType::BOOL:
+				{
+					bool checked = ((System::Windows::Forms::CheckBox^)component)->Checked;
+					m_world->SetComponent(m_currentEntity, componentName, varName, &checked);
+					break;
+				}
+
+				case ECSL::ComponentDataType::MATRIX:
+				{
+					//Don't update.
+					break;
+				}
+
+				case ECSL::ComponentDataType::INT64:
+				{
+					Uint64 data = System::Decimal::ToInt64(((System::Windows::Forms::NumericUpDown^)component)->Value);
+					m_world->SetComponent(m_currentEntity, componentName, varName, &data);
+					break;
+				}
+
+				case ECSL::ComponentDataType::STRING:
+				{
+					std::string str = toString(((System::Windows::Forms::TextBox^)component)->Text);
+					m_world->SetString(m_currentEntity, componentName, iterator->second.GetOffset(), str.c_str());
+					break;
+				}
+
+				default:
+				{
+					break;
+				}
+
+			}
+		}
+	}
 }
 
 //#pragma region Selected Index
