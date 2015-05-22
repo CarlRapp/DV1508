@@ -66,6 +66,8 @@ void MainWindow::InitializeTool()
 
 	this->CreateDataPanel();
 
+	this->CreateToolPanel();
+
 	this->TopMost = true;
 	//this->CreateCreateEntityPanel();
 	m_graphics->TogglePicking();

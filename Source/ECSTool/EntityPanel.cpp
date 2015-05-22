@@ -48,11 +48,11 @@ void MainWindow::CreateEntityPanel()
 	this->entityPanel_NewEntityButton->Location = System::Drawing::Point(entityPanel_FilterButton->Location.X + entityPanel_FilterButton->Size.Width + 3, entityPanel_EntityList->Location.Y + entityPanel_EntityList->Size.Height + 8);
 	this->entityPanel_NewEntityButton->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_newEntityButtons_Clicked);
 
-
 	//	Hook up
 	this->entityPanel->Controls->Add(this->entityPanel_EntityList);
 	this->entityPanel->Controls->Add(this->entityPanel_FilterButton);
 	this->entityPanel->Controls->Add(this->entityPanel_NewEntityButton);
+	
 
 	this->Controls->Add(this->entityPanel);
 
