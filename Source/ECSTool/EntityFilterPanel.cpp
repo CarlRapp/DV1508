@@ -68,6 +68,7 @@ void MainWindow::CreateEntityFilterPanel()
 	this->entityFilterPanel_RemoveFromFilter->Size = this->entityFilterPanel_RequiresOneOf->Size;
 	this->entityFilterPanel_RemoveFromFilter->Location = System::Drawing::Point(this->entityFilterPanel_Excluded->Location.X, this->entityFilterPanel_Excluded->Location.Y + this->entityFilterPanel_Excluded->Size.Height + 4);
 	this->entityFilterPanel_RemoveFromFilter->Click += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_filterButtons_Clicked);
+	this->entityFilterPanel_RemoveFromFilter->Location = System::Drawing::Point(this->entityFilterPanel_List->Location.X + this->entityFilterPanel_List->Size.Width - this->entityFilterPanel_RemoveFromFilter->Size.Width, this->entityFilterPanel_RequiresOneOf->Location.Y);
 
 	//	Hook up
 	this->entityFilterPanel->Controls->Add(this->entityFilterPanel_List);
