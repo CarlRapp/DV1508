@@ -82,7 +82,7 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel_Reset->Name = L"ResetButton";
 	this->dataPanel_Reset->Text = L"Reset";
 	this->dataPanel_Reset->Size = System::Drawing::Size(55, 20);
-	this->dataPanel_Reset->Location = System::Drawing::Point(this->dataPanel_Table->Location.X + this->dataPanel_Table->Size.Width / 2 - 27, this->dataPanel_Table->Size.Height + 34);
+	this->dataPanel_Reset->Location = System::Drawing::Point(this->dataPanel_Table->Location.X, this->dataPanel_Table->Size.Height + 34);
 	this->dataPanel_Reset->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Reset_Clicked);
 
 	//	Create the apply button
