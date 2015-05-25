@@ -64,8 +64,9 @@ bool MainWindow::OneTickUpdate()
 {
 	bool result = oneTickUpdate;
 	oneTickUpdate = false;
+
 	if (result)
-		SDL_Log("ASDASD");
+		m_forceUpdate = true;
 	return result;
 }
 

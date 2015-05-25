@@ -64,6 +64,7 @@ namespace ECSTool {
 		bool toggledPause;
 		bool paused;
 		bool oneTickUpdate;
+		bool oneTickUpdated;
 
 		/*	ENTITY PANEL START	*/
 	public:
