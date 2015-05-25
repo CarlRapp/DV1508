@@ -138,6 +138,8 @@ void MainWindow::CreateDataPanel()
 
 void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 {
+	dataPanel_Apply->Enabled = paused;
+	dataPanel_Reset->Enabled = paused;
 
 	this->dataPanel_Table->Controls->Clear();
 
@@ -257,7 +259,8 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 			data = "";
 			break;
 		}
-
+		component->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Variable_Clicked);
+		//component->Enabled = paused;
 
 		System::Windows::Forms::Label^ lable = gcnew System::Windows::Forms::Label();
 		lable->Text = gcnew System::String(varName.c_str());
@@ -377,6 +380,12 @@ System::Void MainWindow::dataPanel_Apply_Clicked(System::Object^ sender, System:
 			}
 		}
 	}
+}
+
+System::Void MainWindow::dataPanel_Variable_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	if (!paused)
+		toggledPause = true;
 }
 
 //#pragma region Selected Index

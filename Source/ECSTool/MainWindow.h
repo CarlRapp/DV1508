@@ -162,6 +162,8 @@ namespace ECSTool {
 		//System::Void dataPanel_Pause_Clicked(System::Object^ sender, System::EventArgs^ e);
 		System::Void dataPanel_Reset_Clicked(System::Object^ sender, System::EventArgs^ e);
 		System::Void dataPanel_Apply_Clicked(System::Object^ sender, System::EventArgs^ e);
+		System::Void dataPanel_Variable_Clicked(System::Object^ sender, System::EventArgs^ e);
+		
 		/*	DATA PANEL END	*/
 
 		/*	CREATE ENTITY PANEL START	*/
