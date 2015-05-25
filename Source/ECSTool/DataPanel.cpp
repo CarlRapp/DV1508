@@ -38,16 +38,17 @@ void MainWindow::CreateDataPanel()
 		40)));
 	this->dataPanel_Table->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 		60)));
-	this->dataPanel_Table->Location = System::Drawing::Point(4, this->entityPanel_EntityList->Location.Y);;
+	this->dataPanel_Table->Location = System::Drawing::Point(4, this->entityPanel_EntityList->Location.Y);
 	this->dataPanel_Table->Name = L"DataTable";
 	this->dataPanel_Table->RowCount = 0;
 	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
 	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
-	this->dataPanel_Table->Size = this->entityPanel_EntityList->Size;
+	this->dataPanel_Table->Size = System::Drawing::Size(200, 199);
 	this->dataPanel_Table->TabIndex = 0;
 	//this->dataPanel_Table->VerticalScroll->Maximum = 100000;
 	this->dataPanel_Table->Padding = System::Windows::Forms::Padding(0, 0, 4, 0);
 	this->dataPanel_Table->AutoScroll = true; 
+	this->dataPanel_Table->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
 
 	//BUTTONS >>
 
