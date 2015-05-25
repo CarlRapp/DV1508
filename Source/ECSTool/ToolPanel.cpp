@@ -29,6 +29,7 @@ void MainWindow::CreateToolPanel()
 	this->togglePickingButton->Size = System::Drawing::Size(90, 20);
 	this->togglePickingButton->Location = System::Drawing::Point(50, 0);
 	this->togglePickingButton->Click += gcnew System::EventHandler(this, &MainWindow::TogglePicking_Clicked);
+	this->togglePickingButton->Checked = true;
 	this->toolPanel->Controls->Add(this->togglePickingButton);
 
 	this->togglePauseButton = (gcnew System::Windows::Forms::CheckBox());
@@ -58,8 +59,6 @@ void MainWindow::CreateToolPanel()
 
 	this->dataPanel->ResumeLayout(true);
 	this->ResumeLayout(true);
-
-	m_graphics->TogglePicking();
 }
 
 void MainWindow::TogglePicking_Clicked(System::Object^ sender, System::EventArgs^ e)
@@ -70,6 +69,7 @@ void MainWindow::TogglePicking_Clicked(System::Object^ sender, System::EventArgs
 void MainWindow::TogglePause_Clicked(System::Object^ sender, System::EventArgs^ e)
 {
 	toggledPause = true;
+	this->togglePauseButton->Checked = paused;
 	//PAUSE GAME
 }
 

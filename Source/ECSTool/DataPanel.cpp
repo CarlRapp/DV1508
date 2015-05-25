@@ -27,24 +27,6 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel->Size = System::Drawing::Size(210, 260);
 	this->dataPanel->TabIndex = 0;
 
-	//	Create the list
-	this->dataPanel_List = (gcnew System::Windows::Forms::ListView());
-	this->dataPanel_List->BackColor = System::Drawing::Color::White;
-	this->dataPanel_List->Name = L"DataList";
-	this->dataPanel_List->Size = this->entityPanel_EntityList->Size;
-	this->dataPanel_List->Location = System::Drawing::Point(this->entityPanel_EntityList->Location.X, this->entityPanel_EntityList->Location.Y);
-	//this->dataPanel_List->SmallImageList = this->Tool_Icons;
-	this->dataPanel_List->TabIndex = 0;
-	this->dataPanel_List->UseCompatibleStateImageBehavior = false;
-	this->dataPanel_List->View = System::Windows::Forms::View::Details;
-	this->dataPanel_List->Columns->Clear();
-	this->dataPanel_List->Columns->Add(L"Variable");
-	this->dataPanel_List->Columns->Add(L"Data");
-	this->dataPanel_List->AutoResizeColumns(ColumnHeaderAutoResizeStyle::HeaderSize);
-	this->dataPanel_List->HeaderStyle = Windows::Forms::ColumnHeaderStyle::None;
-
-	this->dataPanel_List->MultiSelect = false;
-	//this->dataPanel_List->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_List_SelectedIndexChanged);
 
 	//	Hook up
 	//this->dataPanel->Controls->Add(this->dataPanel_List);
@@ -56,16 +38,17 @@ void MainWindow::CreateDataPanel()
 		40)));
 	this->dataPanel_Table->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 		60)));
-	this->dataPanel_Table->Location = System::Drawing::Point(4, this->dataPanel_List->Location.Y );;
+	this->dataPanel_Table->Location = System::Drawing::Point(4, this->entityPanel_EntityList->Location.Y);
 	this->dataPanel_Table->Name = L"DataTable";
 	this->dataPanel_Table->RowCount = 0;
+	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
 	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
-	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
-	this->dataPanel_Table->Size = this->entityPanel_EntityList->Size;
+	this->dataPanel_Table->Size = System::Drawing::Size(200, 199);
 	this->dataPanel_Table->TabIndex = 0;
 	//this->dataPanel_Table->VerticalScroll->Maximum = 100000;
 	this->dataPanel_Table->Padding = System::Windows::Forms::Padding(0, 0, 4, 0);
 	this->dataPanel_Table->AutoScroll = true; 
+	this->dataPanel_Table->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
 
 	//BUTTONS >>
 
@@ -82,7 +65,7 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel_Reset->Name = L"ResetButton";
 	this->dataPanel_Reset->Text = L"Reset";
 	this->dataPanel_Reset->Size = System::Drawing::Size(55, 20);
-	this->dataPanel_Reset->Location = System::Drawing::Point(this->dataPanel_Table->Location.X + this->dataPanel_Table->Size.Width / 2 - 27, this->dataPanel_Table->Size.Height + 34);
+	this->dataPanel_Reset->Location = System::Drawing::Point(this->dataPanel_Table->Location.X, this->dataPanel_Table->Size.Height + 34);
 	this->dataPanel_Reset->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Reset_Clicked);
 
 	//	Create the apply button
@@ -125,6 +108,8 @@ void MainWindow::CreateDataPanel()
 
 void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 {
+	dataPanel_Apply->Enabled = paused;
+	dataPanel_Reset->Enabled = paused;
 
 	this->dataPanel_Table->Controls->Clear();
 
@@ -198,6 +183,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		{
 			System::Windows::Forms::Label^ temp = gcnew System::Windows::Forms::Label();
 			temp->Text = gcnew System::String(data.c_str());
+			temp->Margin = System::Windows::Forms::Padding(0, 7, 0, 0);
 			temp->AutoEllipsis = true;
 
 			component = temp;
@@ -206,8 +192,9 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		case Textbox:
 		{
 			System::Windows::Forms::TextBox^ temp = gcnew System::Windows::Forms::TextBox();
+			SDL_Log("Textbox: %d, %d", temp->Size.Width, temp->Size.Height);
 			temp->Text = gcnew System::String(data.c_str());
-
+			temp->Size = System::Drawing::Size(120, 20);
 			component = temp;
 			break;
 		}
@@ -244,10 +231,12 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 			data = "";
 			break;
 		}
-
+		component->Click += gcnew System::EventHandler(this, &MainWindow::dataPanel_Variable_Clicked);
+		//component->Enabled = paused;
 
 		System::Windows::Forms::Label^ lable = gcnew System::Windows::Forms::Label();
 		lable->Text = gcnew System::String(varName.c_str());
+		lable->Margin = System::Windows::Forms::Padding(0,7,0,0);
 		lable->AutoEllipsis = true;
 		
 		System::Windows::Forms::ToolTip^ tooltip = gcnew System::Windows::Forms::ToolTip();
@@ -258,6 +247,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		tooltip->SetToolTip(lable, gcnew System::String(varName.c_str()));
 
 		//System::Windows::Forms::RowStyle^ row = gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25);
+		this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
 		this->dataPanel_Table->Controls->Add(lable);
 		this->dataPanel_Table->Controls->Add(component);
 	}
@@ -364,6 +354,12 @@ System::Void MainWindow::dataPanel_Apply_Clicked(System::Object^ sender, System:
 			}
 		}
 	}
+}
+
+System::Void MainWindow::dataPanel_Variable_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	if (!paused)
+		toggledPause = true;
 }
 
 //#pragma region Selected Index

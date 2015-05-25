@@ -27,6 +27,18 @@ void MainWindow::Update(float _dt, bool _paused)
 {
 	m_refreshTimer += _dt;
 
+	
+	if (paused != _paused)
+	{
+		paused = _paused;
+		this->togglePauseButton->Checked = paused;
+		m_forceUpdate = true;
+		//if (paused)
+		//	dataPanel_Pause->Text = "Unpause";
+		//else
+		//	dataPanel_Pause->Text = "Pause";
+	}
+
 	if (m_forceUpdate)
 	{
 		m_forceUpdate = false;
@@ -37,14 +49,6 @@ void MainWindow::Update(float _dt, bool _paused)
 		m_refreshTimer = 0;
 		//	Call internal update here
 		InternalUpdate(_dt);
-	}
-	if (paused != _paused)
-	{
-		paused = _paused;
-		//if (paused)
-		//	dataPanel_Pause->Text = "Unpause";
-		//else
-		//	dataPanel_Pause->Text = "Pause";
 	}
 
 }
@@ -97,7 +101,7 @@ void MainWindow::InitializeTool()
 	this->TopMost = true;
 
 	this->toggledPause = false;
-	paused = false;
+	this->paused = false;
 
 	this->BackColor = System::Drawing::Color::Gray;
 
