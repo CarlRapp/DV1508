@@ -386,6 +386,14 @@ void MainWindow::CreateEntityPanel_PopularLabel_MouseClick(System::Object^ sende
 	listItem->Name = gcnew System::String(label->Name);
 	this->createEntityAddedComponents_List->Items->Add(listItem);
 
+	for (int i = 0; i < this->createEntityComponents_List->Items->Count; ++i)
+	{
+		if (this->createEntityComponents_List->Items[i]->Name == listItem->Name)
+		{
+			this->createEntityComponents_List->Items->RemoveAt(i);
+		}
+	}
+
 	label->Visible = false;
 	label->Enabled = false;
 }
