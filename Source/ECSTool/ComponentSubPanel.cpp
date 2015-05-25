@@ -17,7 +17,7 @@ void MainWindow::CreateComponentSubPanel()
 
 	this->addComponentPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 
-	this->addComponentPanel->Location = System::Drawing::Point(this->componentPanel->Location.X, this->componentPanel->Size.Height + 1);
+	this->addComponentPanel->Location = System::Drawing::Point(this->componentPanel->Location.X, this->componentPanel->Location.Y + this->componentPanel->Size.Height);
 	this->addComponentPanel->BackColor = System::Drawing::Color::LightGray;
 	this->addComponentPanel->Hide();
 	this->addComponentPanel->Name = L"ComponentSubPanel";

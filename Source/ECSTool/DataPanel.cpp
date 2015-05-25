@@ -96,24 +96,11 @@ void MainWindow::CreateDataPanel()
 	//BUTTONS <<
 
 	//LABELS >>
-	this->entityListLabel = (gcnew System::Windows::Forms::Label());
-	this->entityPanel->Controls->Add(this->entityListLabel);
-	this->entityListLabel->Text = L"Entity List";
-	this->entityListLabel->Location = System::Drawing::Point(0, 0);
-	this->entityListLabel->Font = (gcnew System::Drawing::Font("Microsoft Sans Serif", 10.0f, System::Drawing::FontStyle::Bold));
-
-	this->componentListLabel = (gcnew System::Windows::Forms::Label());
-	this->componentPanel->Controls->Add(this->componentListLabel);
-	this->componentListLabel->Text = L"Component List";
-	this->componentListLabel->Location = System::Drawing::Point(0, 0);
-	this->componentListLabel->Font = (gcnew System::Drawing::Font("Microsoft Sans Serif", 10.0f, System::Drawing::FontStyle::Bold));
-	this->componentListLabel->Width = 180;
-
 	this->dataListLabel = (gcnew System::Windows::Forms::Label());
 	this->dataPanel->Controls->Add(this->dataListLabel);
-	this->dataListLabel->Text = L"Data List";
-	this->dataListLabel->Location = System::Drawing::Point(0, 0);
-	this->dataListLabel->Font = (gcnew System::Drawing::Font("Microsoft Sans Serif", 10.0f, System::Drawing::FontStyle::Bold));
+	this->dataListLabel->Text = L"Data";
+	this->dataListLabel->Location = System::Drawing::Point(0, 2);
+	this->dataListLabel->Font = (gcnew System::Drawing::Font("Microsoft Sans Serif", 12.0f, System::Drawing::FontStyle::Bold));
 	//LABELS <<
 
 	//	Hook up

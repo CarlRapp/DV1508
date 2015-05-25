@@ -59,6 +59,13 @@ void MainWindow::CreateComponentPanel()
 	this->componentPanel->Controls->Add(this->componentPanel_RemoveComponentButton);
 	this->componentPanel->Controls->Add(this->componentPanel_AddComponentButton);
 
+	this->componentListLabel = (gcnew System::Windows::Forms::Label());
+	this->componentPanel->Controls->Add(this->componentListLabel);
+	this->componentListLabel->Text = L"Components";
+	this->componentListLabel->Location = System::Drawing::Point(0, 2);
+	this->componentListLabel->Font = (gcnew System::Drawing::Font("Microsoft Sans Serif", 12.0f, System::Drawing::FontStyle::Bold));
+	this->componentListLabel->Width = 180;
+
 	this->Controls->Add(this->componentPanel);
 
 	this->componentPanel->ResumeLayout(true);

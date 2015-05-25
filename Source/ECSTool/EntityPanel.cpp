@@ -18,7 +18,7 @@ void MainWindow::CreateEntityPanel()
 
 	this->entityPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 
-	this->entityPanel->Location = System::Drawing::Point(2, 2);
+	this->entityPanel->Location = System::Drawing::Point(3, 24);
 	this->entityPanel->Name = L"EntityPanel";
 	//this->entityPanel->AutoSize = true;
 	//this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
@@ -55,6 +55,13 @@ void MainWindow::CreateEntityPanel()
 	this->entityPanel->Controls->Add(this->entityPanel_EntityList);
 	this->entityPanel->Controls->Add(this->entityPanel_FilterButton);
 	this->entityPanel->Controls->Add(this->entityPanel_NewEntityButton);
+
+	// Label
+	this->entityListLabel = (gcnew System::Windows::Forms::Label());
+	this->entityPanel->Controls->Add(this->entityListLabel);
+	this->entityListLabel->Text = L"Entities";
+	this->entityListLabel->Location = System::Drawing::Point(0, 2);
+	this->entityListLabel->Font = (gcnew System::Drawing::Font("Microsoft Sans Serif", 12.0f, System::Drawing::FontStyle::Bold));
 	
 
 	this->Controls->Add(this->entityPanel);
