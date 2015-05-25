@@ -16,18 +16,18 @@ void MainWindow::CreateToolPanel()
 	this->toolPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 
 	this->toolPanel->BackColor = System::Drawing::Color::WhiteSmoke;
-	this->toolPanel->Location = System::Drawing::Point(this->dataPanel->Location.X + this->dataPanel->Size.Width, this->entityPanel->Location.Y);
+	this->toolPanel->Location = System::Drawing::Point(3, 3);
 	this->toolPanel->Name = L"ToolPanel";
 	//this->toolPanel->AutoSize = true;
 	//this->toolPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
-	this->toolPanel->Size = System::Drawing::Size(110, 70);
+	this->toolPanel->Size = System::Drawing::Size(627, 20);
 	this->toolPanel->TabIndex = 0;
 
 	this->togglePickingButton = (gcnew System::Windows::Forms::CheckBox());
 	this->togglePickingButton->Name = L"PickingButton";
 	this->togglePickingButton->Text = L"3D Picking";
 	this->togglePickingButton->Size = System::Drawing::Size(130, 20);
-	this->togglePickingButton->Location = System::Drawing::Point(this->entityPanel_EntityList->Location.X, this->entityPanel_EntityList->Location.Y);
+	this->togglePickingButton->Location = System::Drawing::Point(270, 0);
 	this->togglePickingButton->Click += gcnew System::EventHandler(this, &MainWindow::TogglePicking_Clicked);
 	this->toolPanel->Controls->Add(this->togglePickingButton);
 
@@ -35,7 +35,7 @@ void MainWindow::CreateToolPanel()
 	this->togglePauseButton->Name = L"PickingButton";
 	this->togglePauseButton->Text = L"Pause";
 	this->togglePauseButton->Size = System::Drawing::Size(130, 20);
-	this->togglePauseButton->Location = System::Drawing::Point(this->entityPanel_EntityList->Location.X, this->entityPanel_EntityList->Location.Y + this->togglePickingButton->Size.Height);
+	this->togglePauseButton->Location = System::Drawing::Point(550, 0);
 	this->togglePauseButton->Click += gcnew System::EventHandler(this, &MainWindow::TogglePause_Clicked);
 	this->toolPanel->Controls->Add(this->togglePauseButton);
 

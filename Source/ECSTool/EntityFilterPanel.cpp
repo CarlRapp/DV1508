@@ -17,7 +17,7 @@ void MainWindow::CreateEntityFilterPanel()
 
 	this->entityFilterPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 
-	this->entityFilterPanel->Location = System::Drawing::Point(2, this->entityPanel->Size.Height + 1);
+	this->entityFilterPanel->Location = System::Drawing::Point(this->entityPanel->Location.X, this->entityPanel->Location.Y + this->entityPanel->Size.Height);
 	this->entityFilterPanel->BackColor = System::Drawing::Color::LightGray;
 	this->entityFilterPanel->Hide();
 	this->entityFilterPanel->Name = L"EntityFilterPanel";
