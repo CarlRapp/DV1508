@@ -200,6 +200,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		{
 			System::Windows::Forms::Label^ temp = gcnew System::Windows::Forms::Label();
 			temp->Text = gcnew System::String(data.c_str());
+			temp->Margin = System::Windows::Forms::Padding(0, 7, 0, 0);
 			temp->AutoEllipsis = true;
 
 			component = temp;
