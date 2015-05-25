@@ -192,8 +192,9 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		case Textbox:
 		{
 			System::Windows::Forms::TextBox^ temp = gcnew System::Windows::Forms::TextBox();
+			SDL_Log("Textbox: %d, %d", temp->Size.Width, temp->Size.Height);
 			temp->Text = gcnew System::String(data.c_str());
-
+			temp->Size = System::Drawing::Size(120, 20);
 			component = temp;
 			break;
 		}
