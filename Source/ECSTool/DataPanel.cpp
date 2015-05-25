@@ -27,24 +27,6 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel->Size = System::Drawing::Size(210, 260);
 	this->dataPanel->TabIndex = 0;
 
-	//	Create the list
-	this->dataPanel_List = (gcnew System::Windows::Forms::ListView());
-	this->dataPanel_List->BackColor = System::Drawing::Color::White;
-	this->dataPanel_List->Name = L"DataList";
-	this->dataPanel_List->Size = this->entityPanel_EntityList->Size;
-	this->dataPanel_List->Location = System::Drawing::Point(this->entityPanel_EntityList->Location.X, this->entityPanel_EntityList->Location.Y);
-	//this->dataPanel_List->SmallImageList = this->Tool_Icons;
-	this->dataPanel_List->TabIndex = 0;
-	this->dataPanel_List->UseCompatibleStateImageBehavior = false;
-	this->dataPanel_List->View = System::Windows::Forms::View::Details;
-	this->dataPanel_List->Columns->Clear();
-	this->dataPanel_List->Columns->Add(L"Variable");
-	this->dataPanel_List->Columns->Add(L"Data");
-	this->dataPanel_List->AutoResizeColumns(ColumnHeaderAutoResizeStyle::HeaderSize);
-	this->dataPanel_List->HeaderStyle = Windows::Forms::ColumnHeaderStyle::None;
-
-	this->dataPanel_List->MultiSelect = false;
-	//this->dataPanel_List->SelectedIndexChanged += gcnew System::EventHandler(this, &MainWindow::entityFilterPanel_List_SelectedIndexChanged);
 
 	//	Hook up
 	//this->dataPanel->Controls->Add(this->dataPanel_List);
@@ -56,7 +38,7 @@ void MainWindow::CreateDataPanel()
 		40)));
 	this->dataPanel_Table->ColumnStyles->Add((gcnew System::Windows::Forms::ColumnStyle(System::Windows::Forms::SizeType::Percent,
 		60)));
-	this->dataPanel_Table->Location = System::Drawing::Point(4, this->dataPanel_List->Location.Y );;
+	this->dataPanel_Table->Location = System::Drawing::Point(4, this->entityPanel_EntityList->Location.Y);;
 	this->dataPanel_Table->Name = L"DataTable";
 	this->dataPanel_Table->RowCount = 0;
 	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
