@@ -37,14 +37,14 @@ void MainWindow::Update(float _dt, bool _paused)
 		//	Call internal update here
 		InternalUpdate(_dt);
 	}
-// 	if (paused != _paused)
-// 	{
-// 		paused = _paused;
-// 		if (paused)
-// 			dataPanel_Pause->Text = "Unpause";
-// 		else
-// 			dataPanel_Pause->Text = "Pause";
-// 	}
+	if (paused != _paused)
+	{
+		paused = _paused;
+		//if (paused)
+		//	dataPanel_Pause->Text = "Unpause";
+		//else
+		//	dataPanel_Pause->Text = "Pause";
+	}
 
 }
 
