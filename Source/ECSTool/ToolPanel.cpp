@@ -26,8 +26,8 @@ void MainWindow::CreateToolPanel()
 	this->togglePickingButton = (gcnew System::Windows::Forms::CheckBox());
 	this->togglePickingButton->Name = L"PickingButton";
 	this->togglePickingButton->Text = L"3D Picking";
-	this->togglePickingButton->Size = System::Drawing::Size(130, 20);
-	this->togglePickingButton->Location = System::Drawing::Point(270, 0);
+	this->togglePickingButton->Size = System::Drawing::Size(90, 20);
+	this->togglePickingButton->Location = System::Drawing::Point(50, 0);
 	this->togglePickingButton->Click += gcnew System::EventHandler(this, &MainWindow::TogglePicking_Clicked);
 	this->toolPanel->Controls->Add(this->togglePickingButton);
 
@@ -35,13 +35,13 @@ void MainWindow::CreateToolPanel()
 	this->togglePauseButton->Name = L"PickingButton";
 	this->togglePauseButton->Text = L"Pause";
 	this->togglePauseButton->Size = System::Drawing::Size(130, 20);
-	this->togglePauseButton->Location = System::Drawing::Point(550, 0);
+	this->togglePauseButton->Location = System::Drawing::Point(togglePickingButton->Location.X + togglePickingButton->Size.Width, 0);
 	this->togglePauseButton->Click += gcnew System::EventHandler(this, &MainWindow::TogglePause_Clicked);
 	this->toolPanel->Controls->Add(this->togglePauseButton);
 
 	this->toolLabel = (gcnew System::Windows::Forms::Label());
 	this->toolPanel->Controls->Add(this->toolLabel);
-	this->toolLabel->Text = L"Tools";
+	this->toolLabel->Text = L"Tools:";
 	this->toolLabel->Location = System::Drawing::Point(0, 0);
 	this->toolLabel->Font = (gcnew System::Drawing::Font("Microsoft Sans Serif", 10.0f, System::Drawing::FontStyle::Bold));
 
