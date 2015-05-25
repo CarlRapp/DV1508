@@ -59,7 +59,7 @@ void MainWindow::CreateDataPanel()
 	this->dataPanel_Table->Location = System::Drawing::Point(4, this->dataPanel_List->Location.Y );;
 	this->dataPanel_Table->Name = L"DataTable";
 	this->dataPanel_Table->RowCount = 0;
-	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
+	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 20)));
 	//this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Percent, 50)));
 	this->dataPanel_Table->Size = this->entityPanel_EntityList->Size;
 	this->dataPanel_Table->TabIndex = 0;
@@ -264,6 +264,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 
 		System::Windows::Forms::Label^ lable = gcnew System::Windows::Forms::Label();
 		lable->Text = gcnew System::String(varName.c_str());
+		lable->Margin = System::Windows::Forms::Padding(0,7,0,0);
 		lable->AutoEllipsis = true;
 		
 		System::Windows::Forms::ToolTip^ tooltip = gcnew System::Windows::Forms::ToolTip();
@@ -274,6 +275,7 @@ void MainWindow::UpdateDataPanelList(int _entityId, int _currentComponent)
 		tooltip->SetToolTip(lable, gcnew System::String(varName.c_str()));
 
 		//System::Windows::Forms::RowStyle^ row = gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25);
+		this->dataPanel_Table->RowStyles->Add((gcnew System::Windows::Forms::RowStyle(System::Windows::Forms::SizeType::Absolute, 25)));
 		this->dataPanel_Table->Controls->Add(lable);
 		this->dataPanel_Table->Controls->Add(component);
 	}
