@@ -15,6 +15,7 @@ void MainWindow::SetWorld(ECSL::World* _world)
 	m_currentEntity = -1;
 	m_currentComponent = -1;
 	m_forceUpdate = true;
+	oneTickUpdate = false;
 
 	std::vector<unsigned int> bitsetComponents;
 	m_filterMandatory = ECSL::BitSet::BitSetConverter::ArrayToBitSet(bitsetComponents, ECSL::ComponentTypeManager::GetInstance().GetComponentTypeCount());
@@ -54,6 +55,16 @@ bool MainWindow::HasToggledPause()
 	toggledPause = false;
 	return result;
 }
+
+bool MainWindow::OneTickUpdate()
+{
+	bool result = oneTickUpdate;
+	oneTickUpdate = false;
+	if (result)
+		SDL_Log("ASDASD");
+	return result;
+}
+
 
 void MainWindow::InternalUpdate(float _dt)
 {

@@ -63,12 +63,14 @@ namespace ECSTool {
 
 		bool toggledPause;
 		bool paused;
+		bool oneTickUpdate;
 
 		/*	ENTITY PANEL START	*/
 	public:
 		void MainWindow::CreateEntityPanel();
 		void MainWindow::UpdateEntityPanelList();
 		void PickingOccured();
+		bool OneTickUpdate();
 
 	private:
 		System::Windows::Forms::Panel^		entityPanel;
@@ -171,8 +173,10 @@ namespace ECSTool {
 		System::Windows::Forms::Panel^		toolPanel;
 		System::Windows::Forms::CheckBox^	togglePickingButton;
 		System::Windows::Forms::CheckBox^	togglePauseButton;
+		System::Windows::Forms::Button^		toggleOneTickUpdate;
 		System::Windows::Forms::Label^		toolLabel;
 	public:
+		System::Void ButtonOneTickUpdate_Clicked(System::Object^ sender, System::EventArgs^ e);
 		System::Void TogglePicking_Clicked(System::Object^ sender, System::EventArgs^ e);
 		System::Void TogglePause_Clicked(System::Object^ sender, System::EventArgs^ e);
 		void MainWindow::CreateToolPanel();

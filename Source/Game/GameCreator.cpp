@@ -634,7 +634,7 @@ void GameCreator::StartGame(int argc, char** argv)
 		if (WindowCreator::HasToggledPause())
 			m_paused = !m_paused;
 
-		if (!m_paused)
+		if (!m_paused || WindowCreator::OneTickUpdate())
 		{
 			m_serverWorldCounter.Reset();
 			/*	Update world (systems, entities, etc)	*/

@@ -18,6 +18,11 @@ bool WindowCreator::HasToggledPause()
 	return WindowWrapper::GetInstance()->HasToggledPause();
 }
 
+bool WindowCreator::OneTickUpdate()
+{
+	return WindowWrapper::GetInstance()->OneTickUpdate();
+}
+
 void WindowCreator::PickingOccured()
 {
 	WindowWrapper::GetInstance()->PickingOccured();

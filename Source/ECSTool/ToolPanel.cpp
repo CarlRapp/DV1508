@@ -34,10 +34,19 @@ void MainWindow::CreateToolPanel()
 	this->togglePauseButton = (gcnew System::Windows::Forms::CheckBox());
 	this->togglePauseButton->Name = L"PickingButton";
 	this->togglePauseButton->Text = L"Pause";
-	this->togglePauseButton->Size = System::Drawing::Size(130, 20);
+	this->togglePauseButton->Size = System::Drawing::Size(60, 20);
 	this->togglePauseButton->Location = System::Drawing::Point(togglePickingButton->Location.X + togglePickingButton->Size.Width, 0);
 	this->togglePauseButton->Click += gcnew System::EventHandler(this, &MainWindow::TogglePause_Clicked);
 	this->toolPanel->Controls->Add(this->togglePauseButton);
+
+	this->toggleOneTickUpdate = (gcnew System::Windows::Forms::Button());
+	this->toggleOneTickUpdate->Name = L"PickingButton";
+	this->toggleOneTickUpdate->Text = L"Update";
+	this->toggleOneTickUpdate->Size = System::Drawing::Size(55, 19);
+	this->toggleOneTickUpdate->Location = System::Drawing::Point(togglePauseButton->Location.X + togglePauseButton->Size.Width, 0);
+	this->toggleOneTickUpdate->Click += gcnew System::EventHandler(this, &MainWindow::ButtonOneTickUpdate_Clicked);
+	this->toggleOneTickUpdate->Font = (gcnew System::Drawing::Font("Microsoft Sans Serif", 8.0f, System::Drawing::FontStyle::Regular));
+	this->toolPanel->Controls->Add(this->toggleOneTickUpdate);
 
 	this->toolLabel = (gcnew System::Windows::Forms::Label());
 	this->toolPanel->Controls->Add(this->toolLabel);
@@ -64,3 +73,7 @@ void MainWindow::TogglePause_Clicked(System::Object^ sender, System::EventArgs^ 
 	//PAUSE GAME
 }
 
+void MainWindow::ButtonOneTickUpdate_Clicked(System::Object^ sender, System::EventArgs^ e)
+{
+	oneTickUpdate = true;
+}

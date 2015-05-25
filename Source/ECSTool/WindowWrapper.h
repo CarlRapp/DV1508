@@ -16,6 +16,7 @@ public:
 	void ChangeWorld(ECSL::World* _world, Renderer::GraphicsHigh* _graphics);
 	void Update(float _dt, bool _paused);
 	bool HasToggledPause();
+	bool OneTickUpdate();
 	void PickingOccured();
 
 private:

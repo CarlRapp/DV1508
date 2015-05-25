@@ -10,6 +10,7 @@ namespace WindowCreator
 	void DECLSPEC CreateMainWindow(ECSL::World* _world, Renderer::GraphicDevice* _graphics);
 	void DECLSPEC UpdateWindow(float _dt, bool paused);
 	bool DECLSPEC HasToggledPause();
+	bool DECLSPEC OneTickUpdate();
 	void DECLSPEC PickingOccured();
 }
 

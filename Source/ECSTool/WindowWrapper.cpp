@@ -43,6 +43,13 @@ bool WindowWrapper::HasToggledPause()
 	return false;
 }
 
+bool WindowWrapper::OneTickUpdate()
+{
+	if (m_isActive)
+		return m_window->OneTickUpdate();
+	return false;
+}
+
 void WindowWrapper::PickingOccured()
 {
 	if (m_isActive)
