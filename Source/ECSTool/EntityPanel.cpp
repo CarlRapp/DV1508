@@ -18,7 +18,7 @@ void MainWindow::CreateEntityPanel()
 
 	this->entityPanel->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
 
-	this->entityPanel->Location = System::Drawing::Point(3, 24);
+	this->entityPanel->Location = System::Drawing::Point(3, 28);
 	this->entityPanel->Name = L"EntityPanel";
 	//this->entityPanel->AutoSize = true;
 	//this->entityPanel->AutoSizeMode = System::Windows::Forms::AutoSizeMode::GrowAndShrink;
