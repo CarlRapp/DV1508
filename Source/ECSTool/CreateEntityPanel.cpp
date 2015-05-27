@@ -396,6 +396,9 @@ void MainWindow::CreateEntityPanel_PopularLabel_MouseClick(System::Object^ sende
 
 	label->Visible = false;
 	label->Enabled = false;
+
+	if (this->createEntityAddedComponents_List->Items->Count > 0)
+		this->createEntityPanel_CreateEntityButton->Enabled = true;
 }
 
 void MainWindow::ChooseEntityTypePanel_RadioButton_Clicked(System::Object^ sender, EventArgs^ e)
